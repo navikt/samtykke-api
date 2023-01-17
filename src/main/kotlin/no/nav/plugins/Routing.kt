@@ -23,7 +23,7 @@ fun Application.configureRouting() {
 
     routing {
         healthRoute()
-        route("/citizen") {
+        route("citizen") {
             citizenRoute()
         }
     }
