@@ -6,6 +6,7 @@ import io.ktor.server.application.*
 import io.ktor.server.plugins.contentnegotiation.*
 import io.ktor.server.plugins.cors.routing.*
 import io.ktor.server.routing.*
+import no.nav.routes.citizenRoute
 import no.nav.routes.healthRoute
 
 fun Application.configureRouting() {
@@ -19,8 +20,11 @@ fun Application.configureRouting() {
         allowMethod(HttpMethod.Delete)
         allowMethod(HttpMethod.Patch)
     }
-    
+
     routing {
         healthRoute()
+        route("/citizen") {
+            citizenRoute()
+        }
     }
 }
