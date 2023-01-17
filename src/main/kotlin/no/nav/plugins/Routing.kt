@@ -19,6 +19,7 @@ fun Application.configureRouting() {
         allowMethod(HttpMethod.Post)
         allowMethod(HttpMethod.Delete)
         allowMethod(HttpMethod.Patch)
+        allowMethod(HttpMethod.Put)
     }
 
     routing {

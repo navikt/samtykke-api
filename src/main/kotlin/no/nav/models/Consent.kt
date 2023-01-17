@@ -12,5 +12,6 @@ data class Consent(
     val totalInvolved: Int,
     val expiration: LocalDate,
     val code: String,
-    val candidates: List<Candidate>
+    val candidates: List<Candidate>,
+    val employee: Employee
 )
