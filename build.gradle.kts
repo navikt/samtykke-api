@@ -31,14 +31,13 @@ tasks {
         archiveFileName.set("app.jar")
 
         manifest {
-            attributes["Main-class"] = "nav.no.ApplicationKt"
+            attributes["Main-Class"] = "nav.no.ApplicationKt"
             attributes["Class-Path"] = configurations.runtimeClasspath.get().joinToString(separator = " ") {
                 it.name
             }
         }
         doLast {
-            configurations.runtimeClasspath
-                .get()
+            configurations.runtimeClasspath.get()
                 .filter { it.name != "app.jar" }
                 .forEach {
                     val file = File("$buildDir/libs/${it.name}")
