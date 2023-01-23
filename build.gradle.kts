@@ -27,13 +27,6 @@ tasks {
         kotlinOptions.jvmTarget = "18"
     }
 
-    withType<Test> {
-        useJUnitPlatform()
-        testLogging {
-            events("skipped", "failed")
-        }
-    }
-
     jar {
         archiveFileName.set("app.jar")
 
