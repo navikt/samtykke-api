@@ -20,8 +20,3 @@ spec:
     path: isready
   ingresses:
     - https://samtykke-api.labs.nais.io
-  #accessPolicy:
-  #  inbound:
-  #    rules:
-  #      - application: samtykke-citizen
-  #      - application: samtykke-employee
