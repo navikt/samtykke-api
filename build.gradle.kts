@@ -18,6 +18,45 @@ application {
     applicationDefaultJvmArgs = listOf("-Dio.ktor.development=true")
 }
 
+tasks {
+    compileKotlin {
+        kotlinOptions.jvmTarget = "18"
+    }
+
+    compileTestKotlin {
+        kotlinOptions.jvmTarget = "18"
+    }
+
+    withType<Test> {
+        useJUnitPlatform()
+        testLogging {
+            events("skipped", "failed")
+        }
+    }
+
+    jar {
+        archiveFileName.set("app.jar")
+
+        manifest {
+            attributes["Main-class"] = "nav.no.ApplicationKt"
+            attributes["Class-Path"] = configurations.runtimeClasspath.get().joinToString(separator = " ") {
+                it.name
+            }
+        }
+        doLast {
+            configurations.runtimeClasspath
+                .get()
+                .filter { it.name != "app.jar" }
+                .forEach {
+                    val file = File("$buildDir/libs/${it.name}")
+                    if (!file.exists()) {
+                        it.copyTo(file)
+                    }
+                }
+        }
+    }
+}
+
 repositories {
     mavenCentral()
 }

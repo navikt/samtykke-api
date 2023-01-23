@@ -24,6 +24,7 @@ fun Application.configureRouting() {
 
     routing {
         healthRoute()
+        // TODO: wrap TokenX authentication around citizen route
         route("citizen") {
             citizenRoute()
         }
