@@ -18,6 +18,8 @@ spec:
   readiness:
     initialDelay: 30
     path: isready
+  ingresses:
+    - https://samtykke-api.labs.nais.io
   accessPolicy:
     inbound:
       rules:
