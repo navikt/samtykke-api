@@ -6,10 +6,10 @@ import io.ktor.server.response.*
 import io.ktor.server.routing.*
 
 fun Route.healthRoute() {
-    get("/isalive") {
+    get("isalive") {
         call.respond(HttpStatusCode.OK)
     }
-    get("/isready") {
+    get("isready") {
         call.respond(HttpStatusCode.OK)
     }
 }
