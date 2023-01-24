@@ -7,6 +7,7 @@ import io.ktor.server.plugins.contentnegotiation.*
 import io.ktor.server.plugins.cors.routing.*
 import io.ktor.server.routing.*
 import no.nav.routes.citizenRoute
+import no.nav.routes.employeeRoute
 import no.nav.routes.healthRoute
 import no.nav.routes.mocks.citizenRouteMock
 import no.nav.routes.mocks.employeeRouteMock
@@ -27,7 +28,6 @@ fun Application.configureRouting() {
     routing {
         healthRoute()
         if (System.getenv("NAIS_CLUSTER_NAME") == "labs-gcp") {
-            // TODO: wrap TokenX authentication around citizen route
             route("citizen") {
                 citizenRouteMock()
             }
@@ -35,8 +35,13 @@ fun Application.configureRouting() {
                 employeeRouteMock()
             }
         } else {
+            // TODO: wrap TokenX authentication around citizen route
             route("citizen") {
                 citizenRoute()
+            }
+            // TODO: wrap AzureOBO authentication round employee route
+            route("employee") {
+                employeeRoute()
             }
         }
     }
