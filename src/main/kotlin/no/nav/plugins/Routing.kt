@@ -10,6 +10,7 @@ import io.ktor.server.plugins.cors.routing.*
 import io.ktor.server.routing.*
 import no.nav.routes.citizenRoute
 import no.nav.routes.healthRoute
+import no.nav.routes.mocks.citizenRouteMock
 
 val dotenv = dotenv()
 
@@ -27,15 +28,14 @@ fun Application.configureRouting() {
     }
 
     routing {
+        healthRoute()
         if (dotenv["MOCK_DATABASE"] == "ja") {
-            // TODO: Rename these to mock
-            healthRoute()
             // TODO: wrap TokenX authentication around citizen route
             route("citizen") {
-                citizenRoute()
+                citizenRouteMock()
             }
         } else {
-            // TODO: implement real routes
+            citizenRoute()
         }
     }
 }
