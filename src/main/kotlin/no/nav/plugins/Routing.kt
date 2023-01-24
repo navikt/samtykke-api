@@ -1,7 +1,5 @@
 package no.nav.plugins
 
-import io.github.cdimascio.dotenv.Dotenv
-import io.github.cdimascio.dotenv.dotenv
 import io.ktor.http.*
 import io.ktor.serialization.kotlinx.json.*
 import io.ktor.server.application.*
@@ -11,8 +9,6 @@ import io.ktor.server.routing.*
 import no.nav.routes.citizenRoute
 import no.nav.routes.healthRoute
 import no.nav.routes.mocks.citizenRouteMock
-
-val dotenv = dotenv()
 
 fun Application.configureRouting() {
     install(ContentNegotiation) { json() }
@@ -29,7 +25,7 @@ fun Application.configureRouting() {
 
     routing {
         healthRoute()
-        if (dotenv["MOCK_DATABASE"] == "ja") {
+        if (System.getenv("NAIS_CLUSTER_NAME") == "labs-gcp") {
             // TODO: wrap TokenX authentication around citizen route
             route("citizen") {
                 citizenRouteMock()
