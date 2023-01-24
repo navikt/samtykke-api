@@ -9,6 +9,7 @@ import io.ktor.server.routing.*
 import no.nav.routes.citizenRoute
 import no.nav.routes.healthRoute
 import no.nav.routes.mocks.citizenRouteMock
+import no.nav.routes.mocks.employeeRouteMock
 
 fun Application.configureRouting() {
     install(ContentNegotiation) { json() }
@@ -30,8 +31,13 @@ fun Application.configureRouting() {
             route("citizen") {
                 citizenRouteMock()
             }
+            route("employee") {
+                employeeRouteMock()
+            }
         } else {
-            citizenRoute()
+            route("citizen") {
+                citizenRoute()
+            }
         }
     }
 }
