@@ -20,3 +20,6 @@ spec:
     path: isready
   ingresses:
     - https://samtykke-api.labs.nais.io
+  env:
+    - name: MOCK_DATABASE
+      value: ja
