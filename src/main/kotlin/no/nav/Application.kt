@@ -6,6 +6,7 @@ import io.ktor.server.netty.*
 import no.nav.plugins.*
 
 fun main() {
+    val context = ApplicationContext(System.getenv())
     embeddedServer(Netty, port = 8080, host = "0.0.0.0", module = Application::module)
         .start(wait = true)
 }
