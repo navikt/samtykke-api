@@ -15,6 +15,13 @@ BEGIN
 END
 $$;
 
+CREATE TABLE employee(
+    id TEXT UNIQUE CONSTRAINT employee_pk PRIMARY KEY,
+    firstname TEXT,
+    lastname TEXT,
+    email TEXT
+);
+
 CREATE TABLE consent(
     id BIGSERIAL CONSTRAINT consent_pk PRIMARY KEY,
     title TEXT,
@@ -22,7 +29,8 @@ CREATE TABLE consent(
     purpose TEXT,
     total_involved BIGINT,
     expiration DATE,
-    code TEXT UNIQUE
+    code TEXT UNIQUE,
+    employee_id TEXT CONSTRAINT consent_employee_id_fk REFERENCES employee ON DELETE CASCADE
 );
 
 CREATE TYPE STATUS AS ENUM ('ACCEPTED', 'WITHDRAWN');
@@ -35,14 +43,6 @@ CREATE TABLE candidate(
     audio_recording BOOLEAN,
     store_info BOOLEAN,
     consent_id BIGINT CONSTRAINT candidate_consent_id_fk REFERENCES consent ON DELETE CASCADE
-);
-
-CREATE TABLE employee(
-    id TEXT UNIQUE CONSTRAINT employee_pk PRIMARY KEY,
-    firstname TEXT,
-    lastname TEXT,
-    email TEXT,
-    consent_id BIGINT CONSTRAINT employee_consent_id_fk REFERENCES consent ON DELETE CASCADE
 );
 
 CREATE TABLE citizen(
