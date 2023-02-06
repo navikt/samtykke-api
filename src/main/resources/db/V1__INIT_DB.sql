@@ -4,7 +4,13 @@ BEGIN
     IF EXISTS
         (select 1 from pg_roles where rolname = 'cloudsqliamuser')
     THEN
-        grant all privileges on all tables in schema public to cloudsqliamuser;
+        -- TODO: Find a better way to do this
+        --grant all privileges on all tables in schema public to cloudsqliamuser;
+        grant all privileges on table consent to cloudsqliamuser;
+        grant all privileges on table candidate to cloudsqliamuser;
+        grant all privileges on table employee to cloudsqliamuser;
+        grant all privileges on table citizen to cloudsqliamuser;
+        grant all privileges on table message to cloudsqliamuser;
     END IF;
 END
 $$;
