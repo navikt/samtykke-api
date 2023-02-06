@@ -8,6 +8,6 @@ data class Employee(
     val firstname: String,
     val lastname: String,
     val email: String,
-    val consents: List<Consent>,
-    val messages: List<Message>
+    val consents: List<Consent>?,
+    val messages: List<Message>?
 )

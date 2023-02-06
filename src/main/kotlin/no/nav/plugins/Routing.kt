@@ -6,6 +6,7 @@ import io.ktor.server.application.*
 import io.ktor.server.plugins.contentnegotiation.*
 import io.ktor.server.plugins.cors.routing.*
 import io.ktor.server.routing.*
+import no.nav.ApplicationContext
 import no.nav.routes.citizenRoute
 import no.nav.routes.employeeRoute
 import no.nav.routes.healthRoute
@@ -35,13 +36,14 @@ fun Application.configureRouting() {
                 employeeRouteMock()
             }
         } else {
+            val context = ApplicationContext(System.getenv())
             // TODO: wrap TokenX authentication around citizen route
             route("citizen") {
                 citizenRoute()
             }
             // TODO: wrap AzureOBO authentication round employee route
             route("employee") {
-                employeeRoute()
+                employeeRoute(context.employeeService)
             }
         }
     }
