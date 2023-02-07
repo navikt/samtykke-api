@@ -5,7 +5,6 @@ import io.ktor.server.application.*
 import io.ktor.server.request.*
 import io.ktor.server.response.*
 import io.ktor.server.routing.*
-import no.nav.models.Consent
 import no.nav.models.CreateConsentRequest
 import no.nav.models.Employee
 import no.nav.services.ConsentService
@@ -49,6 +48,21 @@ fun Route.employeeRoute(
                     call.respond(activeConsents)
                 } catch (e: Exception) {
                     call.respond(HttpStatusCode.NotAcceptable)
+                }
+            }
+        }
+
+        route("{code}") {
+            get {
+                try {
+                    val code = call.parameters["code"].toString()
+                    val consent = consentService.getConsentByCodeWithCandidates(code)
+                    call.respond(consent)
+                } catch (e: Exception) {
+                    call.respondText(
+                        "Error getting consent",
+                        status = HttpStatusCode.NotFound
+                    )
                 }
             }
         }

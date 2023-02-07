@@ -1,11 +1,13 @@
 package no.nav.services
 
+import no.nav.database.dao.CandidateDao
 import no.nav.database.dao.ConsentDao
 import no.nav.models.Consent
 import no.nav.models.CreateConsentRequest
 
 class ConsentService(
-    private val consentDao: ConsentDao
+    private val consentDao: ConsentDao,
+    private val candidateDao: CandidateDao
 ) {
     fun createConsent(createConsentRequest: CreateConsentRequest, employeeId: String) {
         //TODO: handle database saying: "consent code already exists" exception
@@ -13,6 +15,21 @@ class ConsentService(
     }
 
     fun getActiveConsents(employeeId: String): List<Consent> = consentDao.getActiveConsents(employeeId)
+
+    fun getConsentByCodeWithCandidates(code: String): Consent {
+        val consent = consentDao.getConsentByCode(code)
+        return Consent(
+            consent.id,
+            consent.title,
+            consent.responsibleGroup,
+            consent.purpose,
+            consent.totalInvolved,
+            consent.expiration,
+            consent.code,
+            candidateDao.getCandidatesByConsentId(consent.id),
+            null
+        )
+    }
 
     private fun createConsentCode(): String {
         val allowedChars = ('A'..'Z') + ('0'..'9')

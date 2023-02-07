@@ -1,6 +1,7 @@
 package no.nav
 
 import no.nav.database.DataSourceBuilder
+import no.nav.database.dao.CandidateDao
 import no.nav.database.dao.ConsentDao
 import no.nav.database.dao.EmployeeDao
 import no.nav.services.ConsentService
@@ -17,8 +18,9 @@ class ApplicationContext(private val env: Map<String, String>) {
 
         val employeeDao = EmployeeDao(dataSource)
         val consentDao = ConsentDao(dataSource)
+        val candidateDao = CandidateDao(dataSource)
 
         employeeService = EmployeeService(employeeDao)
-        consentService = ConsentService(consentDao)
+        consentService = ConsentService(consentDao, candidateDao)
     }
 }
