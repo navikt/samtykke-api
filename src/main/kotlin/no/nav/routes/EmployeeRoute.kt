@@ -9,10 +9,12 @@ import no.nav.models.CreateConsentRequest
 import no.nav.models.Employee
 import no.nav.services.ConsentService
 import no.nav.services.EmployeeService
+import no.nav.services.MessageService
 
 fun Route.employeeRoute(
     employeeService: EmployeeService,
-    consentService: ConsentService
+    consentService: ConsentService,
+    messageService: MessageService
 ) {
     route("currentEmployee") {
         get {
@@ -64,6 +66,20 @@ fun Route.employeeRoute(
                         status = HttpStatusCode.NotFound
                     )
                 }
+            }
+        }
+    }
+
+    route("messages") {
+        get {
+            try {
+                val messages = messageService.getMessagesByEmployeeId("sgoijh20u5")
+                call.respond(messages)
+            } catch (e: Exception) {
+                call.respondText(
+                    "Error getting messages",
+                    status = HttpStatusCode.NotFound
+                )
             }
         }
     }
