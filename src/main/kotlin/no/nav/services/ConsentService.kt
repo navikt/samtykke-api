@@ -12,6 +12,8 @@ class ConsentService(
         consentDao.createConsent(createConsentRequest, employeeId, createConsentCode())
     }
 
+    fun getActiveConsents(employeeId: String): List<Consent> = consentDao.getActiveConsents(employeeId)
+
     private fun createConsentCode(): String {
         val allowedChars = ('A'..'Z') + ('0'..'9')
         return (1..7).map {

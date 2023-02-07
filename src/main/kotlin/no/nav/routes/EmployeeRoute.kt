@@ -35,16 +35,22 @@ fun Route.employeeRoute(
             try {
                 val source = call.receive<CreateConsentRequest>()
                 // TODO: replace this by getting id from AzureOBO token
-                consentService.createConsent(source, "sgoijh20u5")
+                consentService.createConsent(source, "bdfhw3fsd")
                 call.respond(HttpStatusCode.OK)
             } catch (e: Exception) {
-                print(e)
                 call.respond(HttpStatusCode.NotAcceptable)
             }
         }
 
         route("active") {
-
+            get {
+                try {
+                    val activeConsents = consentService.getActiveConsents("bdfhw3fsd")
+                    call.respond(activeConsents)
+                } catch (e: Exception) {
+                    call.respond(HttpStatusCode.NotAcceptable)
+                }
+            }
         }
     }
 }
