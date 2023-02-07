@@ -8,7 +8,7 @@ class ConsentService(
     private val consentDao: ConsentDao
 ) {
     fun createConsent(createConsentRequest: CreateConsentRequest, employeeId: String) {
-        //TODO: createConsentCode() should check with database if consent code exists
+        //TODO: handle database saying: "consent code already exists" exception
         consentDao.createConsent(createConsentRequest, employeeId, createConsentCode())
     }
 

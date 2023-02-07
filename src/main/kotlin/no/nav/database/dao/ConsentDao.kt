@@ -19,7 +19,7 @@ class ConsentDao(
                 setDate(5, Date.valueOf(consent.expiration.toString()))
                 setString(6, code)
                 setString(7, employeeId)
-            }.executeQuery()
+            }.executeUpdate()
         }
     }
 

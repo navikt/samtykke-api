@@ -38,8 +38,12 @@ fun Route.employeeRoute(
                 consentService.createConsent(source, "sgoijh20u5")
                 call.respond(HttpStatusCode.OK)
             } catch (e: Exception) {
+                print(e)
                 call.respond(HttpStatusCode.NotAcceptable)
             }
+        }
+
+        route("active") {
 
         }
     }
