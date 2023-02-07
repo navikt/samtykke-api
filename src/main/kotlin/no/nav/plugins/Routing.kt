@@ -43,7 +43,7 @@ fun Application.configureRouting() {
             }
             // TODO: wrap AzureOBO authentication round employee route
             route("employee") {
-                employeeRoute(context.employeeService)
+                employeeRoute(context.employeeService, context.consentService)
             }
         }
     }

@@ -1,6 +1,6 @@
 package no.nav.database.dao
 
-import no.nav.database.dao.EmployeeQueries.SELECT_EMPLOYEE
+import no.nav.database.dao.EmployeeDao.EmployeeQueries.SELECT_EMPLOYEE
 import no.nav.models.Employee
 import javax.sql.DataSource
 
@@ -27,12 +27,13 @@ class EmployeeDao(
             }
         }
     }
+
+    private object EmployeeQueries {
+        val SELECT_EMPLOYEE = """
+            SELECT *
+            FROM employee
+            WHERE id = ?
+        """.trimIndent()
+    }
 }
 
-private object EmployeeQueries {
-    val SELECT_EMPLOYEE = """
-        SELECT *
-        FROM employee
-        WHERE id = ?
-    """.trimIndent()
-}

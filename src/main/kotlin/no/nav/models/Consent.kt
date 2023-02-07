@@ -11,7 +11,16 @@ data class Consent(
     val purpose: String,
     val totalInvolved: Int,
     val expiration: LocalDate,
-    val code: String,
-    val candidates: List<Candidate>,
-    val employee: Employee
+    val code: String?,
+    val candidates: List<Candidate>?,
+    val employee: Employee?
+)
+
+@Serializable
+data class CreateConsentRequest(
+    val title: String,
+    val responsibleGroup: String,
+    val purpose: String,
+    val totalInvolved: Int,
+    val expiration: LocalDate,
 )

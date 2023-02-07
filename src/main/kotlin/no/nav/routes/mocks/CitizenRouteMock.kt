@@ -34,9 +34,9 @@ fun Route.citizenRouteMock() {
                         it.code == code
                     }
 
-                    if (consents.size == 1 && consents[0].candidates.isNotEmpty()) {
-                        call.respond(consents[0].copy(candidates = listOf(consents[0].candidates[0])))
-                    } else if (consents.size == 1 && consents[0].candidates.isEmpty()) {
+                    if (consents.size == 1 && consents[0].candidates!!.isNotEmpty()) {
+                        call.respond(consents[0].copy(candidates = listOf(consents[0].candidates!![0])))
+                    } else if (consents.size == 1 && consents[0].candidates!!.isEmpty()) {
                         call.respond(consents[0].copy(candidates = listOf()))
                     } else {
                         call.respond(HttpStatusCode.NotFound)
