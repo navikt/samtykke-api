@@ -14,6 +14,8 @@ class ConsentService(
         consentDao.createConsent(createConsentRequest, employeeId, createConsentCode())
     }
 
+    fun getConsentByCode(code: String): Consent = consentDao.getConsentByCode(code)
+
     fun getEmployeeActiveConsents(employeeId: String): List<Consent> = consentDao.getActiveConsents(employeeId)
 
     fun getCitizenActiveConsents(citizenId: String): List<Consent> {

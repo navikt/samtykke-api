@@ -27,7 +27,16 @@ fun Route.citizenRoute(
 
         route("{code}") {
             get {
-                // TODO: add
+                try {
+                    val code = call.parameters["code"].toString()
+                    val consent = consentService.getConsentByCode(code)
+                    call.respond(consent)
+                } catch (e: Exception) {
+                    call.respondText(
+                        "Error getting consent",
+                        status = HttpStatusCode.NotFound
+                    )
+                }
             }
         }
 
@@ -38,6 +47,7 @@ fun Route.citizenRoute(
 
             post {
                 // TODO: add
+                // TODO: check if citizen already has candidate, then dont allow to post
             }
 
             put {
