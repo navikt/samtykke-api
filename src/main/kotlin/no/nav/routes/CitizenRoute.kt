@@ -38,20 +38,30 @@ fun Route.citizenRoute(
                     )
                 }
             }
-        }
+            route("canditature") {
+                get {
+                    // 1. Get consent with code,
+                    // 2. get candidate which is connected to both consent id and candidate it
+                    try {
+                        val code = call.parameters["code"].toString()
+                        val consent = consentService.getConsentByCodeWithCandidate(code, "sdp40972")
+                        call.respond(consent)
+                    } catch (e: Exception) {
+                        call.respondText(
+                            "Error getting consent",
+                            status = HttpStatusCode.NotFound
+                        )
+                    }
+                }
 
-        route("canditature") {
-            get {
-                // TODO: add
-            }
+                post {
+                    // TODO: add
+                    // TODO: check if citizen already has candidate, then dont allow to post
+                }
 
-            post {
-                // TODO: add
-                // TODO: check if citizen already has candidate, then dont allow to post
-            }
-
-            put {
-                // TODO: add
+                put {
+                    // TODO: add
+                }
             }
         }
     }

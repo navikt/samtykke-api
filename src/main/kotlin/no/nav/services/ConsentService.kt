@@ -46,6 +46,23 @@ class ConsentService(
         )
     }
 
+    fun getConsentByCodeWithCandidate(code: String, citizenId: String): Consent {
+        val consent = consentDao.getConsentByCode(code)
+        val candidate = candidateDao.getCitizenCandidature(consent.id, citizenId)
+
+        return Consent(
+            consent.id,
+            consent.title,
+            consent.responsibleGroup,
+            consent.purpose,
+            consent.totalInvolved,
+            consent.expiration,
+            consent.code,
+            listOf(candidate),
+            null
+        )
+    }
+
     private fun createConsentCode(): String {
         val allowedChars = ('A'..'Z') + ('0'..'9')
         return (1..7).map {

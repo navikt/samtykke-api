@@ -3,6 +3,7 @@ package no.nav.database.dao
 import kotlinx.datetime.LocalDate
 import no.nav.database.dao.CandidateDao.CandidateQueries.SELECT_ALL_CANDIDATES_BY_CONSENT
 import no.nav.database.dao.CandidateDao.CandidateQueries.SELECT_ALL_CANDIDATURES_BY_CITIZEN
+import no.nav.database.dao.CandidateDao.CandidateQueries.SELECT_CANDIDATE
 import no.nav.database.toList
 import no.nav.models.Candidate
 import no.nav.models.CandidateStatus
@@ -57,6 +58,33 @@ class CandidateDao(
         }
     }
 
+    fun getCitizenCandidature(consentId: Long, citizenId: String): Candidate {
+        dataSource.connection.use {
+            val result =  it.prepareStatement(SELECT_CANDIDATE).apply {
+                setLong(1, consentId)
+                setString(2, citizenId)
+            }.executeQuery()
+            return if (result.next()) {
+                Candidate(
+                    result.getLong("id"),
+                    result.getString("name"),
+                    result.getString("email"),
+                    CandidateStatus.valueOf(result.getString("status")),
+                    LocalDate(
+                        result.getDate("consented").toLocalDate().year,
+                        result.getDate("consented").toLocalDate().month,
+                        result.getDate("consented").toLocalDate().dayOfMonth
+                    ),
+                    result.getBoolean("audio_recording"),
+                    result.getBoolean("store_info"),
+                    result.getLong("consent_id")
+                )
+            } else {
+                throw Exception("Could not find candidate with $consentId and $citizenId")
+            }
+        }
+    }
+
     private object CandidateQueries {
         val SELECT_ALL_CANDIDATES_BY_CONSENT = """
             SELECT * FROM candidate
@@ -66,6 +94,11 @@ class CandidateDao(
         val SELECT_ALL_CANDIDATURES_BY_CITIZEN = """
             SELECT * FROM candidate
             WHERE citizen_id = ?
+        """.trimIndent()
+
+        val SELECT_CANDIDATE = """
+            SELECT * FROM candidate
+            WHERE consent_id = ? AND citizen_id = ?
         """.trimIndent()
     }
 }
