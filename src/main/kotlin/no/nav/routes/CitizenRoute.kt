@@ -6,7 +6,7 @@ fun Route.citizenRoute() {
     route("consent") {
         route("active") {
             get {
-                // TODO: add
+                // TODO: get all active canditatures and consents connected to user
             }
         }
 

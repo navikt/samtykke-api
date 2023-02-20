@@ -42,12 +42,12 @@ CREATE TABLE candidate(
     consented DATE,
     audio_recording BOOLEAN,
     store_info BOOLEAN,
-    consent_id BIGINT CONSTRAINT candidate_consent_id_fk REFERENCES consent ON DELETE CASCADE
+    consent_id BIGINT CONSTRAINT candidate_consent_id_fk REFERENCES consent ON DELETE CASCADE,
+    citizen_id TEXT CONSTRAINT candidate_citizen_id_fk REFERENCES citizen ON DELETE CASCADE
 );
 
 CREATE TABLE citizen(
-    id TEXT UNIQUE CONSTRAINT citizen_pk PRIMARY KEY,
-    candidate_id BIGINT CONSTRAINT citizen_candidate_id_fk REFERENCES candidate ON DELETE CASCADE
+    id TEXT UNIQUE CONSTRAINT citizen_pk PRIMARY KEY
 );
 
 CREATE TABLE message(
