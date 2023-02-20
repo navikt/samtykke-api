@@ -14,7 +14,20 @@ class ConsentService(
         consentDao.createConsent(createConsentRequest, employeeId, createConsentCode())
     }
 
-    fun getActiveConsents(employeeId: String): List<Consent> = consentDao.getActiveConsents(employeeId)
+    fun getEmployeeActiveConsents(employeeId: String): List<Consent> = consentDao.getActiveConsents(employeeId)
+
+    fun getCitizenActiveConsents(citizenId: String): List<Consent> {
+        // 1. Find ALL canditatures by citizen id
+        // 2. Get all consents connected to those canditatures
+
+        val consents = mutableListOf<Consent>()
+
+        candidateDao.getCitizenCandidaturesByCitizenId(citizenId).forEach {
+            consents.add(consentDao.getConsentById(it.consentId!!))
+        }
+
+        return consents
+    }
 
     fun getConsentByCodeWithCandidates(code: String): Consent {
         val consent = consentDao.getConsentByCode(code)

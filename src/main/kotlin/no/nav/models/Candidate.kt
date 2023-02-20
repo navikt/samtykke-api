@@ -11,5 +11,6 @@ data class Candidate(
     val status: CandidateStatus,
     val consented: LocalDate?,
     val audioRecording: Boolean,
-    val storeInfo: Boolean
+    val storeInfo: Boolean,
+    val consentId: Long?,
 )

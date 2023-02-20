@@ -46,7 +46,7 @@ fun Route.employeeRoute(
         route("active") {
             get {
                 try {
-                    val activeConsents = consentService.getActiveConsents("bdfhw3fsd")
+                    val activeConsents = consentService.getEmployeeActiveConsents("bdfhw3fsd")
                     call.respond(activeConsents)
                 } catch (e: Exception) {
                     call.respond(HttpStatusCode.NotAcceptable)

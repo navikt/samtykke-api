@@ -4,6 +4,7 @@ import kotlinx.datetime.LocalDate
 import no.nav.database.dao.ConsentDao.ConsentQueries.POST_CONSENT
 import no.nav.database.dao.ConsentDao.ConsentQueries.SELECT_ALL_ACTIVE_CONSENTS
 import no.nav.database.dao.ConsentDao.ConsentQueries.SELECT_CONSENT_BY_CODE
+import no.nav.database.dao.ConsentDao.ConsentQueries.SELECT_CONSENT_BY_ID
 import no.nav.database.toList
 import no.nav.models.Consent
 import no.nav.models.CreateConsentRequest
@@ -78,6 +79,33 @@ class ConsentDao(
         }
     }
 
+    fun getConsentById(consentId: Long): Consent {
+        dataSource.connection.use {
+            val result = it.prepareStatement(SELECT_CONSENT_BY_ID).apply {
+                setLong(1, consentId)
+            }.executeQuery()
+            return if (result.next()) {
+                Consent(
+                    result.getLong("id"),
+                    result.getString("title"),
+                    result.getString("responsible_group"),
+                    result.getString("purpose"),
+                    result.getInt("total_involved"),
+                    LocalDate(
+                        result.getDate("expiration").toLocalDate().year,
+                        result.getDate("expiration").toLocalDate().month,
+                        result.getDate("expiration").toLocalDate().dayOfMonth
+                    ),
+                    result.getString("code"),
+                    null,
+                    null
+                )
+            } else {
+                throw Exception("Could not find consent with id: $consentId")
+            }
+        }
+    }
+
     private object ConsentQueries {
         val POST_CONSENT = """
             INSERT INTO consent
@@ -94,6 +122,11 @@ class ConsentDao(
         val SELECT_CONSENT_BY_CODE = """
             SELECT * FROM consent
             WHERE code = ?
+        """.trimIndent()
+
+        val SELECT_CONSENT_BY_ID = """
+            SELECT * FROM consent
+            WHERE id = ?
         """.trimIndent()
     }
 }

@@ -13,7 +13,8 @@ fun candidatesMock(): List<Candidate> {
             CandidateStatus.ACCEPTED,
             LocalDate(2023, 2, 4),
             true,
-            false
+            false,
+            null
         ),
         Candidate(
             2,
@@ -22,7 +23,8 @@ fun candidatesMock(): List<Candidate> {
             CandidateStatus.ACCEPTED,
             LocalDate(2023, 2, 4),
             false,
-            true
+            true,
+            null
         ),
         Candidate(
             3,
@@ -31,7 +33,8 @@ fun candidatesMock(): List<Candidate> {
             CandidateStatus.WITHDRAWN,
             null,
             false,
-            false
+            false,
+            null
         ),
         Candidate(
             4,
@@ -40,7 +43,8 @@ fun candidatesMock(): List<Candidate> {
             CandidateStatus.WITHDRAWN,
             null,
             false,
-            false
+            false,
+            null
         )
     )
 }
