@@ -39,7 +39,7 @@ fun Application.configureRouting() {
             val context = ApplicationContext(System.getenv())
             // TODO: wrap TokenX authentication around citizen route
             route("citizen") {
-                citizenRoute(context.consentService)
+                citizenRoute(context.consentService, context.candidateService)
             }
             // TODO: wrap AzureOBO authentication round employee route
             route("employee") {

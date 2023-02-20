@@ -19,9 +19,6 @@ class ConsentService(
     fun getEmployeeActiveConsents(employeeId: String): List<Consent> = consentDao.getActiveConsents(employeeId)
 
     fun getCitizenActiveConsents(citizenId: String): List<Consent> {
-        // 1. Find ALL canditatures by citizen id
-        // 2. Get all consents connected to those canditatures
-
         val consents = mutableListOf<Consent>()
 
         candidateDao.getCitizenCandidaturesByCitizenId(citizenId).forEach {

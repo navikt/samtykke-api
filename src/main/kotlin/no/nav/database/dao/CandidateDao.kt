@@ -1,12 +1,15 @@
 package no.nav.database.dao
 
 import kotlinx.datetime.LocalDate
+import no.nav.database.dao.CandidateDao.CandidateQueries.POST_CANDIDATE
 import no.nav.database.dao.CandidateDao.CandidateQueries.SELECT_ALL_CANDIDATES_BY_CONSENT
 import no.nav.database.dao.CandidateDao.CandidateQueries.SELECT_ALL_CANDIDATURES_BY_CITIZEN
 import no.nav.database.dao.CandidateDao.CandidateQueries.SELECT_CANDIDATE
 import no.nav.database.toList
 import no.nav.models.Candidate
 import no.nav.models.CandidateStatus
+import no.nav.models.CreateCandidateRequest
+import java.sql.Date
 import javax.sql.DataSource
 
 class CandidateDao(
@@ -85,6 +88,21 @@ class CandidateDao(
         }
     }
 
+    fun createCandidature(candidate: CreateCandidateRequest, consentId: Long, citizenId: String) {
+        dataSource.connection.use {
+            it.prepareStatement(POST_CANDIDATE).apply {
+                setString(1, candidate.name)
+                setString(2, candidate.email)
+                setString(3, candidate.status.toString())
+                setDate(4, Date.valueOf(candidate.consented.toString()))
+                setBoolean(5, candidate.audioRecording)
+                setBoolean(6, candidate.storeInfo)
+                setLong(7, consentId)
+                setString(8, citizenId)
+            }.executeUpdate()
+        }
+    }
+
     private object CandidateQueries {
         val SELECT_ALL_CANDIDATES_BY_CONSENT = """
             SELECT * FROM candidate
@@ -99,6 +117,13 @@ class CandidateDao(
         val SELECT_CANDIDATE = """
             SELECT * FROM candidate
             WHERE consent_id = ? AND citizen_id = ?
+        """.trimIndent()
+
+        val POST_CANDIDATE = """
+            INSERT INTO candidate
+            (name, email, status, consented, audio_recording, store_info, consent_id, citizen_id)
+            VALUES
+            (?, ?, ?::status, ?, ?, ?, ?, ?)
         """.trimIndent()
     }
 }

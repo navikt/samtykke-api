@@ -14,3 +14,13 @@ data class Candidate(
     val storeInfo: Boolean,
     val consentId: Long?,
 )
+
+@Serializable
+data class CreateCandidateRequest(
+    val name: String,
+    val email: String,
+    val status: CandidateStatus,
+    val consented: LocalDate,
+    val audioRecording: Boolean,
+    val storeInfo: Boolean,
+)
