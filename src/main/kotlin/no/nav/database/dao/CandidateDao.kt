@@ -1,5 +1,6 @@
 package no.nav.database.dao
 
+import io.ktor.server.plugins.*
 import kotlinx.datetime.LocalDate
 import no.nav.database.dao.CandidateDao.CandidateQueries.POST_CANDIDATE
 import no.nav.database.dao.CandidateDao.CandidateQueries.SELECT_ALL_CANDIDATES_BY_CONSENT
@@ -83,23 +84,27 @@ class CandidateDao(
                     result.getLong("consent_id")
                 )
             } else {
-                throw Exception("Could not find candidate with $consentId and $citizenId")
+                throw NotFoundException()
             }
         }
     }
 
     fun createCandidature(candidate: CreateCandidateRequest, consentId: Long, citizenId: String) {
-        dataSource.connection.use {
-            it.prepareStatement(POST_CANDIDATE).apply {
-                setString(1, candidate.name)
-                setString(2, candidate.email)
-                setString(3, candidate.status.toString())
-                setDate(4, Date.valueOf(candidate.consented.toString()))
-                setBoolean(5, candidate.audioRecording)
-                setBoolean(6, candidate.storeInfo)
-                setLong(7, consentId)
-                setString(8, citizenId)
-            }.executeUpdate()
+        try {
+            dataSource.connection.use {
+                it.prepareStatement(POST_CANDIDATE).apply {
+                    setString(1, candidate.name)
+                    setString(2, candidate.email)
+                    setString(3, candidate.status.toString())
+                    setDate(4, Date.valueOf(candidate.consented.toString()))
+                    setBoolean(5, candidate.audioRecording)
+                    setBoolean(6, candidate.storeInfo)
+                    setLong(7, consentId)
+                    setString(8, citizenId)
+                }.executeUpdate()
+            }
+        } catch (e: Exception) {
+            throw BadRequestException("Could not create candidate")
         }
     }
 

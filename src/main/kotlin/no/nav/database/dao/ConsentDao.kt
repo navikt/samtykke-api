@@ -1,5 +1,6 @@
 package no.nav.database.dao
 
+import io.ktor.server.plugins.*
 import kotlinx.datetime.LocalDate
 import no.nav.database.dao.ConsentDao.ConsentQueries.POST_CONSENT
 import no.nav.database.dao.ConsentDao.ConsentQueries.SELECT_ALL_ACTIVE_CONSENTS
@@ -74,7 +75,7 @@ class ConsentDao(
                     null
                 )
             } else {
-                throw Exception("Could not find consent with code: $code")
+                throw NotFoundException()
             }
         }
     }
@@ -101,7 +102,7 @@ class ConsentDao(
                     null
                 )
             } else {
-                throw Exception("Could not find consent with id: $consentId")
+                throw NotFoundException()
             }
         }
     }

@@ -2,6 +2,7 @@ package no.nav.routes
 
 import io.ktor.http.*
 import io.ktor.server.application.*
+import io.ktor.server.plugins.*
 import io.ktor.server.request.*
 import io.ktor.server.response.*
 import io.ktor.server.routing.*
@@ -60,16 +61,11 @@ fun Route.citizenRoute(
                 }
 
                 post {
-                    // TODO: Fix this returning only 200 OK
-                    try {
-                        val source = call.receive<CreateCandidateRequest>()
-                        val code = call.parameters["code"].toString()
-                        // TODO: replace this by getting id from TokenX token
-                        candidateService.createCandidature(source, code, "sdp40972")
-                        call.respond(HttpStatusCode.OK)
-                    } catch (e: Exception) {
-                        call.respond(HttpStatusCode.NotAcceptable)
-                    }
+                    val source = call.receive<CreateCandidateRequest>()
+                    val code = call.parameters["code"].toString()
+                    // TODO: replace this by getting id from TokenX token
+                    candidateService.createCandidature(source, code, "sdp40972")
+                    call.respond(HttpStatusCode.OK)
                 }
 
                 put {
