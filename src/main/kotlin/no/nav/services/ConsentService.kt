@@ -47,6 +47,8 @@ class ConsentService(
             consents.add(consentDao.getConsentById(it.consentId!!))
         }
 
+        if (consents.isEmpty()) throw NotFoundException()
+
         return consents
     }
 

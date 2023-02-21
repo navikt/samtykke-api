@@ -17,47 +17,25 @@ fun Route.citizenRoute(
     route("consent") {
         route("active") {
             get {
-                try {
-                    // TODO: replace this by getting id from TokenX token
-                    val activeConsents = consentService.getCitizenActiveConsents("sdp40972")
-                    call.respond(activeConsents)
-                } catch (e: Exception) {
-                    call.respondText(
-                        "Error getting active consents",
-                        status = HttpStatusCode.NotFound
-                    )
-                }
+                // TODO: replace this by getting id from TokenX token
+                val activeConsents = consentService.getCitizenActiveConsents("sdp40972")
+                call.respond(activeConsents)
             }
         }
 
         route("{code}") {
             get {
-                try {
-                    val code = call.parameters["code"].toString()
-                    val consent = consentService.getConsentByCode(code)
-                    call.respond(consent)
-                } catch (e: Exception) {
-                    call.respondText(
-                        "Error getting consent",
-                        status = HttpStatusCode.NotFound
-                    )
-                }
+                val code = call.parameters["code"].toString()
+                val consent = consentService.getConsentByCode(code)
+                call.respond(consent)
             }
+
             route("canditature") {
                 get {
-                    // 1. Get consent with code,
-                    // 2. get candidate which is connected to both consent id and candidate it
-                    try {
-                        val code = call.parameters["code"].toString()
-                        // TODO: replace this by getting id from TokenX token
-                        val consent = consentService.getConsentByCodeWithCandidate(code, "sdp40972")
-                        call.respond(consent)
-                    } catch (e: Exception) {
-                        call.respondText(
-                            "Error getting consent",
-                            status = HttpStatusCode.NotFound
-                        )
-                    }
+                    val code = call.parameters["code"].toString()
+                    // TODO: replace this by getting id from TokenX token
+                    val consent = consentService.getConsentByCodeWithCandidate(code, "sdp40972")
+                    call.respond(consent)
                 }
 
                 post {
