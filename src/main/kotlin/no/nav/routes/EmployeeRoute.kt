@@ -18,16 +18,9 @@ fun Route.employeeRoute(
 ) {
     route("currentEmployee") {
         get {
-            try {
-                // TODO: replace this by getting id from AzureOBO token
-                val employee: Employee = employeeService.getEmployee("sgoijh20u5")
-                call.respond(employee)
-            } catch (e: Exception) {
-                call.respondText(
-                    "Error getting employee",
-                    status = HttpStatusCode.NotFound
-                )
-            }
+            // TODO: replace this by getting id from AzureOBO token
+            val employee: Employee = employeeService.getEmployee("sgoijh20u5")
+            call.respond(employee)
         }
     }
 

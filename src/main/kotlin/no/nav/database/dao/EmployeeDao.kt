@@ -1,5 +1,6 @@
 package no.nav.database.dao
 
+import io.ktor.server.plugins.*
 import no.nav.database.dao.EmployeeDao.EmployeeQueries.SELECT_EMPLOYEE
 import no.nav.models.Employee
 import javax.sql.DataSource
@@ -22,8 +23,7 @@ class EmployeeDao(
                     null
                 )
             } else {
-                // TODO: add propper exception handling
-                throw Exception("Employee not found")
+                throw NotFoundException()
             }
         }
     }

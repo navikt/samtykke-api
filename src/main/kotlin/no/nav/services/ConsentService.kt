@@ -1,5 +1,6 @@
 package no.nav.services
 
+import io.ktor.server.plugins.*
 import no.nav.database.dao.CandidateDao
 import no.nav.database.dao.ConsentDao
 import no.nav.models.Consent
@@ -11,7 +12,18 @@ class ConsentService(
 ) {
     fun createConsent(createConsentRequest: CreateConsentRequest, employeeId: String) {
         //TODO: handle database saying: "consent code already exists" exception
-        consentDao.createConsent(createConsentRequest, employeeId, createConsentCode())
+        var unique = false
+
+        do {
+            val code = createConsentCode()
+            try {
+                consentDao.getConsentByCode(code)
+                break
+            } catch (e: Exception) {
+                if (e is NotFoundException) consentDao.createConsent(createConsentRequest, employeeId, code)
+                unique = true
+            }
+        } while (!unique)
     }
 
     fun getConsentByCode(code: String): Consent = consentDao.getConsentByCode(code)

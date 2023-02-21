@@ -17,6 +17,7 @@ import javax.sql.DataSource
 class CandidateDao(
     private val dataSource: DataSource
 ) {
+    // TODO: add filtering of anonymized candidatures
     fun getCandidatesByConsentId(consentId: Long): List<Candidate> {
         dataSource.connection.use {
             return it.prepareStatement(SELECT_ALL_CANDIDATES_BY_CONSENT).apply {
@@ -40,6 +41,7 @@ class CandidateDao(
         }
     }
 
+    // TODO: add filtering of anonymized candidatures
     fun getCitizenCandidaturesByCitizenId(citizenId: String): List<Candidate> {
         dataSource.connection.use {
             return it.prepareStatement(SELECT_ALL_CANDIDATURES_BY_CITIZEN).apply {
