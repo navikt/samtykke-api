@@ -11,9 +11,7 @@ class ConsentService(
     private val candidateDao: CandidateDao
 ) {
     fun createConsent(createConsentRequest: CreateConsentRequest, employeeId: String) {
-        //TODO: handle database saying: "consent code already exists" exception
-        var unique = false
-
+        var unique: Boolean
         do {
             val code = createConsentCode()
             try {

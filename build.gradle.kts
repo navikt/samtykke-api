@@ -49,6 +49,7 @@ dependencies {
     implementation("io.ktor:ktor-server-core-jvm:$ktor_version")
     implementation("io.ktor:ktor-server-content-negotiation-jvm:$ktor_version")
     implementation("io.ktor:ktor-serialization-kotlinx-json-jvm:$ktor_version")
+    implementation("io.ktor:ktor-server-request-validation:$ktor_version")
     implementation("org.jetbrains.kotlinx:kotlinx-datetime:0.4.0")
     implementation("org.postgresql:postgresql:42.5.1")
     implementation("com.zaxxer:HikariCP:5.0.1")

@@ -30,26 +30,30 @@ class ConsentDao(
     }
 
     fun getActiveConsents(employeeId: String): List<Consent> {
-        dataSource.connection.use {
-            return it.prepareStatement(SELECT_ALL_ACTIVE_CONSENTS).apply {
-                setString(1, employeeId)
-            }.executeQuery().toList {
-                Consent(
-                    getLong("id"),
-                    getString("title"),
-                    getString("responsible_group"),
-                    getString("purpose"),
-                    getInt("total_involved"),
-                    LocalDate(
-                        getDate("expiration").toLocalDate().year,
-                        getDate("expiration").toLocalDate().month,
-                        getDate("expiration").toLocalDate().dayOfMonth
-                    ),
-                    getString("code"),
-                    null,
-                    null
-                )
+        try {
+            dataSource.connection.use {
+                return it.prepareStatement(SELECT_ALL_ACTIVE_CONSENTS).apply {
+                    setString(1, employeeId)
+                }.executeQuery().toList {
+                    Consent(
+                        getLong("id"),
+                        getString("title"),
+                        getString("responsible_group"),
+                        getString("purpose"),
+                        getInt("total_involved"),
+                        LocalDate(
+                            getDate("expiration").toLocalDate().year,
+                            getDate("expiration").toLocalDate().month,
+                            getDate("expiration").toLocalDate().dayOfMonth
+                        ),
+                        getString("code"),
+                        null,
+                        null
+                    )
+                }
             }
+        } catch (e: Exception) {
+            throw NotFoundException()
         }
     }
 
