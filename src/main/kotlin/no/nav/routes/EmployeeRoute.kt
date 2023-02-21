@@ -34,12 +34,9 @@ fun Route.employeeRoute(
 
         route("active") {
             get {
-                try {
-                    val activeConsents = consentService.getEmployeeActiveConsents("bdfhw3fsd")
-                    call.respond(activeConsents)
-                } catch (e: Exception) {
-                    call.respond(HttpStatusCode.NotAcceptable)
-                }
+                // TODO: replace this by getting id from AzureOBO token
+                val activeConsents = consentService.getEmployeeActiveConsents("bdfhw3fsd")
+                call.respond(activeConsents)
             }
         }
 

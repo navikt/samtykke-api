@@ -32,7 +32,13 @@ class ConsentService(
 
     fun getConsentByCode(code: String): Consent = consentDao.getConsentByCode(code)
 
-    fun getEmployeeActiveConsents(employeeId: String): List<Consent> = consentDao.getActiveConsents(employeeId)
+    fun getEmployeeActiveConsents(employeeId: String): List<Consent> {
+        val consents: List<Consent> = consentDao.getActiveConsents(employeeId)
+
+        if (consents.isEmpty()) throw NotFoundException()
+
+        return consents
+    }
 
     fun getCitizenActiveConsents(citizenId: String): List<Consent> {
         val consents = mutableListOf<Consent>()
