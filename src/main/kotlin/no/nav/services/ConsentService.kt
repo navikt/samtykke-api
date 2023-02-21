@@ -11,6 +11,12 @@ class ConsentService(
     private val candidateDao: CandidateDao
 ) {
     fun createConsent(createConsentRequest: CreateConsentRequest, employeeId: String) {
+        try {
+            validateConsent(createConsentRequest)
+        } catch (e: Exception) {
+            throw BadRequestException("Consent not valid")
+        }
+
         var unique: Boolean
         do {
             val code = createConsentCode()
@@ -68,6 +74,15 @@ class ConsentService(
             listOf(candidate),
             null
         )
+    }
+
+    private fun validateConsent(createConsentRequest: CreateConsentRequest) {
+        require(createConsentRequest.title.length > 5) { "Title must be longer than 5 characters" }
+        require(createConsentRequest.title.length < 50) { "Title must be shorter than 50 characters" }
+        require(createConsentRequest.responsibleGroup.isNotBlank()) { "Responsible group must be set" }
+        require(createConsentRequest.purpose.length > 30) { "Purpose must be longer than 30 characters" }
+        require(createConsentRequest.purpose.length < 300) { "Purpose must be shorten than 300 characters" }
+        require(createConsentRequest.totalInvolved > 0) { "There has to be at least 1 involved" }
     }
 
     private fun createConsentCode(): String {
