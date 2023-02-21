@@ -45,7 +45,7 @@ fun Route.citizenRoute(
                     candidateService.createCandidature(source, code, "sdp40972")
                     call.respond(HttpStatusCode.OK)
                 }
-
+                // TODO: add the posiblity of updating candidate, not just anonymizing it
                 put {
                     val code = call.parameters["code"].toString()
                     candidateService.anonymizeCandidate(code, "sdp40972")
