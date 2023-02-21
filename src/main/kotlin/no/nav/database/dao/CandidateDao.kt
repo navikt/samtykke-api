@@ -6,6 +6,7 @@ import no.nav.database.dao.CandidateDao.CandidateQueries.POST_CANDIDATE
 import no.nav.database.dao.CandidateDao.CandidateQueries.SELECT_ALL_CANDIDATES_BY_CONSENT
 import no.nav.database.dao.CandidateDao.CandidateQueries.SELECT_ALL_CANDIDATURES_BY_CITIZEN
 import no.nav.database.dao.CandidateDao.CandidateQueries.SELECT_CANDIDATE
+import no.nav.database.dao.CandidateDao.CandidateQueries.UPDATE_CANDIDATE
 import no.nav.database.toList
 import no.nav.models.Candidate
 import no.nav.models.CandidateStatus
@@ -108,6 +109,27 @@ class CandidateDao(
         }
     }
 
+    fun anonymizeCandidate(consentId: Long, citizenId: String) {
+        try {
+            dataSource.connection.use {
+                it.prepareStatement(UPDATE_CANDIDATE).apply {
+                    setString(1, "")
+                    setString(2, "")
+                    setString(3, CandidateStatus.WITHDRAWN.toString())
+                    setDate(4, null)
+                    setBoolean(5, false)
+                    setBoolean(6, false)
+                    setString(7, "")
+                    // Used to find correct candidate
+                    setLong(8, consentId)
+                    setString(9, citizenId)
+                }.executeUpdate()
+            }
+        } catch (e: Exception) {
+            throw BadRequestException("Could not anonymize")
+        }
+    }
+
     private object CandidateQueries {
         val SELECT_ALL_CANDIDATES_BY_CONSENT = """
             SELECT * FROM candidate
@@ -129,6 +151,13 @@ class CandidateDao(
             (name, email, status, consented, audio_recording, store_info, consent_id, citizen_id)
             VALUES
             (?, ?, ?::status, ?, ?, ?, ?, ?)
+        """.trimIndent()
+
+        // Should this return any value?
+        val UPDATE_CANDIDATE = """
+            UPDATE candidate
+            SET name = ?, email = ?, status = ?::status, consented = ?, audio_recording = ?, store_info = ?, citizen_id = ?
+            WHERE consent_id = ? AND citizen_id = ?
         """.trimIndent()
     }
 }

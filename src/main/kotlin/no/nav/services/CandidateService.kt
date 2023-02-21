@@ -12,4 +12,9 @@ class CandidateService(
         val consent = consentDao.getConsentByCode(code)
         candidateDao.createCandidature(createCandidateRequest, consent.id, citizenId)
     }
+
+    fun anonymizeCandidate(code: String, citizenId: String) {
+        val consent = consentDao.getConsentByCode(code)
+        candidateDao.anonymizeCandidate(consent.id, citizenId)
+    }
 }

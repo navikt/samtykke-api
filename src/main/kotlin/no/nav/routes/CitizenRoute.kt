@@ -69,7 +69,9 @@ fun Route.citizenRoute(
                 }
 
                 put {
-                    // TODO: add
+                    val code = call.parameters["code"].toString()
+                    candidateService.anonymizeCandidate(code, "sdp40972")
+                    call.respond(HttpStatusCode.OK)
                 }
             }
         }
