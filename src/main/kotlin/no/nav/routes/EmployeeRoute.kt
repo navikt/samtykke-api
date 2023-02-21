@@ -42,31 +42,17 @@ fun Route.employeeRoute(
 
         route("{code}") {
             get {
-                try {
-                    val code = call.parameters["code"].toString()
-                    val consent = consentService.getConsentByCodeWithCandidates(code)
-                    call.respond(consent)
-                } catch (e: Exception) {
-                    call.respondText(
-                        "Error getting consent",
-                        status = HttpStatusCode.NotFound
-                    )
-                }
+                val code = call.parameters["code"].toString()
+                val consent = consentService.getConsentByCodeWithCandidates(code)
+                call.respond(consent)
             }
         }
     }
 
     route("messages") {
         get {
-            try {
-                val messages = messageService.getMessagesByEmployeeId("sgoijh20u5")
-                call.respond(messages)
-            } catch (e: Exception) {
-                call.respondText(
-                    "Error getting messages",
-                    status = HttpStatusCode.NotFound
-                )
-            }
+            val messages = messageService.getMessagesByEmployeeId("sgoijh20u5")
+            call.respond(messages)
         }
     }
 }
