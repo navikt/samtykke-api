@@ -43,7 +43,7 @@ CREATE TABLE candidate(
     audio_recording BOOLEAN,
     store_info BOOLEAN,
     consent_id BIGINT CONSTRAINT candidate_consent_id_fk REFERENCES consent ON DELETE CASCADE,
-    citizen_id TEXT CONSTRAINT candidate_citizen_id_fk REFERENCES citizen ON DELETE CASCADE,
+    citizen_id TEXT CONSTRAINT candidate_citizen_id_fk REFERENCES citizen ON DELETE CASCADE
 );
 CREATE UNIQUE INDEX ON candidate (consent_id, citizen_id);
 
