@@ -5,6 +5,7 @@ import kotlinx.datetime.LocalDate
 import kotlinx.datetime.toJavaLocalDate
 import no.nav.database.dao.CandidateDao
 import no.nav.database.dao.ConsentDao
+import no.nav.models.Candidate
 import no.nav.models.CreateCandidateRequest
 import java.util.regex.Pattern
 
@@ -29,10 +30,27 @@ class CandidateService(
         candidateDao.anonymizeCandidate(consent.id, citizenId)
     }
 
+    fun updateCandidate(candidate: Candidate, code: String, citizenId: String) {
+        val consent = consentDao.getConsentByCode(code)
+
+        try {
+            validateCandidate(candidate)
+        } catch (e: Exception) {
+            throw BadRequestException("Candidate not valid")
+        }
+
+        candidateDao.updateCandidate(consent.id, citizenId, candidate)
+    }
+
     private fun validateCandidate(createCandidateRequest: CreateCandidateRequest) {
         require(createCandidateRequest.name.isNotBlank()) { "Name must be set" }
         require(isEmail(createCandidateRequest.email)) { "Email must be valid" }
         require(consentedDateValid(createCandidateRequest.consented)) { "Consented date not valid" }
+    }
+
+    private fun validateCandidate(candidate: Candidate) {
+        require(candidate.name.isNotBlank()) { "Name must be set" }
+        require(isEmail(candidate.email)) { "Email must be valid" }
     }
 
     private fun isEmail(email: String): Boolean {

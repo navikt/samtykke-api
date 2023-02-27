@@ -2,14 +2,17 @@ package no.nav.database.dao
 
 import io.ktor.server.plugins.*
 import kotlinx.datetime.LocalDate
+import kotlinx.datetime.toJavaLocalDate
 import no.nav.database.dao.CandidateDao.CandidateQueries.POST_CANDIDATE
 import no.nav.database.dao.CandidateDao.CandidateQueries.SELECT_ALL_CANDIDATES_BY_CONSENT
 import no.nav.database.dao.CandidateDao.CandidateQueries.SELECT_ALL_CANDIDATURES_BY_CITIZEN
 import no.nav.database.dao.CandidateDao.CandidateQueries.SELECT_CANDIDATE
 import no.nav.database.dao.CandidateDao.CandidateQueries.UPDATE_CANDIDATE
+import no.nav.database.dao.CandidateDao.CandidateQueries.UPDATE_CANDIDATE_NO_CONSENTED_DATE
 import no.nav.database.toList
 import no.nav.models.Candidate
 import no.nav.models.CandidateStatus
+import no.nav.models.Citizen
 import no.nav.models.CreateCandidateRequest
 import java.sql.Date
 import javax.sql.DataSource
@@ -132,6 +135,25 @@ class CandidateDao(
         }
     }
 
+    fun updateCandidate(consentId: Long, citizenId: String, newCandidate: Candidate) {
+        try {
+            dataSource.connection.use {
+                it.prepareStatement(UPDATE_CANDIDATE_NO_CONSENTED_DATE).apply {
+                    setString(1, newCandidate.name)
+                    setString(2, newCandidate.email)
+                    setString(3, newCandidate.status.toString())
+                    setBoolean(4, newCandidate.audioRecording)
+                    setBoolean(5, newCandidate.storeInfo)
+                    // Used to find correct candidate
+                    setLong(6, consentId)
+                    setString(7, citizenId)
+                }.executeUpdate()
+            }
+        } catch (e: Exception) {
+            throw BadRequestException("Could not update candidate")
+        }
+    }
+
     private object CandidateQueries {
         val SELECT_ALL_CANDIDATES_BY_CONSENT = """
             SELECT * FROM candidate
@@ -159,6 +181,12 @@ class CandidateDao(
         val UPDATE_CANDIDATE = """
             UPDATE candidate
             SET name = ?, email = ?, status = ?::status, consented = ?, audio_recording = ?, store_info = ?, citizen_id = ?
+            WHERE consent_id = ? AND citizen_id = ?
+        """.trimIndent()
+
+        val UPDATE_CANDIDATE_NO_CONSENTED_DATE = """
+            UPDATE candidate
+            SET name = ?, email = ?, status = ?::status, audio_recording = ?, store_info = ?
             WHERE consent_id = ? AND citizen_id = ?
         """.trimIndent()
     }

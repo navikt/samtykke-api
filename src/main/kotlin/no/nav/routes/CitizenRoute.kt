@@ -6,6 +6,7 @@ import io.ktor.server.plugins.*
 import io.ktor.server.request.*
 import io.ktor.server.response.*
 import io.ktor.server.routing.*
+import no.nav.models.Candidate
 import no.nav.models.CreateCandidateRequest
 import no.nav.services.CandidateService
 import no.nav.services.ConsentService
@@ -45,11 +46,20 @@ fun Route.citizenRoute(
                     candidateService.createCandidature(source, code, "sdp40972")
                     call.respond(HttpStatusCode.OK)
                 }
-                // TODO: add the posiblity of updating candidate, not just anonymizing it
                 put {
+                    val newCandidate = call.receive<Candidate>()
                     val code = call.parameters["code"].toString()
-                    candidateService.anonymizeCandidate(code, "sdp40972")
+                    // TODO: replace this by getting id from TokenX token
+                    candidateService.updateCandidate(newCandidate, code, "sdp40972")
                     call.respond(HttpStatusCode.OK)
+                }
+
+                route("anonymize") {
+                    put {
+                        val code = call.parameters["code"].toString()
+                        candidateService.anonymizeCandidate(code, "sdp40972")
+                        call.respond(HttpStatusCode.OK)
+                    }
                 }
             }
         }
