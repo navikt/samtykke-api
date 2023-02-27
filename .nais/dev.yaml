@@ -31,3 +31,8 @@ spec:
         databases:
           - name: samtykke
             envVarPrefix: DB
+  accessPolicy:
+    inbound:
+      rules:
+        - application: samtykke-employee
+        - application: samtykke-citizen
