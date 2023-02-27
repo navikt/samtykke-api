@@ -3,12 +3,15 @@ package no.nav.services
 import io.ktor.server.plugins.*
 import no.nav.database.dao.CandidateDao
 import no.nav.database.dao.ConsentDao
+import no.nav.database.dao.EmployeeDao
+import no.nav.models.Candidate
 import no.nav.models.Consent
 import no.nav.models.CreateConsentRequest
 
 class ConsentService(
     private val consentDao: ConsentDao,
-    private val candidateDao: CandidateDao
+    private val candidateDao: CandidateDao,
+    private val employeeDao: EmployeeDao
 ) {
     fun createConsent(createConsentRequest: CreateConsentRequest, employeeId: String) {
         try {
@@ -69,7 +72,16 @@ class ConsentService(
 
     fun getConsentByCodeWithCandidate(code: String, citizenId: String): Consent {
         val consent = consentDao.getConsentByCode(code)
-        val candidate = candidateDao.getCitizenCandidature(consent.id, citizenId)
+        val employeeId = consentDao.getOwnerIdByConsentId(consent.id)
+        val employee = employeeDao.getEmployee(employeeId)
+
+        val candidates = mutableListOf<Candidate>()
+        try {
+            candidates.add(candidateDao.getCitizenCandidature(consent.id, citizenId))
+        } catch (e: Exception) {
+            // If exception is NotFoundError, do nothing (empty candidates list is sent), else throw exception to be handled
+            if (e !is NotFoundException) throw e
+        }
 
         return Consent(
             consent.id,
@@ -79,8 +91,8 @@ class ConsentService(
             consent.totalInvolved,
             consent.expiration,
             consent.code,
-            listOf(candidate),
-            null
+            candidates,
+            employee
         )
     }
 

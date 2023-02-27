@@ -111,6 +111,19 @@ class ConsentDao(
         }
     }
 
+    fun getOwnerIdByConsentId(consentId: Long): String {
+        dataSource.connection.use {
+            val result = it.prepareStatement(SELECT_CONSENT_BY_ID).apply {
+                setLong(1, consentId)
+            }.executeQuery()
+            return if (result.next()) {
+                result.getString("employee_id")
+            } else {
+                throw NotFoundException()
+            }
+        }
+    }
+
     private object ConsentQueries {
         val POST_CONSENT = """
             INSERT INTO consent
