@@ -115,8 +115,6 @@ class CandidateDao(
     }
 
     fun anonymizeCandidate(consentId: Long, citizenId: String) {
-        println(consentId)
-        println(citizenId)
         try {
             dataSource.connection.use {
                 it.prepareStatement(UPDATE_CANDIDATE).apply {
@@ -133,7 +131,6 @@ class CandidateDao(
                 }.executeUpdate()
             }
         } catch (e: Exception) {
-            println(e)
             throw BadRequestException("Could not anonymize")
         }
     }
