@@ -16,6 +16,8 @@ BEGIN
         grant all privileges on table employee to "samtykke-api";
         grant all privileges on table citizen to "samtykke-api";
         grant all privileges on table message to "samtykke-api";
+        grant all privileges on all sequences in schema public to cloudsqliamuser;
+        grant all privileges on all sequences in schema public to "samtykke-api";
     END IF;
 END
 $$;
