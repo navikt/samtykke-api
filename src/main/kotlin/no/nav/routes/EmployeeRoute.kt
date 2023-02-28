@@ -19,7 +19,7 @@ fun Route.employeeRoute(
     route("currentEmployee") {
         get {
             // TODO: replace this by getting id from AzureOBO token
-            val employee: Employee = employeeService.getEmployee("sgoijh20u5")
+            val employee: Employee = employeeService.getEmployee("bdfhw3fsd")
             call.respond(employee)
         }
     }
@@ -51,7 +51,7 @@ fun Route.employeeRoute(
 
     route("messages") {
         get {
-            val messages = messageService.getMessagesByEmployeeId("sgoijh20u5")
+            val messages = messageService.getMessagesByEmployeeId("bdfhw3fsd")
             call.respond(messages)
         }
     }

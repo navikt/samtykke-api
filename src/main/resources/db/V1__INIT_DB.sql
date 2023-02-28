@@ -33,6 +33,10 @@ CREATE TABLE consent(
     employee_id TEXT CONSTRAINT consent_employee_id_fk REFERENCES employee ON DELETE CASCADE
 );
 
+CREATE TABLE citizen(
+    id TEXT UNIQUE CONSTRAINT citizen_pk PRIMARY KEY
+);
+
 CREATE TYPE STATUS AS ENUM ('ACCEPTED', 'WITHDRAWN');
 CREATE TABLE candidate(
     id BIGSERIAL CONSTRAINT candidate_pk PRIMARY KEY,
@@ -47,9 +51,6 @@ CREATE TABLE candidate(
 );
 CREATE UNIQUE INDEX ON candidate (consent_id, citizen_id);
 
-CREATE TABLE citizen(
-    id TEXT UNIQUE CONSTRAINT citizen_pk PRIMARY KEY
-);
 
 CREATE TABLE message(
     id BIGSERIAL CONSTRAINT message_pk PRIMARY KEY,
