@@ -58,7 +58,6 @@ CREATE TABLE candidate(
 );
 CREATE UNIQUE INDEX ON candidate (consent_id, citizen_id);
 
-
 CREATE TABLE message(
     id BIGSERIAL CONSTRAINT message_pk PRIMARY KEY,
     timestamp DATE,
