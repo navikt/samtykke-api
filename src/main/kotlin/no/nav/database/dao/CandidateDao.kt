@@ -131,6 +131,7 @@ class CandidateDao(
                 }.executeUpdate()
             }
         } catch (e: Exception) {
+            println(e)
             throw BadRequestException("Could not anonymize")
         }
     }
