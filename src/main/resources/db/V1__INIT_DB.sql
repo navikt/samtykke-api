@@ -11,6 +11,11 @@ BEGIN
         grant all privileges on table employee to cloudsqliamuser;
         grant all privileges on table citizen to cloudsqliamuser;
         grant all privileges on table message to cloudsqliamuser;
+        grant all privileges on table consent to "samtykke-api";
+        grant all privileges on table candidate to "samtykke-api";
+        grant all privileges on table employee to "samtykke-api";
+        grant all privileges on table citizen to "samtykke-api";
+        grant all privileges on table message to "samtykke-api";
     END IF;
 END
 $$;
