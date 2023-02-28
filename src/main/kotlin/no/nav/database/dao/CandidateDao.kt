@@ -32,9 +32,9 @@ class CandidateDao(
                     getString("email"),
                     CandidateStatus.valueOf(getString("status")),
                     LocalDate(
-                        getDate("consented").toLocalDate().year,
-                        getDate("consented").toLocalDate().month,
-                        getDate("consented").toLocalDate().dayOfMonth
+                        getDate("consented")!!.toLocalDate().year,
+                        getDate("consented")!!.toLocalDate().month,
+                        getDate("consented")!!.toLocalDate().dayOfMonth
                     ),
                     getBoolean("audio_recording"),
                     getBoolean("store_info"),
