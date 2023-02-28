@@ -25,6 +25,8 @@ spec:
     requests:
       cpu: 200m
       memory: 256Mi
+  ingresses:
+    - https://samtykke-api.dev.intern.nav.no
   gcp:
     sqlInstances:
       - type: POSTGRES_14
