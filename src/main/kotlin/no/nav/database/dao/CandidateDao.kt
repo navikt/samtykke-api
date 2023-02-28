@@ -126,7 +126,7 @@ class CandidateDao(
                     setDate(4, null)
                     setBoolean(5, false)
                     setBoolean(6, false)
-                    setString(7, "")
+                    setString(7, null)
                     // Used to find correct candidate
                     setLong(8, consentId)
                     setString(9, citizenId)
