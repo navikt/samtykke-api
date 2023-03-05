@@ -12,4 +12,7 @@ fun main() {
 
 fun Application.module() {
     configureRouting()
+    // TODO: if not in "dev-gcp" or "prod-gcp", in application context override "Here is application header with token, get user in database based on oid in token"
+    //  with "place dummy id to user".
+    //  Do normal check with database if id exists, if not, create user with id.
 }
