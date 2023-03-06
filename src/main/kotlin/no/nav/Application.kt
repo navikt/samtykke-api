@@ -24,24 +24,32 @@ fun Application.module() {
         .rateLimited(10, 1, TimeUnit.MINUTES)
         .build()
 
+    val tokenXProvider: JwkProvider = JwkProviderBuilder(System.getenv("TOKEN_X_JWKS_URI"))
+        .cached(10, 24, TimeUnit.HOURS)
+        .rateLimited(10, 1, TimeUnit.MINUTES)
+        .build()
+
     if (isNais()) {
         install(Authentication) {
             jwt("citizen") {
-                // TODO: add propper checking
+                verifier(tokenXProvider, System.getenv("TOKEN_X_ISSUER"))
+                challenge { _, _ -> call.respond(HttpStatusCode.Unauthorized) }
                 validate { cred ->
+                    if (!cred.audience.contains(System.getenv("TOKEN_X_CLIENT_ID"))) {
+                        println("Audience does not match!")
+                        return@validate null
+                    }
                     JWTPrincipal(cred.payload)
                 }
             }
             jwt("employee") {
-                // TODO: add propper checking
                 verifier(azureADProvider, System.getenv("AZURE_OPENID_CONFIG_ISSUER"))
-                challenge{ _, _ -> call.respond(HttpStatusCode.Unauthorized)}
+                challenge { _, _ -> call.respond(HttpStatusCode.Unauthorized) }
                 validate { cred ->
                     if (!cred.audience.contains(System.getenv("AZURE_APP_CLIENT_ID"))) {
                         println("Audience does not match!")
                         return@validate null
                     }
-
                     JWTPrincipal(cred.payload)
                 }
             }
