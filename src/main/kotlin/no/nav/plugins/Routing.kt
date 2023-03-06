@@ -3,10 +3,14 @@ package no.nav.plugins
 import io.ktor.http.*
 import io.ktor.serialization.kotlinx.json.*
 import io.ktor.server.application.*
+import io.ktor.server.auth.*
+import io.ktor.server.auth.jwt.*
 import io.ktor.server.plugins.contentnegotiation.*
 import io.ktor.server.plugins.cors.routing.*
 import io.ktor.server.routing.*
+import io.ktor.http.*
 import no.nav.ApplicationContext
+import no.nav.isNais
 import no.nav.routes.citizenRoute
 import no.nav.routes.employeeRoute
 import no.nav.routes.healthRoute
@@ -37,13 +41,24 @@ fun Application.configureRouting() {
             }
         } else {
             val context = ApplicationContext(System.getenv())
-            // TODO: wrap TokenX authentication around citizen route
-            route("citizen") {
-                citizenRoute(context.consentService, context.candidateService)
-            }
-            // TODO: wrap AzureOBO authentication round employee route
-            route("employee") {
-                employeeRoute(context.employeeService, context.consentService, context.messageService)
+            if (isNais()) {
+                authenticate("citizen") {
+                    route("citizen") {
+                        citizenRoute(context.consentService, context.candidateService, context.citizenService)
+                    }
+                }
+                authenticate("employee") {
+                    route("employee") {
+                        employeeRoute(context.employeeService, context.consentService, context.messageService)
+                    }
+                }
+            } else {
+                route("citizen") {
+                    citizenRoute(context.consentService, context.candidateService, context.citizenService)
+                }
+                route("employee") {
+                    employeeRoute(context.employeeService, context.consentService, context.messageService)
+                }
             }
         }
     }

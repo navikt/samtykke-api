@@ -1,17 +1,14 @@
 package no.nav
 
 import no.nav.database.DataSourceBuilder
-import no.nav.database.dao.CandidateDao
-import no.nav.database.dao.ConsentDao
-import no.nav.database.dao.EmployeeDao
-import no.nav.database.dao.MessageDao
-import no.nav.services.CandidateService
-import no.nav.services.ConsentService
-import no.nav.services.EmployeeService
-import no.nav.services.MessageService
+import no.nav.database.dao.*
+import no.nav.services.*
+import org.slf4j.Logger
+import org.slf4j.LoggerFactory
 
 class ApplicationContext(private val env: Map<String, String>) {
     val employeeService: EmployeeService
+    val citizenService: CitizenService
     val consentService: ConsentService
     val messageService: MessageService
     val candidateService: CandidateService
@@ -22,11 +19,13 @@ class ApplicationContext(private val env: Map<String, String>) {
         val dataSource = dataSourceBuilder.dataSource
 
         val employeeDao = EmployeeDao(dataSource)
+        val citizenDao = CitizenDao(dataSource)
         val consentDao = ConsentDao(dataSource)
         val candidateDao = CandidateDao(dataSource)
         val messageDao = MessageDao(dataSource)
 
         employeeService = EmployeeService(employeeDao)
+        citizenService = CitizenService(citizenDao)
         consentService = ConsentService(consentDao, candidateDao, employeeDao)
         messageService = MessageService(messageDao)
         candidateService = CandidateService(consentDao, candidateDao)

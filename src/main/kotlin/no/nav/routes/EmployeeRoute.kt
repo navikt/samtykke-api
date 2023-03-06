@@ -2,9 +2,11 @@ package no.nav.routes
 
 import io.ktor.http.*
 import io.ktor.server.application.*
+import io.ktor.server.auth.*
 import io.ktor.server.request.*
 import io.ktor.server.response.*
 import io.ktor.server.routing.*
+import no.nav.getEmployeeId
 import no.nav.models.CreateConsentRequest
 import no.nav.models.Employee
 import no.nav.services.ConsentService
@@ -18,8 +20,7 @@ fun Route.employeeRoute(
 ) {
     route("currentEmployee") {
         get {
-            // TODO: replace this by getting id from AzureOBO token
-            val employee: Employee = employeeService.getEmployee("bdfhw3fsd")
+            val employee: Employee = employeeService.getEmployee(getEmployeeId(call.principal(), employeeService))
             call.respond(employee)
         }
     }
@@ -27,15 +28,13 @@ fun Route.employeeRoute(
     route("consent") {
         post {
                 val source = call.receive<CreateConsentRequest>()
-                // TODO: replace this by getting id from AzureOBO token
-                consentService.createConsent(source, "bdfhw3fsd")
+                consentService.createConsent(source, getEmployeeId(call.principal(), employeeService))
                 call.respond(HttpStatusCode.OK)
         }
 
         route("active") {
             get {
-                // TODO: replace this by getting id from AzureOBO token
-                val activeConsents = consentService.getEmployeeActiveConsents("bdfhw3fsd")
+                val activeConsents = consentService.getEmployeeActiveConsents(getEmployeeId(call.principal(), employeeService))
                 call.respond(activeConsents)
             }
         }
@@ -51,7 +50,7 @@ fun Route.employeeRoute(
 
     route("messages") {
         get {
-            val messages = messageService.getMessagesByEmployeeId("bdfhw3fsd")
+            val messages = messageService.getMessagesByEmployeeId(getEmployeeId(call.principal(), employeeService))
             call.respond(messages)
         }
     }

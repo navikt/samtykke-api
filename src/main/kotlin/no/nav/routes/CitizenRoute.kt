@@ -2,24 +2,28 @@ package no.nav.routes
 
 import io.ktor.http.*
 import io.ktor.server.application.*
+import io.ktor.server.auth.*
+import io.ktor.server.auth.jwt.*
 import io.ktor.server.plugins.*
 import io.ktor.server.request.*
 import io.ktor.server.response.*
 import io.ktor.server.routing.*
+import no.nav.getCitizenId
 import no.nav.models.Candidate
 import no.nav.models.CreateCandidateRequest
 import no.nav.services.CandidateService
+import no.nav.services.CitizenService
 import no.nav.services.ConsentService
 
 fun Route.citizenRoute(
     consentService: ConsentService,
-    candidateService: CandidateService
+    candidateService: CandidateService,
+    citizenService: CitizenService
 ) {
     route("consent") {
         route("active") {
             get {
-                // TODO: replace this by getting id from TokenX token
-                val activeConsents = consentService.getCitizenActiveConsents("sdp40972")
+                val activeConsents = consentService.getCitizenActiveConsents(getCitizenId(call.principal(), citizenService))
                 call.respond(activeConsents)
             }
         }
@@ -34,30 +38,27 @@ fun Route.citizenRoute(
             route("canditature") {
                 get {
                     val code = call.parameters["code"].toString()
-                    // TODO: replace this by getting id from TokenX token
-                    val consent = consentService.getConsentByCodeWithCandidate(code, "sdp40972")
+                    val consent = consentService.getConsentByCodeWithCandidate(code, getCitizenId(call.principal(), citizenService))
                     call.respond(consent)
                 }
 
                 post {
                     val source = call.receive<CreateCandidateRequest>()
                     val code = call.parameters["code"].toString()
-                    // TODO: replace this by getting id from TokenX token
-                    candidateService.createCandidature(source, code, "sdp40972")
+                    candidateService.createCandidature(source, code, getCitizenId(call.principal(), citizenService))
                     call.respond(HttpStatusCode.OK)
                 }
                 put {
                     val newCandidate = call.receive<Candidate>()
                     val code = call.parameters["code"].toString()
-                    // TODO: replace this by getting id from TokenX token
-                    candidateService.updateCandidate(newCandidate, code, "sdp40972")
+                    candidateService.updateCandidate(newCandidate, code, getCitizenId(call.principal(), citizenService))
                     call.respond(HttpStatusCode.OK)
                 }
 
                 route("anonymize") {
                     put {
                         val code = call.parameters["code"].toString()
-                        candidateService.anonymizeCandidate(code, "sdp40972")
+                        candidateService.anonymizeCandidate(code, getCitizenId(call.principal(), citizenService))
                         call.respond(HttpStatusCode.OK)
                     }
                 }

@@ -1,6 +1,7 @@
 package no.nav.database.dao
 
 import io.ktor.server.plugins.*
+import no.nav.database.dao.EmployeeDao.EmployeeQueries.POST_EMPLOYEE
 import no.nav.database.dao.EmployeeDao.EmployeeQueries.SELECT_EMPLOYEE
 import no.nav.models.Employee
 import javax.sql.DataSource
@@ -28,11 +29,29 @@ class EmployeeDao(
         }
     }
 
+    fun createEmployee(employee: Employee) {
+        dataSource.connection.use {
+            it.prepareStatement(POST_EMPLOYEE).apply {
+                setString(1, employee.id)
+                setString(2, employee.firstname)
+                setString(3, employee.lastname)
+                setString(4, employee.email)
+            }.executeUpdate()
+        }
+    }
+
     private object EmployeeQueries {
         val SELECT_EMPLOYEE = """
             SELECT *
             FROM employee
             WHERE id = ?
+        """.trimIndent()
+
+        val POST_EMPLOYEE = """
+            INSERT INTO employee
+            (id, firstname, lastname, email)
+            VALUES
+            (?, ?, ?, ?)
         """.trimIndent()
     }
 }
