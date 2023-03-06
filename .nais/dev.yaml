@@ -33,6 +33,12 @@ spec:
         databases:
           - name: samtykke
             envVarPrefix: DB
+  tokenx:
+    enabled: true
+  azure:
+    application:
+      enabled: true
+      tenant: nav.no
   accessPolicy:
     inbound:
       rules:
