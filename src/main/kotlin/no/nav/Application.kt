@@ -32,32 +32,24 @@ fun Application.module() {
         install(Authentication) {
             jwt("citizen") {
                 verifier(tokenXProvider, System.getenv("TOKEN_X_ISSUER"))
-                validate { cred ->
-                    println(cred)
-                    println(cred.audience)
-                    println(cred.payload.audience)
-                    println(System.getenv("TOKEN_X_CLIENT_ID"))
-                    if (!cred.payload.audience.contains(System.getenv("TOKEN_X_CLIENT_ID"))) {
-                        println("Audience does not match!")
-                        return@validate null
+                validate { credentials ->
+                    require(credentials.payload.audience?.contains(System.getenv("TOKEN_X_CLIENT_ID")) == true) {
+                        "Auth: Valid audience not found in claims"
                     }
-                    JWTPrincipal(cred.payload)
+                    JWTPrincipal(credentials.payload)
                 }
-//                challenge { _, _ ->
-//                    call.respond(HttpStatusCode.Unauthorized)
+            }
+//            jwt("employee") {
+//                verifier(azureADProvider, System.getenv("AZURE_OPENID_CONFIG_ISSUER"))
+//                challenge { _, _ -> call.respond(HttpStatusCode.Unauthorized) }
+//                validate { cred ->
+//                    if (!cred.audience.contains(System.getenv("AZURE_APP_CLIENT_ID"))) {
+//                        println("Audience does not match!")
+//                        return@validate null
+//                    }
+//                    JWTPrincipal(cred.payload)
 //                }
-            }
-            jwt("employee") {
-                verifier(azureADProvider, System.getenv("AZURE_OPENID_CONFIG_ISSUER"))
-                challenge { _, _ -> call.respond(HttpStatusCode.Unauthorized) }
-                validate { cred ->
-                    if (!cred.audience.contains(System.getenv("AZURE_APP_CLIENT_ID"))) {
-                        println("Audience does not match!")
-                        return@validate null
-                    }
-                    JWTPrincipal(cred.payload)
-                }
-            }
+//            }
         }
     }
     configureRouting()
