@@ -50,7 +50,10 @@ fun Application.configureRouting() {
         install(Authentication) {
             jwt("citizen") {
                 verifier(tokenXProvider, System.getenv("TOKEN_X_ISSUER"))
-                challenge { _, _ -> call.respond(HttpStatusCode.Unauthorized) }
+                challenge { _, _ ->
+                    println(call)
+                    call.respond(HttpStatusCode.Unauthorized)
+                }
                 validate { cred ->
                     if (!cred.audience.contains(System.getenv("TOKEN_X_CLIENT_ID"))) {
                         println("Audience does not match!")
