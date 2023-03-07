@@ -53,11 +53,11 @@ fun Application.configureRouting() {
                         citizenRoute(context.consentService, context.candidateService, context.citizenService)
                     }
                 }
-                //authenticate("employee") {
+                authenticate("employee") {
                     route("employee") {
                         employeeRoute(context.employeeService, context.consentService, context.messageService)
                     }
-                //}
+                }
             } else {
                 route("citizen") {
                     citizenRoute(context.consentService, context.candidateService, context.citizenService)
