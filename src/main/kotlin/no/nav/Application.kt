@@ -10,6 +10,7 @@ import io.ktor.server.engine.*
 import io.ktor.server.netty.*
 import io.ktor.server.response.*
 import no.nav.plugins.*
+import java.net.URL
 import java.util.*
 import java.util.concurrent.TimeUnit
 
@@ -19,7 +20,7 @@ fun main() {
 }
 
 fun Application.module() {
-    val azureADProvider: JwkProvider = JwkProviderBuilder(System.getenv("AZURE_OPENID_CONFIG_JWKS_URI"))
+    val azureADProvider: JwkProvider = JwkProviderBuilder(URL(System.getenv("AZURE_OPENID_CONFIG_JWKS_URI")))
         .cached(10, 24, TimeUnit.HOURS)
         .rateLimited(10, 1, TimeUnit.MINUTES)
         .build()
