@@ -55,6 +55,7 @@ fun Application.configureRouting() {
                     call.respond(HttpStatusCode.Unauthorized)
                 }
                 validate { cred ->
+                    println("sdgij")
                     if (!cred.audience.contains(System.getenv("TOKEN_X_CLIENT_ID"))) {
                         println("Audience does not match!")
                         return@validate null
