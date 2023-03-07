@@ -32,9 +32,11 @@ fun Application.module() {
     if (isNais()) {
         install(Authentication) {
             jwt("citizen") {
+                println("Got here")
                 verifier(tokenXProvider, System.getenv("TOKEN_X_ISSUER"))
                 challenge { _, _ -> call.respond(HttpStatusCode.Unauthorized) }
                 validate { cred ->
+                    println(cred)
                     if (!cred.audience.contains(System.getenv("TOKEN_X_CLIENT_ID"))) {
                         println("Audience does not match!")
                         return@validate null
