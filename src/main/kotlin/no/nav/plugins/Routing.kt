@@ -46,18 +46,25 @@ fun Application.configureRouting() {
 
     if (isNais()) {
         install(Authentication) {
-            jwt("citizen") {
-                println("Got here")
-                verifier(tokenXProvider, System.getenv("TOKEN_X_ISSUER"))
-                challenge { _, _ -> call.respond(HttpStatusCode.Unauthorized) }
-                validate { cred ->
-                    println(cred)
-                    if (!cred.audience.contains(System.getenv("TOKEN_X_CLIENT_ID"))) {
-                        println("Audience does not match!")
-                        return@validate null
+            try {
+                jwt("citizen") {
+                    println("Got here")
+                    println(System.getenv("TOKEN_X_JWKS_URI"))
+                    println(System.getenv("TOKEN_X_ISSUER"))
+                    println(System.getenv("TOKEN_X_CLIENT_ID"))
+                    verifier(tokenXProvider, System.getenv("TOKEN_X_ISSUER"))
+                    challenge { _, _ -> call.respond(HttpStatusCode.Unauthorized) }
+                    validate { cred ->
+                        println(cred)
+                        if (!cred.audience.contains(System.getenv("TOKEN_X_CLIENT_ID"))) {
+                            println("Audience does not match!")
+                            return@validate null
+                        }
+                        JWTPrincipal(cred.payload)
                     }
-                    JWTPrincipal(cred.payload)
                 }
+            } catch (e: Exception) {
+                println(e)
             }
             jwt("employee") {
                 verifier(azureADProvider, System.getenv("AZURE_OPENID_CONFIG_ISSUER"))
