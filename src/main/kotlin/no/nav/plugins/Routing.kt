@@ -49,18 +49,14 @@ fun Application.configureRouting() {
     if (isNais()) {
         install(Authentication) {
             jwt("citizen") {
-                try {
-                    verifier(tokenXProvider, System.getenv("TOKEN_X_ISSUER"))
-                    challenge { _, _ -> call.respond(HttpStatusCode.Unauthorized) }
-                    validate { cred ->
-                        if (!cred.payload.audience.contains(System.getenv("TOKEN_X_CLIENT_ID"))) {
-                            println("Audience does not match!")
-                            return@validate null
-                        }
-                        JWTPrincipal(cred.payload)
+                verifier(tokenXProvider, System.getenv("TOKEN_X_ISSUER"))
+                challenge { _, _ -> call.respond(HttpStatusCode.Unauthorized) }
+                validate { cred ->
+                    if (!cred.audience.contains(System.getenv("TOKEN_X_CLIENT_ID"))) {
+                        println("Audience does not match!")
+                        return@validate null
                     }
-                } catch (e: Exception) {
-                    println(e)
+                    JWTPrincipal(cred.payload)
                 }
             }
             jwt("employee") {
