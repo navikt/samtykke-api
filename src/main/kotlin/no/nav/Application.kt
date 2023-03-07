@@ -25,7 +25,10 @@ fun Application.module() {
         .rateLimited(10, 1, TimeUnit.MINUTES)
         .build()
 
-    val tokenXProvider: JwkProvider = JwkProviderBuilder(System.getenv("TOKEN_X_JWKS_URI"))
+    val tokenXProvider: JwkProvider = JwkProviderBuilder(URL(System.getenv("TOKEN_X_JWKS_URI")))
+        .cached(10,24,TimeUnit.HOURS)
+        // if not cached, allow max 10 different keys per minute to be fetched from external provider
+        .rateLimited(10, 1, TimeUnit.MINUTES)
         .build()
 
     if (isNais()) {
