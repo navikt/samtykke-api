@@ -19,6 +19,8 @@ import no.nav.routes.employeeRoute
 import no.nav.routes.healthRoute
 import no.nav.routes.mocks.citizenRouteMock
 import no.nav.routes.mocks.employeeRouteMock
+import org.slf4j.Logger
+import org.slf4j.LoggerFactory
 import java.util.concurrent.TimeUnit
 
 fun Application.configureRouting() {
@@ -39,7 +41,7 @@ fun Application.configureRouting() {
         .rateLimited(10, 1, TimeUnit.MINUTES)
         .build()
 
-    val tokenXProvider: JwkProvider = JwkProviderBuilder(System.getenv("TOKEN_X_ISSUER"))
+    val tokenXProvider: JwkProvider = JwkProviderBuilder(System.getenv("TOKEN_X_JWKS_URI"))
         .cached(10, 24, TimeUnit.HOURS)
         .rateLimited(10, 1, TimeUnit.MINUTES)
         .build()
@@ -48,7 +50,8 @@ fun Application.configureRouting() {
         install(Authentication) {
             try {
                 jwt("citizen") {
-                    verifier(tokenXProvider, System.getenv("TOKEN_X_ISSUER"))
+                    verifier(tokenXProvider)
+                    realm = System.getenv("TOKEN_X_ISSUER")
                     challenge { _, _ -> call.respond(HttpStatusCode.Unauthorized) }
                     validate { cred ->
                         if (!cred.audience.contains(System.getenv("TOKEN_X_CLIENT_ID"))) {
