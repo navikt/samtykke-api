@@ -48,21 +48,20 @@ fun Application.configureRouting() {
 
     if (isNais()) {
         install(Authentication) {
-            try {
-                jwt("citizen") {
-                    verifier(tokenXProvider)
-                    realm = System.getenv("TOKEN_X_ISSUER")
+            jwt("citizen") {
+                try {
+                    verifier(tokenXProvider, System.getenv("TOKEN_X_ISSUER"))
                     challenge { _, _ -> call.respond(HttpStatusCode.Unauthorized) }
                     validate { cred ->
-                        if (!cred.audience.contains(System.getenv("TOKEN_X_CLIENT_ID"))) {
+                        if (!cred.payload.audience.contains(System.getenv("TOKEN_X_CLIENT_ID"))) {
                             println("Audience does not match!")
                             return@validate null
                         }
                         JWTPrincipal(cred.payload)
                     }
+                } catch (e: Exception) {
+                    println(e)
                 }
-            } catch (e: Exception) {
-                println(e)
             }
             jwt("employee") {
                 verifier(azureADProvider, System.getenv("AZURE_OPENID_CONFIG_ISSUER"))
