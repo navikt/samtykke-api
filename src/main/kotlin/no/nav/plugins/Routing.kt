@@ -39,7 +39,7 @@ fun Application.configureRouting() {
         .rateLimited(10, 1, TimeUnit.MINUTES)
         .build()
 
-    val tokenXProvider: JwkProvider = JwkProviderBuilder(System.getenv("TOKEN_X_JWKS_URI"))
+    val tokenXProvider: JwkProvider = JwkProviderBuilder(System.getenv("TOKEN_X_ISSUER"))
         .cached(10, 24, TimeUnit.HOURS)
         .rateLimited(10, 1, TimeUnit.MINUTES)
         .build()
