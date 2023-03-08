@@ -20,18 +20,18 @@ fun main() {
 }
 
 fun Application.module() {
-    val azureADProvider: JwkProvider = JwkProviderBuilder(URL(System.getenv("AZURE_OPENID_CONFIG_JWKS_URI")))
-        .cached(10, 24, TimeUnit.HOURS)
-        .rateLimited(10, 1, TimeUnit.MINUTES)
-        .build()
-
-    val tokenXProvider: JwkProvider = JwkProviderBuilder(URL(System.getenv("TOKEN_X_JWKS_URI")))
-        .cached(10,24,TimeUnit.HOURS)
-        // if not cached, allow max 10 different keys per minute to be fetched from external provider
-        .rateLimited(10, 1, TimeUnit.MINUTES)
-        .build()
 
     if (isNais()) {
+        val azureADProvider: JwkProvider = JwkProviderBuilder(URL(System.getenv("AZURE_OPENID_CONFIG_JWKS_URI")))
+            .cached(10, 24, TimeUnit.HOURS)
+            .rateLimited(10, 1, TimeUnit.MINUTES)
+            .build()
+
+        val tokenXProvider: JwkProvider = JwkProviderBuilder(URL(System.getenv("TOKEN_X_JWKS_URI")))
+            .cached(10,24,TimeUnit.HOURS)
+            // if not cached, allow max 10 different keys per minute to be fetched from external provider
+            .rateLimited(10, 1, TimeUnit.MINUTES)
+            .build()
         install(Authentication) {
             jwt("citizen") {
                 verifier(tokenXProvider, System.getenv("TOKEN_X_ISSUER"))
