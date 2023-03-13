@@ -10,6 +10,7 @@ data class Candidate(
     val email: String,
     val status: CandidateStatus,
     val consented: LocalDate?,
+    val trackingNumber: String,
     val audioRecording: Boolean,
     val storeInfo: Boolean,
     val consentId: Long?,

@@ -51,6 +51,7 @@ CREATE TABLE candidate(
     email TEXT,
     status STATUS,
     consented DATE,
+    tracking_number UUID default gen_random_uuid(),
     audio_recording BOOLEAN,
     store_info BOOLEAN,
     consent_id BIGINT CONSTRAINT candidate_consent_id_fk REFERENCES consent ON DELETE CASCADE,

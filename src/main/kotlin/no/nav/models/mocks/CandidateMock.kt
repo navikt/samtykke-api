@@ -3,6 +3,7 @@ package no.nav.models.mocks
 import kotlinx.datetime.LocalDate
 import no.nav.models.Candidate
 import no.nav.models.CandidateStatus
+import java.util.*
 
 fun candidatesMock(): List<Candidate> {
     return listOf(
@@ -12,6 +13,7 @@ fun candidatesMock(): List<Candidate> {
             "lars.pølse@nav.no",
             CandidateStatus.ACCEPTED,
             LocalDate(2023, 2, 4),
+            UUID.randomUUID().toString(),
             true,
             false,
             null
@@ -22,6 +24,7 @@ fun candidatesMock(): List<Candidate> {
             "ole.bolle.brus@outlook.no",
             CandidateStatus.ACCEPTED,
             LocalDate(2023, 2, 4),
+            UUID.randomUUID().toString(),
             false,
             true,
             null
@@ -32,6 +35,7 @@ fun candidatesMock(): List<Candidate> {
             "pelle.politi@politiet.no",
             CandidateStatus.WITHDRAWN,
             null,
+            UUID.randomUUID().toString(),
             false,
             false,
             null
@@ -42,6 +46,7 @@ fun candidatesMock(): List<Candidate> {
             "nasse.noeff@svenske.se",
             CandidateStatus.WITHDRAWN,
             null,
+            UUID.randomUUID().toString(),
             false,
             false,
             null

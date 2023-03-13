@@ -37,6 +37,7 @@ class CandidateDao(
                             getDate("consented")!!.toLocalDate().month,
                             getDate("consented")!!.toLocalDate().dayOfMonth
                         ),
+                        getString("tracking_number"),
                         getBoolean("audio_recording"),
                         getBoolean("store_info"),
                         null
@@ -50,6 +51,7 @@ class CandidateDao(
                             getString("email"),
                             CandidateStatus.valueOf(getString("status")),
                             null,
+                            getString("tracking_number"),
                             getBoolean("audio_recording"),
                             getBoolean("store_info"),
                             null
@@ -77,6 +79,7 @@ class CandidateDao(
                         getDate("consented").toLocalDate().month,
                         getDate("consented").toLocalDate().dayOfMonth
                     ),
+                    getString("tracking_number"),
                     getBoolean("audio_recording"),
                     getBoolean("store_info"),
                     getLong("consent_id")
@@ -102,6 +105,7 @@ class CandidateDao(
                         result.getDate("consented").toLocalDate().month,
                         result.getDate("consented").toLocalDate().dayOfMonth
                     ),
+                    result.getString("tracking_number"),
                     result.getBoolean("audio_recording"),
                     result.getBoolean("store_info"),
                     result.getLong("consent_id")
