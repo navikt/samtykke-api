@@ -20,11 +20,13 @@ class ConsentDao(
             it.prepareStatement(POST_CONSENT).apply {
                 setString(1, consent.title)
                 setString(2, consent.responsibleGroup)
-                setString(3, consent.purpose)
-                setInt(4, consent.totalInvolved)
-                setDate(5, Date.valueOf(consent.expiration.toString()))
-                setString(6, code)
-                setString(7, employeeId)
+                setString(3, consent.theme)
+                setString(4, consent.purpose)
+                setInt(5, consent.totalInvolved)
+                setDate(6, Date.valueOf(consent.expiration.toString()))
+                setString(7, consent.endResult)
+                setString(8, code)
+                setString(9, employeeId)
             }.executeUpdate()
         }
     }
@@ -39,6 +41,7 @@ class ConsentDao(
                         getLong("id"),
                         getString("title"),
                         getString("responsible_group"),
+                        getString("theme"),
                         getString("purpose"),
                         getInt("total_involved"),
                         LocalDate(
@@ -46,6 +49,7 @@ class ConsentDao(
                             getDate("expiration").toLocalDate().month,
                             getDate("expiration").toLocalDate().dayOfMonth
                         ),
+                        getString("end_result"),
                         getString("code"),
                         null,
                         null
@@ -67,6 +71,7 @@ class ConsentDao(
                     result.getLong("id"),
                     result.getString("title"),
                     result.getString("responsible_group"),
+                    result.getString("theme"),
                     result.getString("purpose"),
                     result.getInt("total_involved"),
                     LocalDate(
@@ -74,6 +79,7 @@ class ConsentDao(
                         result.getDate("expiration").toLocalDate().month,
                         result.getDate("expiration").toLocalDate().dayOfMonth
                     ),
+                    result.getString("end_result"),
                     result.getString("code"),
                     null,
                     null
@@ -94,6 +100,7 @@ class ConsentDao(
                     result.getLong("id"),
                     result.getString("title"),
                     result.getString("responsible_group"),
+                    result.getString("theme"),
                     result.getString("purpose"),
                     result.getInt("total_involved"),
                     LocalDate(
@@ -101,6 +108,7 @@ class ConsentDao(
                         result.getDate("expiration").toLocalDate().month,
                         result.getDate("expiration").toLocalDate().dayOfMonth
                     ),
+                    result.getString("end_result"),
                     result.getString("code"),
                     null,
                     null
@@ -127,9 +135,9 @@ class ConsentDao(
     private object ConsentQueries {
         val POST_CONSENT = """
             INSERT INTO consent
-            (title, responsible_group, purpose, total_involved, expiration, code, employee_id)
+            (title, responsible_group, theme, purpose, total_involved, expiration, end_result, code, employee_id)
             VALUES
-            (?, ?, ?, ?, ?, ?, ?)
+            (?, ?, ?, ?, ?, ?, ?, ?, ?)
         """.trimIndent()
 
         val SELECT_ALL_ACTIVE_CONSENTS = """

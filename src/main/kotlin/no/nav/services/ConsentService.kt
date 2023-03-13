@@ -61,9 +61,11 @@ class ConsentService(
             consent.id,
             consent.title,
             consent.responsibleGroup,
+            consent.theme,
             consent.purpose,
             consent.totalInvolved,
             consent.expiration,
+            consent.endResult,
             consent.code,
             candidateDao.getCandidatesByConsentId(consent.id),
             null
@@ -87,9 +89,11 @@ class ConsentService(
             consent.id,
             consent.title,
             consent.responsibleGroup,
+            consent.theme,
             consent.purpose,
             consent.totalInvolved,
             consent.expiration,
+            consent.endResult,
             consent.code,
             candidates,
             employee
@@ -100,9 +104,11 @@ class ConsentService(
         require(createConsentRequest.title.length > 5) { "Title must be longer than 5 characters" }
         require(createConsentRequest.title.length < 50) { "Title must be shorter than 50 characters" }
         require(createConsentRequest.responsibleGroup.isNotBlank()) { "Responsible group must be set" }
+        require(createConsentRequest.theme.isNotBlank()) { "Theme must be set" }
         require(createConsentRequest.purpose.length > 30) { "Purpose must be longer than 30 characters" }
         require(createConsentRequest.purpose.length < 300) { "Purpose must be shorten than 300 characters" }
         require(createConsentRequest.totalInvolved > 0) { "There has to be at least 1 involved" }
+        require(createConsentRequest.endResult.isNotBlank()) { "End result must be set" }
     }
 
     private fun createConsentCode(): String {

@@ -8,9 +8,11 @@ data class Consent(
     val id: Long,
     val title: String,
     val responsibleGroup: String,
+    val theme: String,
     val purpose: String,
     val totalInvolved: Int,
     val expiration: LocalDate,
+    val endResult: String,
     val code: String?,
     val candidates: List<Candidate>?,
     val employee: Employee?
@@ -20,7 +22,9 @@ data class Consent(
 data class CreateConsentRequest(
     val title: String,
     val responsibleGroup: String,
+    val theme: String,
     val purpose: String,
     val totalInvolved: Int,
     val expiration: LocalDate,
+    val endResult: String,
 )

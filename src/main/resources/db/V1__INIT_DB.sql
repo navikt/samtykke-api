@@ -33,9 +33,11 @@ CREATE TABLE consent(
     id BIGSERIAL CONSTRAINT consent_pk PRIMARY KEY,
     title TEXT,
     responsible_group TEXT,
+    theme TEXT,
     purpose TEXT,
     total_involved BIGINT,
     expiration DATE,
+    end_result TEXT,
     code TEXT UNIQUE,
     employee_id TEXT CONSTRAINT consent_employee_id_fk REFERENCES employee ON DELETE CASCADE
 );
