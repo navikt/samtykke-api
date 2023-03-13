@@ -15,7 +15,6 @@ fun candidatesMock(): List<Candidate> {
             LocalDate(2023, 2, 4),
             UUID.randomUUID().toString(),
             true,
-            false,
             null
         ),
         Candidate(
@@ -26,7 +25,6 @@ fun candidatesMock(): List<Candidate> {
             LocalDate(2023, 2, 4),
             UUID.randomUUID().toString(),
             false,
-            true,
             null
         ),
         Candidate(
@@ -37,7 +35,6 @@ fun candidatesMock(): List<Candidate> {
             null,
             UUID.randomUUID().toString(),
             false,
-            false,
             null
         ),
         Candidate(
@@ -47,7 +44,6 @@ fun candidatesMock(): List<Candidate> {
             CandidateStatus.WITHDRAWN,
             null,
             UUID.randomUUID().toString(),
-            false,
             false,
             null
         )

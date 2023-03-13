@@ -55,7 +55,6 @@ CREATE TABLE candidate(
     consented DATE,
     tracking_number UUID default gen_random_uuid(),
     audio_recording BOOLEAN,
-    store_info BOOLEAN,
     consent_id BIGINT CONSTRAINT candidate_consent_id_fk REFERENCES consent ON DELETE CASCADE,
     citizen_id TEXT CONSTRAINT candidate_citizen_id_fk REFERENCES citizen ON DELETE CASCADE
 );

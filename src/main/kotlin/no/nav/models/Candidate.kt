@@ -12,7 +12,6 @@ data class Candidate(
     val consented: LocalDate?,
     val trackingNumber: String,
     val audioRecording: Boolean,
-    val storeInfo: Boolean,
     val consentId: Long?,
 )
 
@@ -23,5 +22,4 @@ data class CreateCandidateRequest(
     val status: CandidateStatus,
     val consented: LocalDate,
     val audioRecording: Boolean,
-    val storeInfo: Boolean,
 )

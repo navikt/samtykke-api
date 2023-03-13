@@ -39,7 +39,6 @@ class CandidateDao(
                         ),
                         getString("tracking_number"),
                         getBoolean("audio_recording"),
-                        getBoolean("store_info"),
                         null
                     )
                 } catch (e: Exception) {
@@ -53,7 +52,6 @@ class CandidateDao(
                             null,
                             getString("tracking_number"),
                             getBoolean("audio_recording"),
-                            getBoolean("store_info"),
                             null
                         )
                     } else throw e
@@ -81,7 +79,6 @@ class CandidateDao(
                     ),
                     getString("tracking_number"),
                     getBoolean("audio_recording"),
-                    getBoolean("store_info"),
                     getLong("consent_id")
                 )
             }
@@ -107,7 +104,6 @@ class CandidateDao(
                     ),
                     result.getString("tracking_number"),
                     result.getBoolean("audio_recording"),
-                    result.getBoolean("store_info"),
                     result.getLong("consent_id")
                 )
             } else {
@@ -125,9 +121,8 @@ class CandidateDao(
                     setString(3, candidate.status.toString())
                     setDate(4, Date.valueOf(candidate.consented.toString()))
                     setBoolean(5, candidate.audioRecording)
-                    setBoolean(6, candidate.storeInfo)
-                    setLong(7, consentId)
-                    setString(8, citizenId)
+                    setLong(6, consentId)
+                    setString(7, citizenId)
                 }.executeUpdate()
             }
         } catch (e: Exception) {
@@ -144,11 +139,10 @@ class CandidateDao(
                     setString(3, CandidateStatus.WITHDRAWN.toString())
                     setDate(4, null)
                     setBoolean(5, false)
-                    setBoolean(6, false)
-                    setString(7, null)
+                    setString(6, null)
                     // Used to find correct candidate
-                    setLong(8, consentId)
-                    setString(9, citizenId)
+                    setLong(7, consentId)
+                    setString(8, citizenId)
                 }.executeUpdate()
             }
         } catch (e: Exception) {
@@ -164,10 +158,9 @@ class CandidateDao(
                     setString(2, newCandidate.email)
                     setString(3, newCandidate.status.toString())
                     setBoolean(4, newCandidate.audioRecording)
-                    setBoolean(5, newCandidate.storeInfo)
                     // Used to find correct candidate
-                    setLong(6, consentId)
-                    setString(7, citizenId)
+                    setLong(5, consentId)
+                    setString(6, citizenId)
                 }.executeUpdate()
             }
         } catch (e: Exception) {
@@ -193,21 +186,21 @@ class CandidateDao(
 
         val POST_CANDIDATE = """
             INSERT INTO candidate
-            (name, email, status, consented, audio_recording, store_info, consent_id, citizen_id)
+            (name, email, status, consented, audio_recording, consent_id, citizen_id)
             VALUES
-            (?, ?, ?::status, ?, ?, ?, ?, ?)
+            (?, ?, ?::status, ?, ?, ?, ?)
         """.trimIndent()
 
         // Should this return any value?
         val UPDATE_CANDIDATE = """
             UPDATE candidate
-            SET name = ?, email = ?, status = ?::status, consented = ?, audio_recording = ?, store_info = ?, citizen_id = ?
+            SET name = ?, email = ?, status = ?::status, consented = ?, audio_recording = ?, citizen_id = ?
             WHERE consent_id = ? AND citizen_id = ?
         """.trimIndent()
 
         val UPDATE_CANDIDATE_NO_CONSENTED_DATE = """
             UPDATE candidate
-            SET name = ?, email = ?, status = ?::status, audio_recording = ?, store_info = ?
+            SET name = ?, email = ?, status = ?::status, audio_recording = ?
             WHERE consent_id = ? AND citizen_id = ?
         """.trimIndent()
     }
