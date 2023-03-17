@@ -1,5 +1,7 @@
 package no.nav
 
+import io.ktor.client.*
+import io.ktor.client.engine.cio.*
 import no.nav.database.DataSourceBuilder
 import no.nav.database.dao.*
 import no.nav.services.*

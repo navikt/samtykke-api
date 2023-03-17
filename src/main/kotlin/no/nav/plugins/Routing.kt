@@ -2,6 +2,9 @@ package no.nav.plugins
 
 import com.auth0.jwk.JwkProvider
 import com.auth0.jwk.JwkProviderBuilder
+import io.ktor.client.*
+import io.ktor.client.engine.cio.*
+import io.ktor.client.plugins.logging.*
 import io.ktor.http.*
 import io.ktor.serialization.kotlinx.json.*
 import io.ktor.server.application.*
@@ -36,6 +39,12 @@ fun Application.configureRouting() {
         allowMethod(HttpMethod.Put)
     }
 
+    val httpClient = HttpClient(CIO) {
+        install(io.ktor.client.plugins.contentnegotiation.ContentNegotiation) {
+            json()
+        }
+    }
+
     routing {
         healthRoute()
         if (System.getenv("NAIS_CLUSTER_NAME") == "labs-gcp") {
@@ -55,7 +64,7 @@ fun Application.configureRouting() {
                 }
                 authenticate("employee") {
                     route("employee") {
-                        employeeRoute(context.employeeService, context.consentService, context.messageService)
+                        employeeRoute(context.employeeService, context.consentService, context.messageService, httpClient)
                     }
                 }
             } else {
@@ -63,7 +72,7 @@ fun Application.configureRouting() {
                     citizenRoute(context.consentService, context.candidateService, context.citizenService)
                 }
                 route("employee") {
-                    employeeRoute(context.employeeService, context.consentService, context.messageService)
+                    employeeRoute(context.employeeService, context.consentService, context.messageService, httpClient)
                 }
             }
         }

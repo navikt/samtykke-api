@@ -38,6 +38,9 @@ spec:
       enabled: true
       allowAllUsers: true
       tenant: nav.no
+  env:
+    - name: PDFGEN_URL
+      value: http://samtykke-pdfgen.team-researchops
   accessPolicy:
     inbound:
       rules:

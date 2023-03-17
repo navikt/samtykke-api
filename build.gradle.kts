@@ -62,6 +62,11 @@ dependencies {
     implementation("no.nav.security:token-validation-ktor:3.0.4")
     implementation("org.slf4j:slf4j-simple:2.0.6")
 
+    implementation("io.ktor:ktor-client-core:$ktor_version")
+    implementation("io.ktor:ktor-client-cio:$ktor_version")
+    implementation("io.ktor:ktor-client-logging:$ktor_version")
+    implementation("io.ktor:ktor-client-content-negotiation:$ktor_version")
+
     testImplementation("io.ktor:ktor-server-tests-jvm:$ktor_version")
     testImplementation("io.ktor:ktor-server-test-host:$ktor_version")
     testImplementation("org.jetbrains.kotlin:kotlin-test-junit:$kotlin_version")

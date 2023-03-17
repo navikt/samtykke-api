@@ -11,3 +11,10 @@ data class Employee(
     val consents: List<Consent>?,
     val messages: List<Message>?
 )
+
+@Serializable
+data class ShortenedEmployee(
+    val firstname: String,
+    val lastname: String,
+    val email: String,
+)
