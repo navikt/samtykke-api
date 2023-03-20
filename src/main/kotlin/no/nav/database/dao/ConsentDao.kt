@@ -8,14 +8,14 @@ import no.nav.database.dao.ConsentDao.ConsentQueries.SELECT_CONSENT_BY_CODE
 import no.nav.database.dao.ConsentDao.ConsentQueries.SELECT_CONSENT_BY_ID
 import no.nav.database.toList
 import no.nav.models.Consent
-import no.nav.models.CreateConsentRequest
+import no.nav.models.BaseConsent
 import java.sql.Date
 import javax.sql.DataSource
 
 class ConsentDao(
     private val dataSource: DataSource
 ) {
-    fun createConsent(consent: CreateConsentRequest, employeeId: String, code: String) {
+    fun createConsent(consent: BaseConsent, employeeId: String, code: String) {
         dataSource.connection.use {
             it.prepareStatement(POST_CONSENT).apply {
                 setString(1, consent.title)

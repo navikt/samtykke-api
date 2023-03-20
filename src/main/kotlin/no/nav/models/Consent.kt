@@ -19,7 +19,7 @@ data class Consent(
 )
 
 @Serializable
-data class CreateConsentRequest(
+data class BaseConsent(
     val title: String,
     val responsibleGroup: String,
     val theme: String,
@@ -27,16 +27,4 @@ data class CreateConsentRequest(
     val totalInvolved: Int,
     val expiration: LocalDate,
     val endResult: String,
-)
-
-@Serializable
-data class CreateConsentPDFRequest(
-    val title: String,
-    val responsibleGroup: String,
-    val theme: String,
-    val purpose: String,
-    val totalInvolved: Int,
-    val expiration: LocalDate,
-    val endResult: String,
-    val employee: ShortenedEmployee
 )

@@ -1,10 +1,7 @@
 package no.nav.routes
 
 import io.ktor.client.*
-import io.ktor.client.call.*
-import io.ktor.client.engine.cio.*
 import io.ktor.client.request.*
-import io.ktor.client.statement.*
 import io.ktor.http.*
 import io.ktor.server.application.*
 import io.ktor.server.auth.*
@@ -12,12 +9,9 @@ import io.ktor.server.request.*
 import io.ktor.server.response.*
 import io.ktor.server.routing.*
 import io.ktor.util.*
-import kotlinx.coroutines.runBlocking
 import no.nav.getEmployeeId
-import no.nav.models.CreateConsentPDFRequest
-import no.nav.models.CreateConsentRequest
-import no.nav.models.Employee
-import no.nav.models.ShortenedEmployee
+import no.nav.models.*
+import no.nav.pdf.generateConsentPDF
 import no.nav.services.ConsentService
 import no.nav.services.EmployeeService
 import no.nav.services.MessageService
@@ -38,7 +32,7 @@ fun Route.employeeRoute(
 
     route("consent") {
         post {
-                val source = call.receive<CreateConsentRequest>()
+                val source = call.receive<BaseConsent>()
                 consentService.createConsent(source, getEmployeeId(call.principal(), employeeService))
                 call.respond(HttpStatusCode.OK)
         }
@@ -62,20 +56,7 @@ fun Route.employeeRoute(
                     val code = call.parameters["code"].toString()
                     val consent = consentService.getConsentByCode(code)
                     val employee = employeeService.getEmployee(getEmployeeId(call.principal(), employeeService))
-                    val response = httpClient.post {
-                        url("${System.getenv("PDFGEN_URL")}/api/v1/genpdf/samtykke/samtykke")
-                        contentType(ContentType.Application.Json)
-                        setBody(CreateConsentPDFRequest(
-                            consent.title,
-                            consent.responsibleGroup,
-                            consent.theme,
-                            consent.purpose,
-                            consent.totalInvolved,
-                            consent.expiration,
-                            consent.endResult,
-                            ShortenedEmployee(employee.firstname, employee.lastname, employee.email)
-                        ))
-                    }
+                    val response = generateConsentPDF(httpClient, PDFVersion.EMPLOYEE,  consent, employee, null)
                     call.respond(response.content)
                 }
             }

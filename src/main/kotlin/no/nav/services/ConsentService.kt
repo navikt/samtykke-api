@@ -6,16 +6,16 @@ import no.nav.database.dao.ConsentDao
 import no.nav.database.dao.EmployeeDao
 import no.nav.models.Candidate
 import no.nav.models.Consent
-import no.nav.models.CreateConsentRequest
+import no.nav.models.BaseConsent
 
 class ConsentService(
     private val consentDao: ConsentDao,
     private val candidateDao: CandidateDao,
     private val employeeDao: EmployeeDao
 ) {
-    fun createConsent(createConsentRequest: CreateConsentRequest, employeeId: String) {
+    fun createConsent(baseConsent: BaseConsent, employeeId: String) {
         try {
-            validateConsent(createConsentRequest)
+            validateConsent(baseConsent)
         } catch (e: Exception) {
             throw BadRequestException("Consent not valid")
         }
@@ -27,7 +27,7 @@ class ConsentService(
                 consentDao.getConsentByCode(code)
                 break
             } catch (e: Exception) {
-                if (e is NotFoundException) consentDao.createConsent(createConsentRequest, employeeId, code)
+                if (e is NotFoundException) consentDao.createConsent(baseConsent, employeeId, code)
                 unique = true
             }
         } while (!unique)
@@ -100,15 +100,15 @@ class ConsentService(
         )
     }
 
-    private fun validateConsent(createConsentRequest: CreateConsentRequest) {
-        require(createConsentRequest.title.length > 5) { "Title must be longer than 5 characters" }
-        require(createConsentRequest.title.length < 50) { "Title must be shorter than 50 characters" }
-        require(createConsentRequest.responsibleGroup.isNotBlank()) { "Responsible group must be set" }
-        require(createConsentRequest.theme.isNotBlank()) { "Theme must be set" }
-        require(createConsentRequest.purpose.length > 30) { "Purpose must be longer than 30 characters" }
-        require(createConsentRequest.purpose.length < 300) { "Purpose must be shorten than 300 characters" }
-        require(createConsentRequest.totalInvolved > 0) { "There has to be at least 1 involved" }
-        require(createConsentRequest.endResult.isNotBlank()) { "End result must be set" }
+    private fun validateConsent(baseConsent: BaseConsent) {
+        require(baseConsent.title.length > 5) { "Title must be longer than 5 characters" }
+        require(baseConsent.title.length < 50) { "Title must be shorter than 50 characters" }
+        require(baseConsent.responsibleGroup.isNotBlank()) { "Responsible group must be set" }
+        require(baseConsent.theme.isNotBlank()) { "Theme must be set" }
+        require(baseConsent.purpose.length > 30) { "Purpose must be longer than 30 characters" }
+        require(baseConsent.purpose.length < 300) { "Purpose must be shorten than 300 characters" }
+        require(baseConsent.totalInvolved > 0) { "There has to be at least 1 involved" }
+        require(baseConsent.endResult.isNotBlank()) { "End result must be set" }
     }
 
     private fun createConsentCode(): String {
