@@ -1,5 +1,6 @@
 package no.nav.routes
 
+import io.ktor.client.*
 import io.ktor.http.*
 import io.ktor.server.application.*
 import io.ktor.server.auth.*
@@ -8,17 +9,22 @@ import io.ktor.server.plugins.*
 import io.ktor.server.request.*
 import io.ktor.server.response.*
 import io.ktor.server.routing.*
+import io.ktor.util.*
 import no.nav.getCitizenId
 import no.nav.models.Candidate
 import no.nav.models.CreateCandidateRequest
+import no.nav.models.PDFVersion
+import no.nav.pdf.generateConsentPDF
 import no.nav.services.CandidateService
 import no.nav.services.CitizenService
 import no.nav.services.ConsentService
 
+@OptIn(InternalAPI::class)
 fun Route.citizenRoute(
     consentService: ConsentService,
     candidateService: CandidateService,
-    citizenService: CitizenService
+    citizenService: CitizenService,
+    httpClient: HttpClient
 ) {
     route("consent") {
         route("active") {
@@ -61,6 +67,15 @@ fun Route.citizenRoute(
                         candidateService.anonymizeCandidate(code, getCitizenId(call.principal(), citizenService))
                         call.respond(HttpStatusCode.OK)
                     }
+                }
+            }
+
+            route("pdf") {
+                get {
+                    val code = call.parameters["code"].toString()
+                    val consent = consentService.getConsentByCodeWithCandidate(code, getCitizenId(call.principal(), citizenService))
+                    val response = generateConsentPDF(httpClient, PDFVersion.CITIZEN, consent, consent.employee!!, consent.candidates!![0])
+                    call.respond(response.content)
                 }
             }
         }

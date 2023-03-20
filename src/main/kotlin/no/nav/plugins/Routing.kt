@@ -59,7 +59,7 @@ fun Application.configureRouting() {
             if (isNais()) {
                 authenticate("citizen") {
                     route("citizen") {
-                        citizenRoute(context.consentService, context.candidateService, context.citizenService)
+                        citizenRoute(context.consentService, context.candidateService, context.citizenService, httpClient)
                     }
                 }
                 authenticate("employee") {
@@ -69,7 +69,7 @@ fun Application.configureRouting() {
                 }
             } else {
                 route("citizen") {
-                    citizenRoute(context.consentService, context.candidateService, context.citizenService)
+                    citizenRoute(context.consentService, context.candidateService, context.citizenService, httpClient)
                 }
                 route("employee") {
                     employeeRoute(context.employeeService, context.consentService, context.messageService, httpClient)
