@@ -73,7 +73,7 @@ fun Route.employeeRoute(
                             consent.totalInvolved,
                             consent.expiration,
                             consent.endResult,
-                            ShortenedEmployee(employee.firstname, employee.lastname, employee.lastname)
+                            ShortenedEmployee(employee.firstname, employee.lastname, employee.email)
                         ))
                     }
                     call.respond(response.content)
