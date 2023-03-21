@@ -100,6 +100,18 @@ class ConsentService(
         )
     }
 
+    fun deleteExpiredConsentsAndConnectedCandidates() {
+        // Issues with cascading not deleting candidates, have to do it manually
+        // If deleting candidates fails => not finding any candidates to delete,
+        // Do delte consents
+        try {
+            candidateDao.deleteCandidatesFromExpiredConsents()
+            consentDao.deleteExpiredConsents()
+        } catch (e: Exception) {
+            consentDao.deleteExpiredConsents()
+        }
+    }
+
     private fun validateConsent(baseConsent: BaseConsent) {
         require(baseConsent.title.length > 5) { "Title must be longer than 5 characters" }
         require(baseConsent.title.length < 50) { "Title must be shorter than 50 characters" }

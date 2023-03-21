@@ -2,8 +2,10 @@ package no.nav.database.dao
 
 import io.ktor.server.plugins.*
 import kotlinx.datetime.LocalDate
+import no.nav.database.dao.ConsentDao.ConsentQueries.DELETE_EXPIRED_CONSENTS
 import no.nav.database.dao.ConsentDao.ConsentQueries.POST_CONSENT
 import no.nav.database.dao.ConsentDao.ConsentQueries.SELECT_ALL_ACTIVE_CONSENTS
+import no.nav.database.dao.ConsentDao.ConsentQueries.SELECT_ALL_EXPIRED_CONSENTS
 import no.nav.database.dao.ConsentDao.ConsentQueries.SELECT_CONSENT_BY_CODE
 import no.nav.database.dao.ConsentDao.ConsentQueries.SELECT_CONSENT_BY_ID
 import no.nav.database.toList
@@ -54,6 +56,18 @@ class ConsentDao(
                         null,
                         null
                     )
+                }
+            }
+        } catch (e: Exception) {
+            throw NotFoundException()
+        }
+    }
+
+    fun getIdsOfExpiredConsents(): List<Long> {
+        try {
+            dataSource.connection.use {
+                return it.prepareStatement(SELECT_ALL_EXPIRED_CONSENTS).executeQuery().toList {
+                    getLong("id")
                 }
             }
         } catch (e: Exception) {
@@ -132,6 +146,16 @@ class ConsentDao(
         }
     }
 
+    fun deleteExpiredConsents() {
+        try {
+            dataSource.connection.use {
+                it.prepareStatement(DELETE_EXPIRED_CONSENTS).executeQuery()
+            }
+        } catch (e: Exception) {
+            throw NotFoundException()
+        }
+    }
+
     private object ConsentQueries {
         val POST_CONSENT = """
             INSERT INTO consent
@@ -145,6 +169,11 @@ class ConsentDao(
             WHERE employee_id = ?
         """.trimIndent()
 
+        val SELECT_ALL_EXPIRED_CONSENTS = """
+            SELECT * FROM consent
+            WHERE expiration < CURRENT_DATE
+        """.trimIndent()
+
         val SELECT_CONSENT_BY_CODE = """
             SELECT * FROM consent
             WHERE code = ?
@@ -153,6 +182,11 @@ class ConsentDao(
         val SELECT_CONSENT_BY_ID = """
             SELECT * FROM consent
             WHERE id = ?
+        """.trimIndent()
+
+        val DELETE_EXPIRED_CONSENTS = """
+            DELETE FROM consent 
+            WHERE expiration < CURRENT_DATE RETURNING *
         """.trimIndent()
     }
 }

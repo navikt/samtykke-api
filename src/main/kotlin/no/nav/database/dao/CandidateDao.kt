@@ -3,6 +3,7 @@ package no.nav.database.dao
 import io.ktor.server.plugins.*
 import kotlinx.datetime.LocalDate
 import kotlinx.datetime.toJavaLocalDate
+import no.nav.database.dao.CandidateDao.CandidateQueries.DELETE_CANDIDATES_FROM_EXPIRED_CONSENTS
 import no.nav.database.dao.CandidateDao.CandidateQueries.POST_CANDIDATE
 import no.nav.database.dao.CandidateDao.CandidateQueries.SELECT_ALL_CANDIDATES_BY_CONSENT
 import no.nav.database.dao.CandidateDao.CandidateQueries.SELECT_ALL_CANDIDATURES_BY_CITIZEN
@@ -168,6 +169,16 @@ class CandidateDao(
         }
     }
 
+    fun deleteCandidatesFromExpiredConsents() {
+        try {
+            dataSource.connection.use {
+                it.prepareStatement(DELETE_CANDIDATES_FROM_EXPIRED_CONSENTS).executeQuery()
+            }
+        } catch (e: Exception) {
+            throw NotFoundException()
+        }
+    }
+
     private object CandidateQueries {
         val SELECT_ALL_CANDIDATES_BY_CONSENT = """
             SELECT * FROM candidate
@@ -202,6 +213,13 @@ class CandidateDao(
             UPDATE candidate
             SET name = ?, email = ?, status = ?::status, audio_recording = ?
             WHERE consent_id = ? AND citizen_id = ?
+        """.trimIndent()
+
+        val DELETE_CANDIDATES_FROM_EXPIRED_CONSENTS = """
+            DELETE FROM candidate 
+            WHERE consent_id = (
+                SELECT id FROM consent WHERE expiration < CURRENT_DATE
+            );
         """.trimIndent()
     }
 }

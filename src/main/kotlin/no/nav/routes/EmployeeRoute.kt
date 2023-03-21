@@ -37,6 +37,12 @@ fun Route.employeeRoute(
                 call.respond(HttpStatusCode.OK)
         }
 
+        // Deletes all consents which have expired
+        delete {
+            consentService.deleteExpiredConsentsAndConnectedCandidates()
+            call.respond(HttpStatusCode.OK)
+        }
+
         route("active") {
             get {
                 val activeConsents = consentService.getEmployeeActiveConsents(getEmployeeId(call.principal(), employeeService))
