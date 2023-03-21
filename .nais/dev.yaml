@@ -46,6 +46,7 @@ spec:
       rules:
         - application: samtykke-employee
         - application: samtykke-citizen
+        - application: samtykke-cronjob
     outbound:
       rules:
         - application: samtykke-pdfgen
