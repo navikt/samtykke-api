@@ -26,10 +26,10 @@ class ApplicationContext(private val env: Map<String, String>) {
         val candidateDao = CandidateDao(dataSource)
         val messageDao = MessageDao(dataSource)
 
+        messageService = MessageService(messageDao)
         employeeService = EmployeeService(employeeDao)
         citizenService = CitizenService(citizenDao)
         consentService = ConsentService(consentDao, candidateDao, employeeDao)
-        messageService = MessageService(messageDao)
-        candidateService = CandidateService(consentDao, candidateDao)
+        candidateService = CandidateService(consentDao, candidateDao, messageService)
     }
 }

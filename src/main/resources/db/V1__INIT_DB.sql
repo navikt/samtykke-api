@@ -62,10 +62,10 @@ CREATE UNIQUE INDEX ON candidate (consent_id, citizen_id);
 
 CREATE TABLE message(
     id BIGSERIAL CONSTRAINT message_pk PRIMARY KEY,
-    timestamp DATE,
+    timestamp DATE default CURRENT_DATE,
     title TEXT,
     description TEXT,
-    read BOOLEAN,
+    read BOOLEAN default false,
     ref TEXT,
     employee_id TEXT CONSTRAINT message_employee_id_fk REFERENCES employee ON DELETE CASCADE
 );

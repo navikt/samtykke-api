@@ -7,11 +7,13 @@ import no.nav.database.dao.CandidateDao
 import no.nav.database.dao.ConsentDao
 import no.nav.models.Candidate
 import no.nav.models.CreateCandidateRequest
+import no.nav.models.MessageType
 import java.util.regex.Pattern
 
 class CandidateService(
     private val consentDao: ConsentDao,
-    private val candidateDao: CandidateDao
+    private val candidateDao: CandidateDao,
+    private val messageService: MessageService
 ) {
     fun createCandidature(createCandidateRequest: CreateCandidateRequest, code: String, citizenId: String) {
         val consent = consentDao.getConsentByCode(code)
@@ -23,10 +25,29 @@ class CandidateService(
         }
 
         candidateDao.createCandidature(createCandidateRequest, consent.id, citizenId)
+
+        messageService.createMessage(
+            MessageType.CITIZEN_ACCEPT_CONSENT,
+            consent.title,
+            code,
+            "",
+            listOf(),
+            consentDao.getOwnerIdByConsentId(consent.id),
+        )
     }
 
     fun anonymizeCandidate(code: String, citizenId: String) {
         val consent = consentDao.getConsentByCode(code)
+
+        messageService.createMessage(
+            MessageType.CITIZEN_WITHDRAW_CONSENT,
+            consent.title,
+            code,
+            candidateDao.getCitizenCandidature(consent.id, citizenId).trackingNumber,
+            listOf(),
+            consentDao.getOwnerIdByConsentId(consent.id)
+        )
+
         candidateDao.anonymizeCandidate(consent.id, citizenId)
     }
 
@@ -40,6 +61,15 @@ class CandidateService(
         }
 
         candidateDao.updateCandidate(consent.id, citizenId, candidate)
+
+        messageService.createMessage(
+            MessageType.CITIZEN_UPDATE_CONSENT,
+            consent.title,
+            code,
+            candidateDao.getCitizenCandidature(consent.id, citizenId).trackingNumber.split("-")[0],
+            listOf(),
+            consentDao.getOwnerIdByConsentId(consent.id)
+        )
     }
 
     private fun validateCandidate(createCandidateRequest: CreateCandidateRequest) {

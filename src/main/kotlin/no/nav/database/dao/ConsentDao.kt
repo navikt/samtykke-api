@@ -18,18 +18,22 @@ class ConsentDao(
     private val dataSource: DataSource
 ) {
     fun createConsent(consent: BaseConsent, employeeId: String, code: String) {
-        dataSource.connection.use {
-            it.prepareStatement(POST_CONSENT).apply {
-                setString(1, consent.title)
-                setString(2, consent.responsibleGroup)
-                setString(3, consent.theme)
-                setString(4, consent.purpose)
-                setInt(5, consent.totalInvolved)
-                setDate(6, Date.valueOf(consent.expiration.toString()))
-                setString(7, consent.endResult)
-                setString(8, code)
-                setString(9, employeeId)
-            }.executeUpdate()
+        try {
+            dataSource.connection.use {
+                it.prepareStatement(POST_CONSENT).apply {
+                    setString(1, consent.title)
+                    setString(2, consent.responsibleGroup)
+                    setString(3, consent.theme)
+                    setString(4, consent.purpose)
+                    setInt(5, consent.totalInvolved)
+                    setDate(6, Date.valueOf(consent.expiration.toString()))
+                    setString(7, consent.endResult)
+                    setString(8, code)
+                    setString(9, employeeId)
+                }.executeUpdate()
+            }
+        } catch (e: Exception) {
+            throw BadRequestException("Could not create consent")
         }
     }
 
@@ -56,18 +60,6 @@ class ConsentDao(
                         null,
                         null
                     )
-                }
-            }
-        } catch (e: Exception) {
-            throw NotFoundException()
-        }
-    }
-
-    fun getIdsOfExpiredConsents(): List<Long> {
-        try {
-            dataSource.connection.use {
-                return it.prepareStatement(SELECT_ALL_EXPIRED_CONSENTS).executeQuery().toList {
-                    getLong("id")
                 }
             }
         } catch (e: Exception) {
