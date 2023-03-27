@@ -66,7 +66,7 @@ class CandidateService(
             MessageType.CITIZEN_UPDATE_CONSENT,
             consent.title,
             code,
-            candidateDao.getCitizenCandidature(consent.id, citizenId).trackingNumber.split("-")[0],
+            candidateDao.getCitizenCandidature(consent.id, citizenId).trackingNumber,
             listOf(),
             consentDao.getOwnerIdByConsentId(consent.id)
         )

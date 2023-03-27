@@ -80,8 +80,12 @@ class MessageService(
     private fun formatTrackingNumbers(trackingNumbers: List<String>): String {
         var string = ""
 
-        trackingNumbers.forEach {
-            string = "$string${it.split("-")[0].uppercase()}, "
+        trackingNumbers.forEachIndexed { index, element ->
+            string = if (trackingNumbers.lastIndex == index) {
+                "$string${element.split("-")[0].uppercase()}"
+            } else {
+                "$string${element.split("-")[0].uppercase()}, "
+            }
         }
 
         return string

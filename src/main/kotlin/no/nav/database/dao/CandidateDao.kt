@@ -219,7 +219,7 @@ class CandidateDao(
             DELETE FROM candidate 
             WHERE consent_id = (
                 SELECT id FROM consent WHERE expiration < CURRENT_DATE
-            );
+            ) RETURNING *;
         """.trimIndent()
     }
 }

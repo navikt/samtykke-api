@@ -7,11 +7,13 @@ import no.nav.database.dao.EmployeeDao
 import no.nav.models.Candidate
 import no.nav.models.Consent
 import no.nav.models.BaseConsent
+import no.nav.models.MessageType
 
 class ConsentService(
     private val consentDao: ConsentDao,
     private val candidateDao: CandidateDao,
-    private val employeeDao: EmployeeDao
+    private val employeeDao: EmployeeDao,
+    private val messageService: MessageService
 ) {
     fun createConsent(baseConsent: BaseConsent, employeeId: String) {
         try {
@@ -101,15 +103,39 @@ class ConsentService(
     }
 
     fun deleteExpiredConsentsAndConnectedCandidates() {
-        // Issues with cascading not deleting candidates, have to do it manually
-        // If deleting candidates fails => not finding any candidates to delete,
-        // Do delte consents
+        // 1. Get all expired consents with connected candidates
+        // 2. Send messeage for each consent with list of connected candidates
+        // 3. Do deletion of relevant data
+
+        val expiredConsents = consentDao.getExpiredConsent()
+
+        expiredConsents.forEach {
+            messageService.createMessage(
+                MessageType.CONSENT_EXPIRE,
+                it.title,
+                it.code!!,
+                "",
+                stripCandidatesForTrackingNumber(candidateDao.getCandidatesByConsentId(it.id)),
+                consentDao.getOwnerIdByConsentId(it.id)
+            )
+        }
+
         try {
             candidateDao.deleteCandidatesFromExpiredConsents()
             consentDao.deleteExpiredConsents()
         } catch (e: Exception) {
             consentDao.deleteExpiredConsents()
         }
+    }
+
+    private fun stripCandidatesForTrackingNumber(candidates: List<Candidate>): List<String> {
+        val trackingNumbers = mutableListOf<String>()
+
+        candidates.forEach {
+            trackingNumbers.add(it.trackingNumber)
+        }
+
+        return trackingNumbers
     }
 
     private fun validateConsent(baseConsent: BaseConsent) {

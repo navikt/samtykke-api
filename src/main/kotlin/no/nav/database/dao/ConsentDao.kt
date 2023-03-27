@@ -138,6 +138,34 @@ class ConsentDao(
         }
     }
 
+    fun getExpiredConsent(): List<Consent> {
+        try {
+            dataSource.connection.use {
+                return it.prepareStatement(SELECT_ALL_EXPIRED_CONSENTS).executeQuery().toList {
+                    Consent(
+                        getLong("id"),
+                        getString("title"),
+                        getString("responsible_group"),
+                        getString("theme"),
+                        getString("purpose"),
+                        getInt("total_involved"),
+                        LocalDate(
+                            getDate("expiration").toLocalDate().year,
+                            getDate("expiration").toLocalDate().month,
+                            getDate("expiration").toLocalDate().dayOfMonth
+                        ),
+                        getString("end_result"),
+                        getString("code"),
+                        null,
+                        null
+                    )
+                }
+            }
+        } catch (e: Exception) {
+            throw NotFoundException()
+        }
+    }
+
     fun deleteExpiredConsents() {
         try {
             dataSource.connection.use {
