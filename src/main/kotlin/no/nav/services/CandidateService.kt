@@ -15,7 +15,7 @@ class CandidateService(
     private val candidateDao: CandidateDao,
     private val messageService: MessageService
 ) {
-    fun createCandidature(createCandidateRequest: CreateCandidateRequest, code: String, citizenId: String) {
+    suspend fun createCandidature(createCandidateRequest: CreateCandidateRequest, code: String, citizenId: String) {
         val consent = consentDao.getConsentByCode(code)
 
         try {
@@ -36,7 +36,7 @@ class CandidateService(
         )
     }
 
-    fun anonymizeCandidate(code: String, citizenId: String) {
+    suspend fun anonymizeCandidate(code: String, citizenId: String) {
         val consent = consentDao.getConsentByCode(code)
 
         messageService.createMessage(
@@ -51,7 +51,7 @@ class CandidateService(
         candidateDao.anonymizeCandidate(consent.id, citizenId)
     }
 
-    fun updateCandidate(candidate: Candidate, code: String, citizenId: String) {
+    suspend fun updateCandidate(candidate: Candidate, code: String, citizenId: String) {
         val consent = consentDao.getConsentByCode(code)
 
         try {

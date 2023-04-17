@@ -5,6 +5,8 @@ import no.nav.database.dao.MessageDao
 import no.nav.models.BaseMessage
 import no.nav.models.Message
 import no.nav.models.MessageType
+import no.nav.models.SlackMessage
+import no.nav.slack.sendSlackMessage
 
 class MessageService(
     private val messageDao: MessageDao
@@ -17,7 +19,7 @@ class MessageService(
         return messages
     }
 
-    fun createMessage(
+    suspend fun createMessage(
         messageType: MessageType,
         consentTitle: String,
         consentCode: String,
@@ -36,6 +38,12 @@ class MessageService(
                             "/$consentCode"
                         ), employeeId
                     )
+                    sendSlackMessage(SlackMessage(
+                        MessageType.CITIZEN_ACCEPT_CONSENT,
+                        consentTitle,
+                        listOf(),
+                        "/$consentCode"
+                    ), "")
                 }
                 MessageType.CITIZEN_WITHDRAW_CONSENT -> {
                     messageDao.createMessage(

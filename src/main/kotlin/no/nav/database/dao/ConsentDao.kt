@@ -28,8 +28,9 @@ class ConsentDao(
                     setInt(5, consent.totalInvolved)
                     setDate(6, Date.valueOf(consent.expiration.toString()))
                     setString(7, consent.endResult)
-                    setString(8, code)
-                    setString(9, employeeId)
+                    setString(8, consent.slackChannelId)
+                    setString(9, code)
+                    setString(10, employeeId)
                 }.executeUpdate()
             }
         } catch (e: Exception) {
@@ -56,6 +57,7 @@ class ConsentDao(
                             getDate("expiration").toLocalDate().dayOfMonth
                         ),
                         getString("end_result"),
+                        getString("slack_channel_id"),
                         getString("code"),
                         null,
                         null
@@ -86,6 +88,7 @@ class ConsentDao(
                         result.getDate("expiration").toLocalDate().dayOfMonth
                     ),
                     result.getString("end_result"),
+                    result.getString("slack_channel_id"),
                     result.getString("code"),
                     null,
                     null
@@ -115,6 +118,7 @@ class ConsentDao(
                         result.getDate("expiration").toLocalDate().dayOfMonth
                     ),
                     result.getString("end_result"),
+                    result.getString("slack_channel_id"),
                     result.getString("code"),
                     null,
                     null
@@ -155,6 +159,7 @@ class ConsentDao(
                             getDate("expiration").toLocalDate().dayOfMonth
                         ),
                         getString("end_result"),
+                        getString("slack_channel_id"),
                         getString("code"),
                         null,
                         null
@@ -179,9 +184,9 @@ class ConsentDao(
     private object ConsentQueries {
         val POST_CONSENT = """
             INSERT INTO consent
-            (title, responsible_group, theme, purpose, total_involved, expiration, end_result, code, employee_id)
+            (title, responsible_group, theme, purpose, total_involved, expiration, end_result, slack_channel_id, code, employee_id)
             VALUES
-            (?, ?, ?, ?, ?, ?, ?, ?, ?)
+            (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
         """.trimIndent()
 
         val SELECT_ALL_ACTIVE_CONSENTS = """

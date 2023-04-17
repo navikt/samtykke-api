@@ -38,6 +38,7 @@ CREATE TABLE consent(
     total_involved BIGINT,
     expiration DATE,
     end_result TEXT,
+    slack_channel_id TEXT,
     code TEXT UNIQUE,
     employee_id TEXT CONSTRAINT consent_employee_id_fk REFERENCES employee ON DELETE CASCADE
 );

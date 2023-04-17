@@ -13,6 +13,7 @@ data class Consent(
     val totalInvolved: Int,
     val expiration: LocalDate,
     val endResult: String,
+    val slackChannelId: String,
     val code: String?,
     val candidates: List<Candidate>?,
     val employee: Employee?
@@ -27,4 +28,5 @@ data class BaseConsent(
     val totalInvolved: Int,
     val expiration: LocalDate,
     val endResult: String,
+    val slackChannelId: String,
 )

@@ -68,6 +68,7 @@ class ConsentService(
             consent.totalInvolved,
             consent.expiration,
             consent.endResult,
+            consent.slackChannelId,
             consent.code,
             candidateDao.getCandidatesByConsentId(consent.id),
             null
@@ -96,13 +97,14 @@ class ConsentService(
             consent.totalInvolved,
             consent.expiration,
             consent.endResult,
+            consent.slackChannelId,
             consent.code,
             candidates,
             employee
         )
     }
 
-    fun deleteExpiredConsentsAndConnectedCandidates() {
+    suspend fun deleteExpiredConsentsAndConnectedCandidates() {
         // 1. Get all expired consents with connected candidates
         // 2. Send messeage for each consent with list of connected candidates
         // 3. Do deletion of relevant data

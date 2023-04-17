@@ -1,5 +1,6 @@
 package no.nav.models
 
+import kotlinx.datetime.LocalDate
 import kotlinx.serialization.Serializable
 
 enum class PDFVersion {
@@ -21,9 +22,20 @@ data class PDFEmployee(
 )
 
 @Serializable
+data class PDFConsent(
+    val title: String,
+    val responsibleGroup: String,
+    val theme: String,
+    val purpose: String,
+    val totalInvolved: Int,
+    val expiration: LocalDate,
+    val endResult: String,
+)
+
+@Serializable
 data class CreateConsentPDF(
     val version: PDFVersion,
-    val consent: BaseConsent,
+    val consent: PDFConsent,
     val employee: PDFEmployee,
     val candidate: PDFCandidate
 )

@@ -18,7 +18,7 @@ suspend fun generateConsentPDF(httpClient: HttpClient, version: PDFVersion, cons
                     contentType(ContentType.Application.Json)
                     setBody(CreateConsentPDF(
                         version,
-                        BaseConsent(
+                        PDFConsent(
                             consent.title,
                             consent.responsibleGroup,
                             consent.theme,
@@ -46,7 +46,7 @@ suspend fun generateConsentPDF(httpClient: HttpClient, version: PDFVersion, cons
                     contentType(ContentType.Application.Json)
                     setBody(CreateConsentPDF(
                         version,
-                        BaseConsent(
+                        PDFConsent(
                             consent.title,
                             consent.responsibleGroup,
                             consent.theme,

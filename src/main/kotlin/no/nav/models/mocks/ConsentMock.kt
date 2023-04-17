@@ -14,6 +14,7 @@ fun consentsMock(): List<Consent> {
             4,
             LocalDate(2023, 3, 4),
             "rapport",
+            "",
             "X76-2B3",
             candidatesMock(),
             employeeMock()
@@ -27,6 +28,7 @@ fun consentsMock(): List<Consent> {
             5,
             LocalDate(2023, 7, 18),
             "rapport",
+            "",
             "L90-12N",
             listOf(),
             employeeMock()
@@ -40,6 +42,7 @@ fun consentsMock(): List<Consent> {
             3,
             LocalDate(2023, 5, 12),
             "rapport",
+            "",
             "12J-0ZA",
             listOf(),
             employeeMock()

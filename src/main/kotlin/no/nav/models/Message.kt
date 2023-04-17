@@ -27,3 +27,10 @@ data class BaseMessage(
     val ref: String?
 )
 
+@Serializable
+data class SlackMessage(
+    val messageType: MessageType,
+    val consentTitle: String,
+    val trackingNumbers: List<String>?,
+    val ref: String?
+)
