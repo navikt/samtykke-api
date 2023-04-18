@@ -41,6 +41,8 @@ spec:
   env:
     - name: PDFGEN_URL
       value: http://samtykke-pdfgen.team-researchops
+    - name: SLACKBOT_URL
+      value: http://samtykke-slackbot.team-researchops
   accessPolicy:
     inbound:
       rules:
@@ -50,3 +52,4 @@ spec:
     outbound:
       rules:
         - application: samtykke-pdfgen
+        - application: samtykke-slackbot

@@ -47,33 +47,24 @@ fun Application.configureRouting() {
 
     routing {
         healthRoute()
-        if (System.getenv("NAIS_CLUSTER_NAME") == "labs-gcp") {
-            route("citizen") {
-                citizenRouteMock()
-            }
-            route("employee") {
-                employeeRouteMock()
-            }
-        } else {
-            val context = ApplicationContext(System.getenv())
-            if (isNais()) {
-                authenticate("citizen") {
-                    route("citizen") {
-                        citizenRoute(context.consentService, context.candidateService, context.citizenService, httpClient)
-                    }
-                }
-                authenticate("employee") {
-                    route("employee") {
-                        employeeRoute(context.employeeService, context.consentService, context.messageService, httpClient)
-                    }
-                }
-            } else {
+        val context = ApplicationContext(System.getenv())
+        if (isNais()) {
+            authenticate("citizen") {
                 route("citizen") {
                     citizenRoute(context.consentService, context.candidateService, context.citizenService, httpClient)
                 }
+            }
+            authenticate("employee") {
                 route("employee") {
                     employeeRoute(context.employeeService, context.consentService, context.messageService, httpClient)
                 }
+            }
+        } else {
+            route("citizen") {
+                citizenRoute(context.consentService, context.candidateService, context.citizenService, httpClient)
+            }
+            route("employee") {
+                employeeRoute(context.employeeService, context.consentService, context.messageService, httpClient)
             }
         }
     }

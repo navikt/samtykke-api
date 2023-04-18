@@ -33,6 +33,7 @@ class CandidateService(
             "",
             listOf(),
             consentDao.getOwnerIdByConsentId(consent.id),
+            consent.slackChannelId
         )
     }
 
@@ -45,7 +46,8 @@ class CandidateService(
             code,
             candidateDao.getCitizenCandidature(consent.id, citizenId).trackingNumber,
             listOf(),
-            consentDao.getOwnerIdByConsentId(consent.id)
+            consentDao.getOwnerIdByConsentId(consent.id),
+            consent.slackChannelId
         )
 
         candidateDao.anonymizeCandidate(consent.id, citizenId)
@@ -68,7 +70,8 @@ class CandidateService(
             code,
             candidateDao.getCitizenCandidature(consent.id, citizenId).trackingNumber,
             listOf(),
-            consentDao.getOwnerIdByConsentId(consent.id)
+            consentDao.getOwnerIdByConsentId(consent.id),
+            consent.slackChannelId
         )
     }
 

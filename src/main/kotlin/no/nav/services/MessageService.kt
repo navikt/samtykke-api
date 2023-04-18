@@ -25,7 +25,8 @@ class MessageService(
         consentCode: String,
         citizenTrackingNumber: String,
         citizenTrackingNumbers: List<String>,
-        employeeId: String
+        employeeId: String,
+        slackChannelId: String
     ) {
         try {
             when (messageType) {
@@ -43,7 +44,7 @@ class MessageService(
                         consentTitle,
                         listOf(),
                         "/$consentCode"
-                    ), "")
+                    ), slackChannelId)
                 }
                 MessageType.CITIZEN_WITHDRAW_CONSENT -> {
                     messageDao.createMessage(
@@ -55,6 +56,12 @@ class MessageService(
                             "/$consentCode"
                         ), employeeId
                     )
+                    sendSlackMessage(SlackMessage(
+                        MessageType.CITIZEN_WITHDRAW_CONSENT,
+                        consentTitle,
+                        listOf(citizenTrackingNumber),
+                        "/$consentCode"
+                    ), slackChannelId)
                 }
                 MessageType.CITIZEN_UPDATE_CONSENT -> {
                     messageDao.createMessage(
@@ -66,6 +73,12 @@ class MessageService(
                             "/$consentCode"
                         ), employeeId
                     )
+                    sendSlackMessage(SlackMessage(
+                        MessageType.CITIZEN_UPDATE_CONSENT,
+                        consentTitle,
+                        listOf(citizenTrackingNumber),
+                        "/$consentCode"
+                    ), slackChannelId)
                 }
                 MessageType.CONSENT_EXPIRE -> {
                     messageDao.createMessage(
@@ -78,6 +91,12 @@ class MessageService(
                             ""
                         ), employeeId
                     )
+                    sendSlackMessage(SlackMessage(
+                        MessageType.CONSENT_EXPIRE,
+                        consentTitle,
+                        citizenTrackingNumbers,
+                        ""
+                    ), slackChannelId)
                 }
             }
         } catch (e: Exception) {

@@ -18,7 +18,7 @@ suspend fun sendSlackMessage(message: SlackMessage, channelId: String) {
     }
 
     try {
-        httpClient.post {
+    httpClient.post {
             url(slackBotPath)
             contentType(ContentType.Application.Json)
             setBody(message)

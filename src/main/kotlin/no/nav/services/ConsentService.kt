@@ -118,7 +118,8 @@ class ConsentService(
                 it.code!!,
                 "",
                 stripCandidatesForTrackingNumber(candidateDao.getCandidatesByConsentId(it.id)),
-                consentDao.getOwnerIdByConsentId(it.id)
+                consentDao.getOwnerIdByConsentId(it.id),
+                it.slackChannelId
             )
         }
 
