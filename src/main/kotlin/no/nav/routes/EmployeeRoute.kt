@@ -15,6 +15,7 @@ import no.nav.pdf.generateConsentPDF
 import no.nav.services.ConsentService
 import no.nav.services.EmployeeService
 import no.nav.services.MessageService
+import no.nav.slack.getAzureADToken
 
 @OptIn(InternalAPI::class)
 fun Route.employeeRoute(

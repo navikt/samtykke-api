@@ -22,6 +22,8 @@ import no.nav.routes.employeeRoute
 import no.nav.routes.healthRoute
 import no.nav.routes.mocks.citizenRouteMock
 import no.nav.routes.mocks.employeeRouteMock
+import no.nav.slack.getAzureADToken
+import no.nav.slack.getAzureOBOToken
 import org.slf4j.Logger
 import org.slf4j.LoggerFactory
 import java.util.concurrent.TimeUnit
@@ -65,6 +67,12 @@ fun Application.configureRouting() {
             }
             route("employee") {
                 employeeRoute(context.employeeService, context.consentService, context.messageService, httpClient)
+            }
+        }
+        route("/azure") {
+            get {
+                getAzureOBOToken()
+                call.respond(200)
             }
         }
     }
