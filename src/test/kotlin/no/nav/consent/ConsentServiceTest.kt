@@ -81,21 +81,25 @@ internal class ConsentServiceTest {
 
     @Test
     fun `get full consent by consent code`() {
-        every { consentDao.getConsentByCode(any()) } returns(
-                Consent(
-                    1,
-                    "Brukertest av den nye samtykkeløsningen",
-                    "Team ResearchOps",
-                    "Samtykke",
-                    "Formålet med brukertesten er å finne ut om det nye digitale samtykkeskjemaet til NAV fungerer som det skal",
-                    3,
-                    LocalDate(2023, 6, 12),
-                    "rapport",
-                    "",
-                    "XX1-XX2",
-                    listOf(),
-                    ""
-                )
+        every { consentDao.getConsentByCode(any()) }.returns(
+            Consent(
+                1,
+                "Brukertest av den nye samtykkeløsningen",
+                "Team ResearchOps",
+                "Samtykke",
+                "Formålet med brukertesten er å finne ut om det nye digitale samtykkeskjemaet til NAV fungerer som det skal",
+                3,
+                LocalDate(2023, 6, 12),
+                "rapport",
+                "",
+                "XX1-XX2",
+                listOf(),
+                null
+            )
         )
+
+        consentService.getConsentByCode("XX1-XX2")
+
+        verify(exactly = 1) { consentDao.getConsentByCode(any()) }
     }
 }
