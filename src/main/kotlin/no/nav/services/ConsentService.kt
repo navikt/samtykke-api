@@ -16,6 +16,7 @@ class ConsentService(
     private val messageService: MessageService
 ) {
     fun createConsent(baseConsent: BaseConsent, employeeId: String) {
+
         try {
             validateConsent(baseConsent)
         } catch (e: Exception) {

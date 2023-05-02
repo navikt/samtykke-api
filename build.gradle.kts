@@ -1,6 +1,7 @@
 val ktor_version: String by project
 val kotlin_version: String by project
 val logback_version: String by project
+val junit_jupiter_version: String by project
 
 plugins {
     kotlin("jvm") version "1.8.0"
@@ -19,6 +20,13 @@ application {
 }
 
 tasks {
+    withType<Test> {
+        useJUnitPlatform()
+        testLogging {
+            events("skipped", "failed")
+        }
+    }
+
     jar {
         archiveFileName.set("app.jar")
 
@@ -71,4 +79,8 @@ dependencies {
     testImplementation("io.ktor:ktor-server-tests-jvm:$ktor_version")
     testImplementation("io.ktor:ktor-server-test-host:$ktor_version")
     testImplementation("org.jetbrains.kotlin:kotlin-test-junit:$kotlin_version")
+    testImplementation("io.mockk:mockk:1.13.5")
+    testImplementation("org.junit.jupiter:junit-jupiter-api:5.9.3")
+    testImplementation("org.junit.jupiter:junit-jupiter-params:$junit_jupiter_version")
+    testImplementation("org.junit.jupiter:junit-jupiter-engine:$junit_jupiter_version")
 }

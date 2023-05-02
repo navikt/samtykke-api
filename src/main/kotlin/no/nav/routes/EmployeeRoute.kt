@@ -1,7 +1,6 @@
 package no.nav.routes
 
 import io.ktor.client.*
-import io.ktor.client.request.*
 import io.ktor.http.*
 import io.ktor.server.application.*
 import io.ktor.server.auth.*
@@ -15,7 +14,6 @@ import no.nav.pdf.generateConsentPDF
 import no.nav.services.ConsentService
 import no.nav.services.EmployeeService
 import no.nav.services.MessageService
-import no.nav.slack.getAzureADToken
 
 @OptIn(InternalAPI::class)
 fun Route.employeeRoute(
