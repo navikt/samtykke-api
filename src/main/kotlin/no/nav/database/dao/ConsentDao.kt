@@ -8,6 +8,7 @@ import no.nav.database.dao.ConsentDao.ConsentQueries.SELECT_ALL_ACTIVE_CONSENTS
 import no.nav.database.dao.ConsentDao.ConsentQueries.SELECT_ALL_EXPIRED_CONSENTS
 import no.nav.database.dao.ConsentDao.ConsentQueries.SELECT_CONSENT_BY_CODE
 import no.nav.database.dao.ConsentDao.ConsentQueries.SELECT_CONSENT_BY_ID
+import no.nav.database.singleOrNull
 import no.nav.database.toList
 import no.nav.models.Consent
 import no.nav.models.BaseConsent
@@ -17,10 +18,10 @@ import javax.sql.DataSource
 class ConsentDao(
     private val dataSource: DataSource
 ) {
-    fun createConsent(consent: BaseConsent, employeeId: String, code: String) {
+    fun createConsent(consent: BaseConsent, employeeId: String, code: String): String {
         try {
             dataSource.connection.use {
-                it.prepareStatement(POST_CONSENT).apply {
+                return it.prepareStatement(POST_CONSENT).apply {
                     setString(1, consent.title)
                     setString(2, consent.responsibleGroup)
                     setString(3, consent.theme)
@@ -31,7 +32,7 @@ class ConsentDao(
                     setString(8, consent.slackChannelId)
                     setString(9, code)
                     setString(10, employeeId)
-                }.executeUpdate()
+                }.executeQuery().singleOrNull { getString(1) }!!
             }
         } catch (e: Exception) {
             throw BadRequestException("Could not create consent")
@@ -186,7 +187,7 @@ class ConsentDao(
             INSERT INTO consent
             (title, responsible_group, theme, purpose, total_involved, expiration, end_result, slack_channel_id, code, employee_id)
             VALUES
-            (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+            (?, ?, ?, ?, ?, ?, ?, ?, ?, ?) RETURNING code
         """.trimIndent()
 
         val SELECT_ALL_ACTIVE_CONSENTS = """

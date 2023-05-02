@@ -15,7 +15,8 @@ class ConsentService(
     private val employeeDao: EmployeeDao,
     private val messageService: MessageService
 ) {
-    fun createConsent(baseConsent: BaseConsent, employeeId: String) {
+    fun createConsent(baseConsent: BaseConsent, employeeId: String): String {
+        var consentCodeUsed = ""
 
         try {
             validateConsent(baseConsent)
@@ -30,10 +31,14 @@ class ConsentService(
                 consentDao.getConsentByCode(code)
                 break
             } catch (e: Exception) {
-                if (e is NotFoundException) consentDao.createConsent(baseConsent, employeeId, code)
+                if (e is NotFoundException) {
+                    consentCodeUsed = consentDao.createConsent(baseConsent, employeeId, code)
+                }
                 unique = true
             }
         } while (!unique)
+
+        return consentCodeUsed
     }
 
     fun getConsentByCode(code: String): Consent = consentDao.getConsentByCode(code)

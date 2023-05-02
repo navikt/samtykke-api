@@ -7,6 +7,7 @@ import no.nav.database.dao.CandidateDao
 import no.nav.database.dao.ConsentDao
 import no.nav.database.dao.EmployeeDao
 import no.nav.models.BaseConsent
+import no.nav.models.Consent
 import no.nav.services.ConsentService
 import no.nav.services.MessageService
 import org.junit.jupiter.api.AfterEach
@@ -24,13 +25,12 @@ internal class ConsentServiceTest {
 
     @AfterEach
     fun afterEach() {
+        confirmVerified(consentDao)
         clearAllMocks()
     }
 
     @Test
     fun `create valid consent`() {
-        justRun { consentDao.createConsent(any(), any(), any()) }
-
         val validConsent = BaseConsent(
             "Brukertest av den nye samtykkeløsningen",
             "Team ResearchOps",
@@ -45,6 +45,8 @@ internal class ConsentServiceTest {
         assertDoesNotThrow {
             consentService.createConsent(validConsent, "")
         }
+
+        verify(exactly = 1) { consentDao.getConsentByCode(any()) }
     }
 
     @Test
@@ -75,5 +77,25 @@ internal class ConsentServiceTest {
             consentService.createConsent(emptyConsent, "")
             consentService.createConsent(overFilledConsent, "")
         }
+    }
+
+    @Test
+    fun `get full consent by consent code`() {
+        every { consentDao.getConsentByCode(any()) } returns(
+                Consent(
+                    1,
+                    "Brukertest av den nye samtykkeløsningen",
+                    "Team ResearchOps",
+                    "Samtykke",
+                    "Formålet med brukertesten er å finne ut om det nye digitale samtykkeskjemaet til NAV fungerer som det skal",
+                    3,
+                    LocalDate(2023, 6, 12),
+                    "rapport",
+                    "",
+                    "XX1-XX2",
+                    listOf(),
+                    ""
+                )
+        )
     }
 }
