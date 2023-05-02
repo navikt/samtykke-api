@@ -40,7 +40,7 @@ class CandidateDao(
                         ),
                         getString("tracking_number"),
                         getBoolean("audio_recording"),
-                        null
+                        0
                     )
                 } catch (e: Exception) {
                     // If candidate is anonymized, return with date null
@@ -53,7 +53,7 @@ class CandidateDao(
                             null,
                             getString("tracking_number"),
                             getBoolean("audio_recording"),
-                            null
+                            0
                         )
                     } else throw e
                 }

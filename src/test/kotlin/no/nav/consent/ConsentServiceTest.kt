@@ -7,12 +7,14 @@ import no.nav.database.dao.CandidateDao
 import no.nav.database.dao.ConsentDao
 import no.nav.database.dao.EmployeeDao
 import no.nav.models.BaseConsent
+import no.nav.models.Candidate
 import no.nav.models.Consent
 import no.nav.services.ConsentService
 import no.nav.services.MessageService
 import org.junit.jupiter.api.AfterEach
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.assertDoesNotThrow
+import kotlin.test.assertEquals
 import kotlin.test.assertFails
 
 internal class ConsentServiceTest {
@@ -101,5 +103,53 @@ internal class ConsentServiceTest {
         consentService.getConsentByCode("XX1-XX2")
 
         verify(exactly = 1) { consentDao.getConsentByCode(any()) }
+    }
+
+    @Test
+    fun `employee is able to retrieve active consents`() {
+        every { consentDao.getActiveConsents(any()) }.returns(listOf(mockk(), mockk(), mockk()))
+
+        val activeConsents = consentService.getEmployeeActiveConsents("")
+
+        assertEquals(activeConsents.size, 3)
+
+        verify(exactly = 1) { consentDao.getActiveConsents(any()) }
+    }
+
+    @Test
+    fun `citizen is able to retrieve active consents`() {
+        every { candidateDao.getCitizenCandidaturesByCitizenId(any()) }.returns(listOf(
+            mockk { every { consentId }.returns(2) },
+            mockk { every { consentId }.returns(2) }
+        ))
+        every { consentDao.getConsentById(any()) }.returns(mockk())
+
+        val activeConsent = consentService.getCitizenActiveConsents("")
+
+        assertEquals(activeConsent.size, 2)
+
+        verify(exactly = 2) { consentDao.getConsentById(any()) }
+    }
+
+    @Test
+    fun `error thrown when employee have no active consents`() {
+        every { consentDao.getActiveConsents(any()) }.returns(listOf())
+
+        assertFails {
+            consentService.getEmployeeActiveConsents("")
+        }
+
+        verify(exactly = 1) { consentDao.getActiveConsents(any()) }
+    }
+
+    @Test
+    fun `error thrown when citizen have no active consents`() {
+        every { candidateDao.getCitizenCandidaturesByCitizenId(any())}.returns(listOf())
+
+        assertFails {
+            consentService.getCitizenActiveConsents("")
+        }
+
+        verify(exactly = 0) { consentDao.getConsentById(any()) }
     }
 }

@@ -12,7 +12,7 @@ data class Candidate(
     val consented: LocalDate?,
     val trackingNumber: String,
     val audioRecording: Boolean,
-    val consentId: Long?,
+    val consentId: Long,
 )
 
 @Serializable

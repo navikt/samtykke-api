@@ -55,7 +55,7 @@ class ConsentService(
         val consents = mutableListOf<Consent>()
 
         candidateDao.getCitizenCandidaturesByCitizenId(citizenId).forEach {
-            consents.add(consentDao.getConsentById(it.consentId!!))
+            consents.add(consentDao.getConsentById(it.consentId))
         }
 
         if (consents.isEmpty()) throw NotFoundException()
