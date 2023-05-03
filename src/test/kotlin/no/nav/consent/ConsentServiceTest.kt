@@ -57,7 +57,7 @@ internal class ConsentServiceTest {
     }
 
     @Test
-    fun `fails to create in-valid consent`() {
+    fun `unable to create in-valid consent`() {
         val emptyConsent = BaseConsent(
             "",
             "",
