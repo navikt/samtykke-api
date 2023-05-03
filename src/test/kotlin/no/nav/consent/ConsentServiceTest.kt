@@ -2,12 +2,14 @@ package no.nav.consent
 
 import io.mockk.*
 import kotlinx.datetime.LocalDate
+import no.nav.candidate.validateCandidateAnonymized
 import no.nav.createRandomString
 import no.nav.database.dao.CandidateDao
 import no.nav.database.dao.ConsentDao
 import no.nav.database.dao.EmployeeDao
 import no.nav.models.BaseConsent
 import no.nav.models.Candidate
+import no.nav.models.CandidateStatus
 import no.nav.models.Consent
 import no.nav.services.ConsentService
 import no.nav.services.MessageService
@@ -152,4 +154,114 @@ internal class ConsentServiceTest {
 
         verify(exactly = 0) { consentDao.getConsentById(any()) }
     }
+
+    @Test
+    fun `get full consent with candidates`() {
+        every { consentDao.getConsentByCode(any()) }.returns(
+            mockk {
+                every { id }.returns(1)
+                every { title }.returns("Brukertest")
+                every { responsibleGroup }.returns("Team ReOps")
+                every { theme }.returns("skjemaer")
+                every { purpose }.returns("teste veldig fine skjemaer")
+                every { totalInvolved }.returns(2)
+                every { expiration }.returns(LocalDate(2023, 6, 12))
+                every { endResult }.returns("rapport")
+                every { slackChannelId }.returns("")
+                every { code }.returns("XX1-XX2")
+                every { candidates }.returns(null)
+                every { employee }.returns(null)
+            }
+        )
+        every { candidateDao.getCandidatesByConsentId(any()) }.returns(listOf(mockk(), mockk(), mockk()))
+
+        val consentWithCandidates = consentService.getConsentByCodeWithCandidates("")
+
+        assertEquals(consentWithCandidates.candidates!!.size, 3)
+
+        verify(exactly = 1) { candidateDao.getCandidatesByConsentId(any()) }
+        verify(exactly = 1) { consentDao.getConsentByCode(any()) }
+    }
+
+    @Test
+    fun `able to get consent with empty list of candidates`() {
+        every { consentDao.getConsentByCode(any()) }.returns(
+            mockk {
+                every { id }.returns(1)
+                every { title }.returns("Brukertest")
+                every { responsibleGroup }.returns("Team ReOps")
+                every { theme }.returns("skjemaer")
+                every { purpose }.returns("teste veldig fine skjemaer")
+                every { totalInvolved }.returns(2)
+                every { expiration }.returns(LocalDate(2023, 6, 12))
+                every { endResult }.returns("rapport")
+                every { slackChannelId }.returns("")
+                every { code }.returns("XX1-XX2")
+                every { candidates }.returns(null)
+                every { employee }.returns(null)
+            }
+        )
+        every { candidateDao.getCandidatesByConsentId(any()) }.returns(listOf())
+
+        val consentWithCandidates = consentService.getConsentByCodeWithCandidates("")
+
+        assertEquals(consentWithCandidates.candidates!!.size, 0)
+
+        verify(exactly = 1) { candidateDao.getCandidatesByConsentId(any()) }
+        verify(exactly = 1) { consentDao.getConsentByCode(any()) }
+    }
+    
+    @Test
+    fun `able to get consent with mix of anonymized and un-anonymized candidates`() {
+        every { consentDao.getConsentByCode(any()) }.returns(
+            mockk {
+                every { id }.returns(1)
+                every { title }.returns("Brukertest")
+                every { responsibleGroup }.returns("Team ReOps")
+                every { theme }.returns("skjemaer")
+                every { purpose }.returns("teste veldig fine skjemaer")
+                every { totalInvolved }.returns(2)
+                every { expiration }.returns(LocalDate(2023, 6, 12))
+                every { endResult }.returns("rapport")
+                every { slackChannelId }.returns("")
+                every { code }.returns("XX1-XX2")
+                every { candidates }.returns(null)
+                every { employee }.returns(null)
+            }
+        )
+        every { candidateDao.getCandidatesByConsentId(any()) }.returns(listOf(
+            mockk(),
+            mockk {
+                every { name }.returns("")
+                every { email }.returns("")
+                every { status }.returns(CandidateStatus.WITHDRAWN)
+                every { consented }.returns(null)
+                every { audioRecording }.returns(false)
+            },
+            mockk(),
+            mockk {
+                every { name }.returns("")
+                every { email }.returns("")
+                every { status }.returns(CandidateStatus.WITHDRAWN)
+                every { consented }.returns(null)
+                every { audioRecording }.returns(false)
+            },
+        ))
+
+        val consentWithMixedCandidates = consentService.getConsentByCodeWithCandidates("")
+
+        assertEquals(consentWithMixedCandidates.candidates!!.size, 4)
+
+        validateCandidateAnonymized(consentWithMixedCandidates.candidates!![1])
+        validateCandidateAnonymized(consentWithMixedCandidates.candidates!![3])
+
+        verify(exactly = 1) { candidateDao.getCandidatesByConsentId(any()) }
+        verify(exactly = 1) { consentDao.getConsentByCode(any()) }
+    }
+
+    @Test
+    fun `able to get citizens given consent with candidature`() {}
+
+    @Test
+    fun `throws error when no citizen candidature found to specific consent`() {}
 }

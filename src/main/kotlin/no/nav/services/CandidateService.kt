@@ -6,6 +6,7 @@ import kotlinx.datetime.toJavaLocalDate
 import no.nav.database.dao.CandidateDao
 import no.nav.database.dao.ConsentDao
 import no.nav.models.Candidate
+import no.nav.models.CandidateStatus
 import no.nav.models.CreateCandidateRequest
 import no.nav.models.MessageType
 import java.util.regex.Pattern
