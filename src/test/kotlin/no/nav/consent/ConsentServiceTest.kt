@@ -1,5 +1,6 @@
 package no.nav.consent
 
+import io.ktor.server.plugins.*
 import io.mockk.*
 import kotlinx.datetime.LocalDate
 import no.nav.candidate.validateCandidateAnonymized
@@ -260,8 +261,72 @@ internal class ConsentServiceTest {
     }
 
     @Test
-    fun `able to get citizens given consent with candidature`() {}
+    fun `able to get citizens given consent`() {
+        every { consentDao.getConsentByCode(any()) }.returns(
+            mockk {
+                every { id }.returns(1)
+                every { title }.returns("Brukertest")
+                every { responsibleGroup }.returns("Team ReOps")
+                every { theme }.returns("skjemaer")
+                every { purpose }.returns("teste veldig fine skjemaer")
+                every { totalInvolved }.returns(2)
+                every { expiration }.returns(LocalDate(2023, 6, 12))
+                every { endResult }.returns("rapport")
+                every { slackChannelId }.returns("")
+                every { code }.returns("XX1-XX2")
+                every { candidates }.returns(null)
+                every { employee }.returns(null)
+            }
+        )
+        every { consentDao.getOwnerIdByConsentId(any()) }.returns("xxx")
+        every { employeeDao.getEmployee(any()) }.returns(mockk())
+        every { candidateDao.getCitizenCandidature(any(), any()) }.returns(mockk())
+
+        val consentWithCandidate = consentService.getConsentByCodeWithCandidate("", "")
+
+        assertEquals(consentWithCandidate.candidates!!.size, 1)
+
+        verify(exactly = 1) { consentDao.getConsentByCode(any()) }
+        verify(exactly = 1) { consentDao.getOwnerIdByConsentId(any()) }
+        verify(exactly = 1) { employeeDao.getEmployee(any()) }
+        verify(exactly = 1) { candidateDao.getCitizenCandidature(any(), any()) }
+    }
 
     @Test
-    fun `throws error when no citizen candidature found to specific consent`() {}
+    fun `able to get citizen consent with no candidature`() {
+        every { consentDao.getConsentByCode(any()) }.returns(
+            mockk {
+                every { id }.returns(1)
+                every { title }.returns("Brukertest")
+                every { responsibleGroup }.returns("Team ReOps")
+                every { theme }.returns("skjemaer")
+                every { purpose }.returns("teste veldig fine skjemaer")
+                every { totalInvolved }.returns(2)
+                every { expiration }.returns(LocalDate(2023, 6, 12))
+                every { endResult }.returns("rapport")
+                every { slackChannelId }.returns("")
+                every { code }.returns("XX1-XX2")
+                every { candidates }.returns(null)
+                every { employee }.returns(null)
+            }
+        )
+        every { consentDao.getOwnerIdByConsentId(any()) }.returns("xxx")
+        every { employeeDao.getEmployee(any()) }.returns(mockk())
+        every { candidateDao.getCitizenCandidature(any(), any()) }.throws(NotFoundException())
+
+        val consentWithCandidate = consentService.getConsentByCodeWithCandidate("", "")
+
+        assertEquals(consentWithCandidate.candidates!!.size, 0)
+
+        verify(exactly = 1) { consentDao.getConsentByCode(any()) }
+        verify(exactly = 1) { consentDao.getOwnerIdByConsentId(any()) }
+        verify(exactly = 1) { employeeDao.getEmployee(any()) }
+        verify(exactly = 1) { candidateDao.getCitizenCandidature(any(), any()) }
+    }
+
+    @Test
+    fun `deletes expired consents and connected candidates`() {
+
+    }
+
 }
