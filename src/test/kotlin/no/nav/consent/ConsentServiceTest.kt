@@ -2,6 +2,7 @@ package no.nav.consent
 
 import io.ktor.server.plugins.*
 import io.mockk.*
+import kotlinx.coroutines.runBlocking
 import kotlinx.datetime.LocalDate
 import no.nav.candidate.validateCandidateAnonymized
 import no.nav.createRandomString
@@ -17,6 +18,7 @@ import no.nav.services.MessageService
 import org.junit.jupiter.api.AfterEach
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.assertDoesNotThrow
+import org.junit.jupiter.api.assertThrows
 import kotlin.test.assertEquals
 import kotlin.test.assertFails
 
@@ -325,8 +327,30 @@ internal class ConsentServiceTest {
     }
 
     @Test
-    fun `deletes expired consents and connected candidates`() {
+    fun `deletes expired consents and connected candidates`() = runBlocking {
+        every { consentDao.getExpiredConsent() }.returns(listOf())
+        // These methods are of type void, but they still have to "Mock" an empty response as to not throw NotFoundError
+        every { consentDao.deleteExpiredConsents() }.returns(mockk())
+        every { candidateDao.deleteCandidatesFromExpiredConsents() }.returns(mockk())
 
+        consentService.deleteExpiredConsentsAndConnectedCandidates()
+
+        verify(exactly = 1) { candidateDao.deleteCandidatesFromExpiredConsents() }
+        verify(exactly = 1) { consentDao.deleteExpiredConsents() }
+        verify(exactly = 1) { consentDao.getExpiredConsent() }
     }
 
+    @Test
+    fun `deletes expired consents with no connected candidates`() = runBlocking {
+        every { consentDao.getExpiredConsent() }.returns(listOf())
+        // THis method is of type void, but still need to "Mock" an empty response as to not throw NotFoundError
+        every { consentDao.deleteExpiredConsents() }.returns(mockk())
+        every { candidateDao.deleteCandidatesFromExpiredConsents() }.throws(NotFoundException())
+
+        consentService.deleteExpiredConsentsAndConnectedCandidates()
+
+        verify(exactly = 1) { candidateDao.deleteCandidatesFromExpiredConsents() }
+        verify(exactly = 1) { consentDao.deleteExpiredConsents() }
+        verify(exactly = 1) { consentDao.getExpiredConsent() }
+    }
 }
