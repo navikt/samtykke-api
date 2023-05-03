@@ -1,6 +1,7 @@
 package no.nav.services
 
 import io.ktor.server.plugins.*
+import kotlinx.coroutines.runBlocking
 import kotlinx.datetime.LocalDate
 import kotlinx.datetime.toJavaLocalDate
 import no.nav.database.dao.CandidateDao
@@ -16,7 +17,7 @@ class CandidateService(
     private val candidateDao: CandidateDao,
     private val messageService: MessageService
 ) {
-    suspend fun createCandidature(createCandidateRequest: CreateCandidateRequest, code: String, citizenId: String) {
+    fun createCandidature(createCandidateRequest: CreateCandidateRequest, code: String, citizenId: String) = runBlocking {
         val consent = consentDao.getConsentByCode(code)
 
         try {
@@ -38,7 +39,7 @@ class CandidateService(
         )
     }
 
-    suspend fun anonymizeCandidate(code: String, citizenId: String) {
+    fun anonymizeCandidate(code: String, citizenId: String) = runBlocking {
         val consent = consentDao.getConsentByCode(code)
 
         messageService.createMessage(
@@ -54,7 +55,7 @@ class CandidateService(
         candidateDao.anonymizeCandidate(consent.id, citizenId)
     }
 
-    suspend fun updateCandidate(candidate: Candidate, code: String, citizenId: String) {
+    fun updateCandidate(candidate: Candidate, code: String, citizenId: String) = runBlocking {
         val consent = consentDao.getConsentByCode(code)
 
         try {

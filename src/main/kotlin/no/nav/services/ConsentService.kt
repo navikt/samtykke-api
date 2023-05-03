@@ -1,6 +1,7 @@
 package no.nav.services
 
 import io.ktor.server.plugins.*
+import kotlinx.coroutines.runBlocking
 import no.nav.database.dao.CandidateDao
 import no.nav.database.dao.ConsentDao
 import no.nav.database.dao.EmployeeDao
@@ -110,11 +111,7 @@ class ConsentService(
         )
     }
 
-    suspend fun deleteExpiredConsentsAndConnectedCandidates() {
-        // 1. Get all expired consents with connected candidates
-        // 2. Send messeage for each consent with list of connected candidates
-        // 3. Do deletion of relevant data
-
+    fun deleteExpiredConsentsAndConnectedCandidates() = runBlocking {
         val expiredConsents = consentDao.getExpiredConsent()
 
         expiredConsents.forEach {
