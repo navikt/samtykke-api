@@ -3,12 +3,7 @@ package no.nav.candidate
 import io.ktor.server.plugins.*
 import io.mockk.*
 import kotlinx.datetime.LocalDate
-import no.nav.database.dao.CandidateDao
 import no.nav.consent.ConsentDao
-import no.nav.models.Candidate
-import no.nav.models.CandidateStatus
-import no.nav.models.CreateCandidateRequest
-import no.nav.services.CandidateService
 import no.nav.services.MessageService
 import org.junit.jupiter.api.*
 

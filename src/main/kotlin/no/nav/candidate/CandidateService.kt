@@ -1,14 +1,12 @@
-package no.nav.services
+package no.nav.candidate
 
 import io.ktor.server.plugins.*
 import kotlinx.coroutines.runBlocking
 import kotlinx.datetime.LocalDate
 import kotlinx.datetime.toJavaLocalDate
-import no.nav.database.dao.CandidateDao
 import no.nav.consent.ConsentDao
-import no.nav.models.Candidate
-import no.nav.models.CreateCandidateRequest
 import no.nav.models.MessageType
+import no.nav.services.MessageService
 import java.util.regex.Pattern
 
 class CandidateService(

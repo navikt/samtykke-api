@@ -1,5 +1,7 @@
 package no.nav
 
+import no.nav.candidate.CandidateDao
+import no.nav.candidate.CandidateService
 import no.nav.consent.ConsentDao
 import no.nav.consent.ConsentService
 import no.nav.database.DataSourceBuilder

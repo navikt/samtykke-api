@@ -1,4 +1,4 @@
-package no.nav
+package no.nav.routes
 
 import io.ktor.client.*
 import io.ktor.client.engine.cio.*
@@ -12,9 +12,6 @@ import io.ktor.server.routing.*
 import io.ktor.server.response.*
 import no.nav.ApplicationContext
 import no.nav.isNais
-import no.nav.routes.citizenRoute
-import no.nav.routes.employeeRoute
-import no.nav.routes.healthRoute
 import no.nav.slack.getAzureOBOToken
 
 fun Application.configureRouting() {

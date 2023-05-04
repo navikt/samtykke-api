@@ -2,7 +2,7 @@ package no.nav.consent
 
 import io.ktor.server.plugins.*
 import kotlinx.coroutines.runBlocking
-import no.nav.database.dao.CandidateDao
+import no.nav.candidate.CandidateDao
 import no.nav.database.dao.EmployeeDao
 import no.nav.models.Candidate
 import no.nav.models.MessageType
@@ -23,6 +23,7 @@ class ConsentService(
             throw BadRequestException("Consent not valid")
         }
 
+        // Make sure that the consent code being generated is not already in database
         var unique: Boolean
         do {
             val code = createConsentCode()

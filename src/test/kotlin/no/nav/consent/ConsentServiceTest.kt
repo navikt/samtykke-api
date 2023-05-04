@@ -6,9 +6,9 @@ import kotlinx.coroutines.runBlocking
 import kotlinx.datetime.LocalDate
 import no.nav.candidate.validateCandidateAnonymized
 import no.nav.createRandomString
-import no.nav.database.dao.CandidateDao
+import no.nav.candidate.CandidateDao
 import no.nav.database.dao.EmployeeDao
-import no.nav.models.CandidateStatus
+import no.nav.candidate.CandidateStatus
 import no.nav.services.MessageService
 import org.junit.jupiter.api.AfterEach
 import org.junit.jupiter.api.Test
