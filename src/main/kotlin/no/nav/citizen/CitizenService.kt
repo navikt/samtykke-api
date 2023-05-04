@@ -1,15 +1,10 @@
-package no.nav.services
+package no.nav.citizen
 
 import io.ktor.server.plugins.*
-import no.nav.citizen.CitizenDao
 
 class CitizenService(
     private val citizenDao: CitizenDao
 ) {
-    fun getCitizen(citizenId: String) = citizenDao.getCitizen(citizenId)
-
-    fun createCitizen(citizenId: String) = citizenDao.createCitizen(citizenId)
-
     fun createIfNotExists(citizenId: String) {
         try {
             getCitizen(citizenId)
@@ -17,4 +12,9 @@ class CitizenService(
             if (e is NotFoundException) createCitizen(citizenId)
         }
     }
+
+    private fun getCitizen(citizenId: String) = citizenDao.getCitizen(citizenId)
+
+    private fun createCitizen(citizenId: String) = citizenDao.createCitizen(citizenId)
+
 }

@@ -2,7 +2,7 @@ package no.nav
 
 import io.ktor.server.auth.jwt.*
 import no.nav.employee.Employee
-import no.nav.services.CitizenService
+import no.nav.citizen.CitizenService
 import no.nav.employee.EmployeeService
 
 fun getCitizenId(principal: JWTPrincipal?, citizenService: CitizenService): String {

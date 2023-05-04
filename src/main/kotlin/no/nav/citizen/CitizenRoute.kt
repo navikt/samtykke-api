@@ -13,7 +13,6 @@ import no.nav.getCitizenId
 import no.nav.consent.pdf.generateConsentPDF
 import no.nav.candidate.CandidateService
 import no.nav.candidate.CreateCandidateRequest
-import no.nav.services.CitizenService
 import no.nav.consent.ConsentService
 import no.nav.consent.pdf.PDFVersion
 

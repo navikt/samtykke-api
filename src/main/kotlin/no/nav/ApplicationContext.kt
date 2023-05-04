@@ -3,6 +3,7 @@ package no.nav
 import no.nav.candidate.CandidateDao
 import no.nav.candidate.CandidateService
 import no.nav.citizen.CitizenDao
+import no.nav.citizen.CitizenService
 import no.nav.consent.ConsentDao
 import no.nav.consent.ConsentService
 import no.nav.database.DataSourceBuilder
@@ -10,7 +11,6 @@ import no.nav.employee.EmployeeDao
 import no.nav.employee.EmployeeService
 import no.nav.message.MessageDao
 import no.nav.message.MessageService
-import no.nav.services.*
 
 class ApplicationContext(private val env: Map<String, String>) {
     val employeeService: EmployeeService
