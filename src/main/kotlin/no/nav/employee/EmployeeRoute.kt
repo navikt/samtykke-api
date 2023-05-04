@@ -18,6 +18,7 @@ import no.nav.employee.Employee
 import no.nav.employee.EmployeeService
 import no.nav.message.MessageService
 
+@OptIn(InternalAPI::class)
 fun Route.employeeRoute(
     employeeService: EmployeeService,
     consentService: ConsentService,
@@ -64,7 +65,7 @@ fun Route.employeeRoute(
                     val consent = consentService.getConsentByCode(code)
                     val employee = employeeService.getEmployee(getEmployeeId(call.principal(), employeeService))
                     val response = generateConsentPDF(httpClient, PDFVersion.EMPLOYEE,  consent, employee, null)
-                    call.respond(response.body())
+                    call.respond(response.content)
                 }
             }
         }

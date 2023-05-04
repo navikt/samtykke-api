@@ -1,4 +1,4 @@
-package no.nav.routes
+package no.nav
 
 import io.ktor.http.*
 import io.ktor.server.application.*
