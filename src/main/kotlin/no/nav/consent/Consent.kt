@@ -2,7 +2,7 @@ package no.nav.consent
 
 import kotlinx.datetime.LocalDate
 import kotlinx.serialization.Serializable
-import no.nav.models.Candidate
+import no.nav.candidate.Candidate
 import no.nav.models.Employee
 
 @Serializable

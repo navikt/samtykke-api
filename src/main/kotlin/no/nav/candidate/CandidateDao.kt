@@ -10,9 +10,6 @@ import no.nav.candidate.CandidateDao.CandidateQueries.SELECT_CANDIDATE
 import no.nav.candidate.CandidateDao.CandidateQueries.UPDATE_CANDIDATE
 import no.nav.candidate.CandidateDao.CandidateQueries.UPDATE_CANDIDATE_NO_CONSENTED_DATE
 import no.nav.database.toList
-import no.nav.models.Candidate
-import no.nav.candidate.CandidateStatus
-import no.nav.models.CreateCandidateRequest
 import java.sql.Date
 import javax.sql.DataSource
 

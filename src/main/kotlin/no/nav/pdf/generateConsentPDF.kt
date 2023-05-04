@@ -5,6 +5,7 @@ import io.ktor.client.request.*
 import io.ktor.client.statement.*
 import io.ktor.http.*
 import io.ktor.server.plugins.*
+import no.nav.candidate.Candidate
 import no.nav.consent.Consent
 import no.nav.models.*
 

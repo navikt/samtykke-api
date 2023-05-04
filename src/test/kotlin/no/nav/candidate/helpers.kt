@@ -1,8 +1,5 @@
 package no.nav.candidate
 
-import no.nav.models.Candidate
-import no.nav.candidate.CandidateStatus
-
 fun validateCandidateAnonymized(candidate: Candidate) {
     require(candidate.name.isBlank()) { "Name cannot be set" }
     require(candidate.email.isBlank()) { "Email cannot be set" }

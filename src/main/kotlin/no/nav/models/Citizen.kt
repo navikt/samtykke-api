@@ -1,6 +1,7 @@
 package no.nav.models
 
 import kotlinx.serialization.Serializable
+import no.nav.candidate.Candidate
 
 @Serializable
 data class Citizen(

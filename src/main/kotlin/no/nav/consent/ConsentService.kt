@@ -2,9 +2,9 @@ package no.nav.consent
 
 import io.ktor.server.plugins.*
 import kotlinx.coroutines.runBlocking
+import no.nav.candidate.Candidate
 import no.nav.candidate.CandidateDao
 import no.nav.database.dao.EmployeeDao
-import no.nav.models.Candidate
 import no.nav.models.MessageType
 import no.nav.services.MessageService
 

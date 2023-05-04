@@ -8,12 +8,12 @@ import io.ktor.server.request.*
 import io.ktor.server.response.*
 import io.ktor.server.routing.*
 import io.ktor.util.*
+import no.nav.candidate.Candidate
 import no.nav.getCitizenId
-import no.nav.models.Candidate
-import no.nav.models.CreateCandidateRequest
 import no.nav.models.PDFVersion
 import no.nav.pdf.generateConsentPDF
 import no.nav.candidate.CandidateService
+import no.nav.candidate.CreateCandidateRequest
 import no.nav.services.CitizenService
 import no.nav.consent.ConsentService
 
