@@ -1,4 +1,4 @@
-package no.nav.models
+package no.nav.consent.pdf
 
 import kotlinx.datetime.LocalDate
 import kotlinx.serialization.Serializable

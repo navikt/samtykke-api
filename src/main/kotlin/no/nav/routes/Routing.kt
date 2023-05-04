@@ -12,7 +12,7 @@ import io.ktor.server.routing.*
 import io.ktor.server.response.*
 import no.nav.ApplicationContext
 import no.nav.isNais
-import no.nav.slack.getAzureOBOToken
+import no.nav.message.slack.getAzureOBOToken
 
 fun Application.configureRouting() {
     install(ContentNegotiation) { json() }

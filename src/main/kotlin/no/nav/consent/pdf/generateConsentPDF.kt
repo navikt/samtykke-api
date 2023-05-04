@@ -1,4 +1,4 @@
-package no.nav.pdf
+package no.nav.consent.pdf
 
 import io.ktor.client.*
 import io.ktor.client.request.*
@@ -7,7 +7,7 @@ import io.ktor.http.*
 import io.ktor.server.plugins.*
 import no.nav.candidate.Candidate
 import no.nav.consent.Consent
-import no.nav.models.*
+import no.nav.models.Employee
 
 suspend fun generateConsentPDF(httpClient: HttpClient, version: PDFVersion, consent: Consent, employee: Employee, candidate: Candidate?): HttpResponse {
     val pdfGeneratorAPIPath = "${System.getenv("PDFGEN_URL")}/api/v1/genpdf/samtykke/samtykke"

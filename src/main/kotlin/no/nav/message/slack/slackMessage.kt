@@ -1,4 +1,4 @@
-package no.nav.slack
+package no.nav.message.slack
 
 import io.ktor.client.*
 import io.ktor.client.call.*

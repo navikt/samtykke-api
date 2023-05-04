@@ -1,7 +1,7 @@
 package no.nav.message
 
 import io.ktor.server.plugins.*
-import no.nav.slack.sendSlackMessage
+import no.nav.message.slack.sendSlackMessage
 
 class MessageService(
     private val messageDao: MessageDao

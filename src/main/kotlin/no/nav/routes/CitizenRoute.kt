@@ -10,12 +10,12 @@ import io.ktor.server.routing.*
 import io.ktor.util.*
 import no.nav.candidate.Candidate
 import no.nav.getCitizenId
-import no.nav.models.PDFVersion
-import no.nav.pdf.generateConsentPDF
+import no.nav.consent.pdf.generateConsentPDF
 import no.nav.candidate.CandidateService
 import no.nav.candidate.CreateCandidateRequest
 import no.nav.services.CitizenService
 import no.nav.consent.ConsentService
+import no.nav.consent.pdf.PDFVersion
 
 @OptIn(InternalAPI::class)
 fun Route.citizenRoute(

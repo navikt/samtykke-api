@@ -11,8 +11,9 @@ import io.ktor.util.*
 import no.nav.consent.BaseConsent
 import no.nav.getEmployeeId
 import no.nav.models.*
-import no.nav.pdf.generateConsentPDF
+import no.nav.consent.pdf.generateConsentPDF
 import no.nav.consent.ConsentService
+import no.nav.consent.pdf.PDFVersion
 import no.nav.services.EmployeeService
 import no.nav.message.MessageService
 
