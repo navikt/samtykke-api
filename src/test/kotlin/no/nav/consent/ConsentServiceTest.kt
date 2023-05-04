@@ -7,18 +7,12 @@ import kotlinx.datetime.LocalDate
 import no.nav.candidate.validateCandidateAnonymized
 import no.nav.createRandomString
 import no.nav.database.dao.CandidateDao
-import no.nav.database.dao.ConsentDao
 import no.nav.database.dao.EmployeeDao
-import no.nav.models.BaseConsent
-import no.nav.models.Candidate
 import no.nav.models.CandidateStatus
-import no.nav.models.Consent
-import no.nav.services.ConsentService
 import no.nav.services.MessageService
 import org.junit.jupiter.api.AfterEach
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.assertDoesNotThrow
-import org.junit.jupiter.api.assertThrows
 import kotlin.test.assertEquals
 import kotlin.test.assertFails
 

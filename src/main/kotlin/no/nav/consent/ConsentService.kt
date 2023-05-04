@@ -1,14 +1,12 @@
-package no.nav.services
+package no.nav.consent
 
 import io.ktor.server.plugins.*
 import kotlinx.coroutines.runBlocking
 import no.nav.database.dao.CandidateDao
-import no.nav.database.dao.ConsentDao
 import no.nav.database.dao.EmployeeDao
 import no.nav.models.Candidate
-import no.nav.models.Consent
-import no.nav.models.BaseConsent
 import no.nav.models.MessageType
+import no.nav.services.MessageService
 
 class ConsentService(
     private val consentDao: ConsentDao,

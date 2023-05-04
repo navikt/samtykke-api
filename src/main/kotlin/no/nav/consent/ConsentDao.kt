@@ -1,17 +1,15 @@
-package no.nav.database.dao
+package no.nav.consent
 
 import io.ktor.server.plugins.*
 import kotlinx.datetime.LocalDate
-import no.nav.database.dao.ConsentDao.ConsentQueries.DELETE_EXPIRED_CONSENTS
-import no.nav.database.dao.ConsentDao.ConsentQueries.POST_CONSENT
-import no.nav.database.dao.ConsentDao.ConsentQueries.SELECT_ALL_ACTIVE_CONSENTS
-import no.nav.database.dao.ConsentDao.ConsentQueries.SELECT_ALL_EXPIRED_CONSENTS
-import no.nav.database.dao.ConsentDao.ConsentQueries.SELECT_CONSENT_BY_CODE
-import no.nav.database.dao.ConsentDao.ConsentQueries.SELECT_CONSENT_BY_ID
+import no.nav.consent.ConsentDao.ConsentQueries.DELETE_EXPIRED_CONSENTS
+import no.nav.consent.ConsentDao.ConsentQueries.POST_CONSENT
+import no.nav.consent.ConsentDao.ConsentQueries.SELECT_ALL_ACTIVE_CONSENTS
+import no.nav.consent.ConsentDao.ConsentQueries.SELECT_ALL_EXPIRED_CONSENTS
+import no.nav.consent.ConsentDao.ConsentQueries.SELECT_CONSENT_BY_CODE
+import no.nav.consent.ConsentDao.ConsentQueries.SELECT_CONSENT_BY_ID
 import no.nav.database.singleOrNull
 import no.nav.database.toList
-import no.nav.models.Consent
-import no.nav.models.BaseConsent
 import java.sql.Date
 import javax.sql.DataSource
 

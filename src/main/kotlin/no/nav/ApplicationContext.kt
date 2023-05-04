@@ -1,12 +1,10 @@
 package no.nav
 
-import io.ktor.client.*
-import io.ktor.client.engine.cio.*
+import no.nav.consent.ConsentDao
+import no.nav.consent.ConsentService
 import no.nav.database.DataSourceBuilder
 import no.nav.database.dao.*
 import no.nav.services.*
-import org.slf4j.Logger
-import org.slf4j.LoggerFactory
 
 class ApplicationContext(private val env: Map<String, String>) {
     val employeeService: EmployeeService

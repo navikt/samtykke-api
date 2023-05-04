@@ -8,10 +8,11 @@ import io.ktor.server.request.*
 import io.ktor.server.response.*
 import io.ktor.server.routing.*
 import io.ktor.util.*
+import no.nav.consent.BaseConsent
 import no.nav.getEmployeeId
 import no.nav.models.*
 import no.nav.pdf.generateConsentPDF
-import no.nav.services.ConsentService
+import no.nav.consent.ConsentService
 import no.nav.services.EmployeeService
 import no.nav.services.MessageService
 

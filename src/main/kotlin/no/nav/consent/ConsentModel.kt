@@ -1,7 +1,9 @@
-package no.nav.models
+package no.nav.consent
 
 import kotlinx.datetime.LocalDate
 import kotlinx.serialization.Serializable
+import no.nav.models.Candidate
+import no.nav.models.Employee
 
 @Serializable
 data class Consent(

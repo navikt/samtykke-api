@@ -4,8 +4,6 @@ import io.ktor.client.*
 import io.ktor.http.*
 import io.ktor.server.application.*
 import io.ktor.server.auth.*
-import io.ktor.server.auth.jwt.*
-import io.ktor.server.plugins.*
 import io.ktor.server.request.*
 import io.ktor.server.response.*
 import io.ktor.server.routing.*
@@ -17,7 +15,7 @@ import no.nav.models.PDFVersion
 import no.nav.pdf.generateConsentPDF
 import no.nav.services.CandidateService
 import no.nav.services.CitizenService
-import no.nav.services.ConsentService
+import no.nav.consent.ConsentService
 
 @OptIn(InternalAPI::class)
 fun Route.citizenRoute(

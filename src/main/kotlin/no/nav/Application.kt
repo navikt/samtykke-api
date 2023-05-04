@@ -2,16 +2,12 @@ package no.nav
 
 import com.auth0.jwk.JwkProvider
 import com.auth0.jwk.JwkProviderBuilder
-import io.ktor.http.*
 import io.ktor.server.auth.*
 import io.ktor.server.auth.jwt.*
 import io.ktor.server.application.*
 import io.ktor.server.engine.*
 import io.ktor.server.netty.*
-import io.ktor.server.response.*
-import no.nav.plugins.*
 import java.net.URL
-import java.util.*
 import java.util.concurrent.TimeUnit
 
 fun main() {
@@ -20,7 +16,6 @@ fun main() {
 }
 
 fun Application.module() {
-
     if (isNais()) {
         val azureADProvider: JwkProvider = JwkProviderBuilder(URL(System.getenv("AZURE_OPENID_CONFIG_JWKS_URI")))
             .cached(10, 24, TimeUnit.HOURS)

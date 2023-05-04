@@ -1,6 +1,7 @@
 package no.nav.models
 
 import kotlinx.serialization.Serializable
+import no.nav.consent.Consent
 
 @Serializable
 data class Employee(
