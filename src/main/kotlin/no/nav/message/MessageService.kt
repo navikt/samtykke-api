@@ -1,11 +1,6 @@
-package no.nav.services
+package no.nav.message
 
 import io.ktor.server.plugins.*
-import no.nav.database.dao.MessageDao
-import no.nav.models.BaseMessage
-import no.nav.models.Message
-import no.nav.models.MessageType
-import no.nav.models.SlackMessage
 import no.nav.slack.sendSlackMessage
 
 class MessageService(

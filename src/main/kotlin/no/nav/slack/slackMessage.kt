@@ -5,14 +5,14 @@ import io.ktor.client.call.*
 import io.ktor.client.engine.cio.*
 import io.ktor.client.plugins.auth.providers.*
 import io.ktor.client.request.*
-import io.ktor.client.statement.*
 import io.ktor.http.*
 import io.ktor.serialization.kotlinx.json.*
 import io.ktor.server.plugins.*
+import kotlinx.coroutines.runBlocking
 import kotlinx.serialization.Serializable
-import no.nav.models.SlackMessage
+import no.nav.message.SlackMessage
 
-suspend fun sendSlackMessage(message: SlackMessage, channelId: String) {
+fun sendSlackMessage(message: SlackMessage, channelId: String) = runBlocking {
     val slackBotPath = "${System.getenv("SLACKBOT_URL")}/message/${channelId}"
 
     val httpClient = HttpClient(CIO) {
@@ -39,7 +39,7 @@ suspend fun sendSlackMessage(message: SlackMessage, channelId: String) {
     }
 }
 
-suspend fun getAzureADToken(): String {
+fun getAzureADToken(): String = runBlocking {
     val httpClient = HttpClient(CIO) {
         install(io.ktor.client.plugins.contentnegotiation.ContentNegotiation) {
             json()
@@ -59,10 +59,10 @@ suspend fun getAzureADToken(): String {
         setBody(tokenOptions)
     }.body()
 
-    return response.access_token
+    return@runBlocking response.access_token
 }
 
-suspend fun getAzureOBOToken(): String {
+fun getAzureOBOToken(): String = runBlocking {
     val accessToken = getAzureADToken()
 
     val httpClient = HttpClient(CIO) {
@@ -93,7 +93,7 @@ suspend fun getAzureOBOToken(): String {
         setBody(tokenOptions)
     }.body()
 
-    return response.access_token
+    return@runBlocking response.access_token
 }
 
 // Variable names have to be like this due to incoming azure response

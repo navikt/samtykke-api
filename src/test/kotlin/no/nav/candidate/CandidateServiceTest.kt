@@ -4,7 +4,7 @@ import io.ktor.server.plugins.*
 import io.mockk.*
 import kotlinx.datetime.LocalDate
 import no.nav.consent.ConsentDao
-import no.nav.services.MessageService
+import no.nav.message.MessageService
 import org.junit.jupiter.api.*
 
 internal class CandidateServiceTest {

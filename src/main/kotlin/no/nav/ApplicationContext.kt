@@ -6,6 +6,8 @@ import no.nav.consent.ConsentDao
 import no.nav.consent.ConsentService
 import no.nav.database.DataSourceBuilder
 import no.nav.database.dao.*
+import no.nav.message.MessageDao
+import no.nav.message.MessageService
 import no.nav.services.*
 
 class ApplicationContext(private val env: Map<String, String>) {

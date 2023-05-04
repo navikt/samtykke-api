@@ -1,4 +1,4 @@
-package no.nav.models
+package no.nav.message
 
 import kotlinx.datetime.LocalDate
 import kotlinx.serialization.Serializable

@@ -5,8 +5,8 @@ import kotlinx.coroutines.runBlocking
 import no.nav.candidate.Candidate
 import no.nav.candidate.CandidateDao
 import no.nav.database.dao.EmployeeDao
-import no.nav.models.MessageType
-import no.nav.services.MessageService
+import no.nav.message.MessageType
+import no.nav.message.MessageService
 
 class ConsentService(
     private val consentDao: ConsentDao,

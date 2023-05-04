@@ -9,7 +9,7 @@ import no.nav.createRandomString
 import no.nav.candidate.CandidateDao
 import no.nav.database.dao.EmployeeDao
 import no.nav.candidate.CandidateStatus
-import no.nav.services.MessageService
+import no.nav.message.MessageService
 import org.junit.jupiter.api.AfterEach
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.assertDoesNotThrow

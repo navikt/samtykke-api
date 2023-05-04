@@ -1,11 +1,9 @@
-package no.nav.database.dao
+package no.nav.message
 
 import kotlinx.datetime.LocalDate
-import no.nav.database.dao.MessageDao.MessageQueries.POST_MESSAGE
-import no.nav.database.dao.MessageDao.MessageQueries.SELECT_ALL_MESSAGES_BY_EMPLOYEE
+import no.nav.message.MessageDao.MessageQueries.POST_MESSAGE
+import no.nav.message.MessageDao.MessageQueries.SELECT_ALL_MESSAGES_BY_EMPLOYEE
 import no.nav.database.toList
-import no.nav.models.BaseMessage
-import no.nav.models.Message
 import javax.sql.DataSource
 
 class MessageDao(

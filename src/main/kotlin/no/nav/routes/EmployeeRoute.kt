@@ -14,7 +14,7 @@ import no.nav.models.*
 import no.nav.pdf.generateConsentPDF
 import no.nav.consent.ConsentService
 import no.nav.services.EmployeeService
-import no.nav.services.MessageService
+import no.nav.message.MessageService
 
 @OptIn(InternalAPI::class)
 fun Route.employeeRoute(

@@ -5,8 +5,8 @@ import kotlinx.coroutines.runBlocking
 import kotlinx.datetime.LocalDate
 import kotlinx.datetime.toJavaLocalDate
 import no.nav.consent.ConsentDao
-import no.nav.models.MessageType
-import no.nav.services.MessageService
+import no.nav.message.MessageType
+import no.nav.message.MessageService
 import java.util.regex.Pattern
 
 class CandidateService(
