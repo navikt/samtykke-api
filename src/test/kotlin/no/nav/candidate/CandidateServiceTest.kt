@@ -10,10 +10,7 @@ import no.nav.models.CandidateStatus
 import no.nav.models.CreateCandidateRequest
 import no.nav.services.CandidateService
 import no.nav.services.MessageService
-import org.junit.jupiter.api.AfterEach
-import org.junit.jupiter.api.Test
-import org.junit.jupiter.api.assertDoesNotThrow
-import org.junit.jupiter.api.assertThrows
+import org.junit.jupiter.api.*
 
 internal class CandidateServiceTest {
 
@@ -23,14 +20,8 @@ internal class CandidateServiceTest {
 
     private val candidateService = CandidateService(consentDao, candidateDao, messageService)
 
-    @AfterEach
-    fun afterEach() {
-        confirmVerified(candidateDao)
-        clearAllMocks()
-    }
-
-    @Test
-    fun `create valid candidate`() {
+    @BeforeEach
+    fun beforeEach() {
         every { consentDao.getOwnerIdByConsentId(any()) }.returns("")
         every { consentDao.getConsentByCode(any()) }.returns(
             mockk {
@@ -48,6 +39,16 @@ internal class CandidateServiceTest {
                 every { employee }.returns(null)
             }
         )
+    }
+
+    @AfterEach
+    fun afterEach() {
+        confirmVerified(candidateDao)
+        clearAllMocks()
+    }
+
+    @Test
+    fun `create valid candidate`() {
         every { candidateDao.createCandidature(any(), any(), any()) }.returns(mockk())
 
         val validCandidate = CreateCandidateRequest(
@@ -67,24 +68,6 @@ internal class CandidateServiceTest {
 
     @Test
     fun `unable to create in-valid candidate`() {
-        every { consentDao.getOwnerIdByConsentId(any()) }.returns("")
-        every { consentDao.getConsentByCode(any()) }.returns(
-            mockk {
-                every { id }.returns(1)
-                every { title }.returns("Brukertest")
-                every { responsibleGroup }.returns("Team ReOps")
-                every { theme }.returns("skjemaer")
-                every { purpose }.returns("teste veldig fine skjemaer")
-                every { totalInvolved }.returns(2)
-                every { expiration }.returns(LocalDate(2023, 6, 12))
-                every { endResult }.returns("rapport")
-                every { slackChannelId }.returns("")
-                every { code }.returns("XX1-XX2")
-                every { candidates }.returns(null)
-                every { employee }.returns(null)
-            }
-        )
-
         val invalidCandidate = CreateCandidateRequest(
             "",
             "",
@@ -102,23 +85,6 @@ internal class CandidateServiceTest {
 
     @Test
     fun `able to anonymize candidate`() {
-        every { consentDao.getOwnerIdByConsentId(any()) }.returns("")
-        every { consentDao.getConsentByCode(any()) }.returns(
-            mockk {
-                every { id }.returns(1)
-                every { title }.returns("Brukertest")
-                every { responsibleGroup }.returns("Team ReOps")
-                every { theme }.returns("skjemaer")
-                every { purpose }.returns("teste veldig fine skjemaer")
-                every { totalInvolved }.returns(2)
-                every { expiration }.returns(LocalDate(2023, 6, 12))
-                every { endResult }.returns("rapport")
-                every { slackChannelId }.returns("")
-                every { code }.returns("XX1-XX2")
-                every { candidates }.returns(null)
-                every { employee }.returns(null)
-            }
-        )
         every { candidateDao.anonymizeCandidate(any(), any()) }.returns(mockk())
         every { candidateDao.getCitizenCandidature(any(), any()) }.returns(
             mockk { every { trackingNumber }.returns("xxx") }
@@ -134,23 +100,6 @@ internal class CandidateServiceTest {
 
     @Test
     fun `able to update valid candidate`() {
-        every { consentDao.getOwnerIdByConsentId(any()) }.returns("")
-        every { consentDao.getConsentByCode(any()) }.returns(
-            mockk {
-                every { id }.returns(1)
-                every { title }.returns("Brukertest")
-                every { responsibleGroup }.returns("Team ReOps")
-                every { theme }.returns("skjemaer")
-                every { purpose }.returns("teste veldig fine skjemaer")
-                every { totalInvolved }.returns(2)
-                every { expiration }.returns(LocalDate(2023, 6, 12))
-                every { endResult }.returns("rapport")
-                every { slackChannelId }.returns("")
-                every { code }.returns("XX1-XX2")
-                every { candidates }.returns(null)
-                every { employee }.returns(null)
-            }
-        )
         every { candidateDao.getCitizenCandidature(any(), any()) }.returns(
             mockk { every { trackingNumber }.returns("xxx") }
         )
@@ -177,23 +126,6 @@ internal class CandidateServiceTest {
 
     @Test
     fun `unable to update in-valid candidate`() {
-        every { consentDao.getOwnerIdByConsentId(any()) }.returns("")
-        every { consentDao.getConsentByCode(any()) }.returns(
-            mockk {
-                every { id }.returns(1)
-                every { title }.returns("Brukertest")
-                every { responsibleGroup }.returns("Team ReOps")
-                every { theme }.returns("skjemaer")
-                every { purpose }.returns("teste veldig fine skjemaer")
-                every { totalInvolved }.returns(2)
-                every { expiration }.returns(LocalDate(2023, 6, 12))
-                every { endResult }.returns("rapport")
-                every { slackChannelId }.returns("")
-                every { code }.returns("XX1-XX2")
-                every { candidates }.returns(null)
-                every { employee }.returns(null)
-            }
-        )
         every { candidateDao.getCitizenCandidature(any(), any()) }.returns(
             mockk { every { trackingNumber }.returns("xxx") }
         )
