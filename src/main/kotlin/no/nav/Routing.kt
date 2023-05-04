@@ -12,7 +12,6 @@ import io.ktor.server.routing.*
 import io.ktor.server.response.*
 import no.nav.citizen.citizenRoute
 import no.nav.employee.employeeRoute
-import no.nav.message.slack.getAzureOBOToken
 
 fun Application.configureRouting() {
     install(ContentNegotiation) { json() }
@@ -53,12 +52,6 @@ fun Application.configureRouting() {
             }
             route("employee") {
                 employeeRoute(context.employeeService, context.consentService, context.messageService, httpClient)
-            }
-        }
-        route("/azure") {
-            get {
-                getAzureOBOToken()
-                call.respond(200)
             }
         }
     }
