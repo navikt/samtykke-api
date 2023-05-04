@@ -1,7 +1,7 @@
 package no.nav.services
 
 import io.ktor.server.plugins.*
-import no.nav.database.dao.CitizenDao
+import no.nav.citizen.CitizenDao
 
 class CitizenService(
     private val citizenDao: CitizenDao

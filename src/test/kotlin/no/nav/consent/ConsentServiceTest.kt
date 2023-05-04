@@ -7,7 +7,7 @@ import kotlinx.datetime.LocalDate
 import no.nav.candidate.validateCandidateAnonymized
 import no.nav.createRandomString
 import no.nav.candidate.CandidateDao
-import no.nav.database.dao.EmployeeDao
+import no.nav.employee.EmployeeDao
 import no.nav.candidate.CandidateStatus
 import no.nav.message.MessageService
 import org.junit.jupiter.api.AfterEach

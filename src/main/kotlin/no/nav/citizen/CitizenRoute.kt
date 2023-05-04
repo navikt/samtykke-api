@@ -1,4 +1,4 @@
-package no.nav.routes
+package no.nav.citizen
 
 import io.ktor.client.*
 import io.ktor.http.*

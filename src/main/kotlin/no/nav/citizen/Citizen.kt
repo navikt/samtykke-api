@@ -1,4 +1,4 @@
-package no.nav.models
+package no.nav.citizen
 
 import kotlinx.serialization.Serializable
 import no.nav.candidate.Candidate

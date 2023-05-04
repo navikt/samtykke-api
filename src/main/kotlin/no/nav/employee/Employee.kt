@@ -1,4 +1,4 @@
-package no.nav.models
+package no.nav.employee
 
 import kotlinx.serialization.Serializable
 import no.nav.consent.Consent

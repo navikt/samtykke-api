@@ -1,9 +1,8 @@
-package no.nav.database.dao
+package no.nav.employee
 
 import io.ktor.server.plugins.*
-import no.nav.database.dao.EmployeeDao.EmployeeQueries.POST_EMPLOYEE
-import no.nav.database.dao.EmployeeDao.EmployeeQueries.SELECT_EMPLOYEE
-import no.nav.models.Employee
+import no.nav.employee.EmployeeDao.EmployeeQueries.POST_EMPLOYEE
+import no.nav.employee.EmployeeDao.EmployeeQueries.SELECT_EMPLOYEE
 import javax.sql.DataSource
 
 class EmployeeDao(

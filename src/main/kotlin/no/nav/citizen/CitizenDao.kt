@@ -1,9 +1,8 @@
-package no.nav.database.dao
+package no.nav.citizen
 
 import io.ktor.server.plugins.*
-import no.nav.database.dao.CitizenDao.CitizenQueries.POST_CITIZEN
-import no.nav.database.dao.CitizenDao.CitizenQueries.SELECT_CITIZEN
-import no.nav.models.Citizen
+import no.nav.citizen.CitizenDao.CitizenQueries.POST_CITIZEN
+import no.nav.citizen.CitizenDao.CitizenQueries.SELECT_CITIZEN
 import javax.sql.DataSource
 
 class CitizenDao(

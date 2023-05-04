@@ -4,7 +4,7 @@ import io.ktor.server.plugins.*
 import kotlinx.coroutines.runBlocking
 import no.nav.candidate.Candidate
 import no.nav.candidate.CandidateDao
-import no.nav.database.dao.EmployeeDao
+import no.nav.employee.EmployeeDao
 import no.nav.message.MessageType
 import no.nav.message.MessageService
 

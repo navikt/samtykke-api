@@ -1,11 +1,9 @@
 package no.nav
 
-import io.ktor.server.application.*
-import io.ktor.server.auth.*
 import io.ktor.server.auth.jwt.*
-import no.nav.models.Employee
+import no.nav.employee.Employee
 import no.nav.services.CitizenService
-import no.nav.services.EmployeeService
+import no.nav.employee.EmployeeService
 
 fun getCitizenId(principal: JWTPrincipal?, citizenService: CitizenService): String {
     return if (isNais()) {

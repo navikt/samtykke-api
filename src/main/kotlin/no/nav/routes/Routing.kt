@@ -11,6 +11,8 @@ import io.ktor.server.plugins.cors.routing.*
 import io.ktor.server.routing.*
 import io.ktor.server.response.*
 import no.nav.ApplicationContext
+import no.nav.citizen.citizenRoute
+import no.nav.employee.employeeRoute
 import no.nav.isNais
 import no.nav.message.slack.getAzureOBOToken
 

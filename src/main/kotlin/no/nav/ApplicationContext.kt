@@ -2,10 +2,12 @@ package no.nav
 
 import no.nav.candidate.CandidateDao
 import no.nav.candidate.CandidateService
+import no.nav.citizen.CitizenDao
 import no.nav.consent.ConsentDao
 import no.nav.consent.ConsentService
 import no.nav.database.DataSourceBuilder
-import no.nav.database.dao.*
+import no.nav.employee.EmployeeDao
+import no.nav.employee.EmployeeService
 import no.nav.message.MessageDao
 import no.nav.message.MessageService
 import no.nav.services.*

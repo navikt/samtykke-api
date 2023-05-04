@@ -7,7 +7,7 @@ import io.ktor.http.*
 import io.ktor.server.plugins.*
 import no.nav.candidate.Candidate
 import no.nav.consent.Consent
-import no.nav.models.Employee
+import no.nav.employee.Employee
 
 suspend fun generateConsentPDF(httpClient: HttpClient, version: PDFVersion, consent: Consent, employee: Employee, candidate: Candidate?): HttpResponse {
     val pdfGeneratorAPIPath = "${System.getenv("PDFGEN_URL")}/api/v1/genpdf/samtykke/samtykke"

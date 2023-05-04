@@ -1,6 +1,7 @@
-package no.nav.routes
+package no.nav.employee
 
 import io.ktor.client.*
+import io.ktor.client.call.*
 import io.ktor.http.*
 import io.ktor.server.application.*
 import io.ktor.server.auth.*
@@ -10,14 +11,13 @@ import io.ktor.server.routing.*
 import io.ktor.util.*
 import no.nav.consent.BaseConsent
 import no.nav.getEmployeeId
-import no.nav.models.*
 import no.nav.consent.pdf.generateConsentPDF
 import no.nav.consent.ConsentService
 import no.nav.consent.pdf.PDFVersion
-import no.nav.services.EmployeeService
+import no.nav.employee.Employee
+import no.nav.employee.EmployeeService
 import no.nav.message.MessageService
 
-@OptIn(InternalAPI::class)
 fun Route.employeeRoute(
     employeeService: EmployeeService,
     consentService: ConsentService,
@@ -64,7 +64,7 @@ fun Route.employeeRoute(
                     val consent = consentService.getConsentByCode(code)
                     val employee = employeeService.getEmployee(getEmployeeId(call.principal(), employeeService))
                     val response = generateConsentPDF(httpClient, PDFVersion.EMPLOYEE,  consent, employee, null)
-                    call.respond(response.content)
+                    call.respond(response.body())
                 }
             }
         }

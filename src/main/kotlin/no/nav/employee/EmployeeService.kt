@@ -1,15 +1,11 @@
-package no.nav.services
+package no.nav.employee
 
 import io.ktor.server.plugins.*
-import no.nav.database.dao.EmployeeDao
-import no.nav.models.Employee
 
 class EmployeeService(
     private val employeeDao: EmployeeDao
 ) {
     fun getEmployee(employeeId: String) = employeeDao.getEmployee(employeeId)
-
-    fun createEmployee(employee: Employee) = employeeDao.createEmployee(employee)
 
     fun createIfNotExists(employee: Employee) {
         try {
@@ -18,4 +14,6 @@ class EmployeeService(
             if (e is NotFoundException) createEmployee(employee)
         }
     }
+
+    private fun createEmployee(employee: Employee) = employeeDao.createEmployee(employee)
 }
