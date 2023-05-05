@@ -1,6 +1,8 @@
 package no.nav.citizen
 
 import io.ktor.client.*
+import io.ktor.client.call.*
+import io.ktor.client.statement.*
 import io.ktor.http.*
 import io.ktor.server.application.*
 import io.ktor.server.auth.*
