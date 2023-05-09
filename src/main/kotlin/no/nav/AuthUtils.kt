@@ -17,7 +17,7 @@ fun getCitizenId(principal: JWTPrincipal?, citizenService: CitizenService): Stri
 }
 
 fun getEmployeeId(principal: JWTPrincipal?, employeeService: EmployeeService): String {
-    return if (isNais()) {
+    return if (System.getenv("NAIS_CLUSTER_NAME") == "prod-gcp") {
         val oid = principal!!.payload.getClaim("oid").asString()
         employeeService.createIfNotExists(
             Employee(
