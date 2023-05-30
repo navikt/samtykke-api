@@ -21,10 +21,10 @@ spec:
   resources:
     limits:
       cpu: 400m
-      memory: 256Mi
+      memory: 512Mi
     requests:
-      cpu: 200m
-      memory: 256Mi
+      cpu: 400m
+      memory: 512Mi
   gcp:
     sqlInstances:
       - type: POSTGRES_14
