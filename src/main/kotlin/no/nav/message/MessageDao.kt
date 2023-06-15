@@ -49,7 +49,7 @@ class MessageDao(
                 it.prepareStatement(PATCH_MESSAGE).apply {
                     setBoolean(1, true)
                     setLong(2, messageId)
-                }
+                }.executeUpdate()
             }
         } catch (e: Exception) {
             throw BadRequestException("Could not mark message as read")
