@@ -50,7 +50,7 @@ internal class CandidateServiceTest {
             "Pølle Bølle",
             "pølle.bølle@outlook.com",
             CandidateStatus.ACCEPTED,
-            LocalDate(2023, 6, 12),
+            LocalDate(2023, 8, 12),
             false
         )
 
