@@ -14,7 +14,7 @@ class MessageService(
         return messages
     }
 
-    suspend fun createMessage(
+    fun createMessage(
         messageType: MessageType,
         consentTitle: String,
         consentCode: String,
@@ -98,6 +98,8 @@ class MessageService(
             throw Error("Could not create message of type $messageType")
         }
     }
+
+    fun markMessageAsRead(messageId: Long) = messageDao.markMessageAsRead(messageId)
 
     private fun formatTrackingNumbers(trackingNumbers: List<String>): String {
         var string = ""

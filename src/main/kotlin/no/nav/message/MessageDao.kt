@@ -1,9 +1,11 @@
 package no.nav.message
 
+import io.ktor.server.plugins.*
 import kotlinx.datetime.LocalDate
 import no.nav.message.MessageDao.MessageQueries.POST_MESSAGE
 import no.nav.message.MessageDao.MessageQueries.SELECT_ALL_MESSAGES_BY_EMPLOYEE
 import no.nav.database.toList
+import no.nav.message.MessageDao.MessageQueries.PATCH_MESSAGE
 import javax.sql.DataSource
 
 class MessageDao(
@@ -41,6 +43,19 @@ class MessageDao(
         }
     }
 
+    fun markMessageAsRead(messageId: Long) {
+        try {
+            dataSource.connection.use {
+                it.prepareStatement(PATCH_MESSAGE).apply {
+                    setBoolean(1, true)
+                    setLong(2, messageId)
+                }
+            }
+        } catch (e: Exception) {
+            throw BadRequestException("Could not mark message as read")
+        }
+    }
+
     private object MessageQueries {
         val SELECT_ALL_MESSAGES_BY_EMPLOYEE = """
             SELECT * FROM message
@@ -52,6 +67,12 @@ class MessageDao(
             (title, description, ref, employee_id)
             VALUES
             (?, ?, ?, ?)
+        """.trimIndent()
+
+        val PATCH_MESSAGE = """
+            UPDATE message
+            SET read = ?
+            WHERE id = ?
         """.trimIndent()
     }
 }

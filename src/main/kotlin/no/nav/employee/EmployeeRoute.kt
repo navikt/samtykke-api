@@ -72,5 +72,13 @@ fun Route.employeeRoute(
             val messages = messageService.getMessagesByEmployeeId(getEmployeeId(call.principal(), employeeService))
             call.respond(messages)
         }
+
+        route("{id}") {
+            patch {
+                val messageId = call.parameters["id"]!!.toLong()
+                messageService.markMessageAsRead(messageId)
+                call.respond(HttpStatusCode.OK)
+            }
+        }
     }
 }
