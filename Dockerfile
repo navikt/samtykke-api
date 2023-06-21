@@ -1,4 +1,4 @@
-FROM ghcr.io/navikt/baseimages/temurin:latest
+FROM ghcr.io/navikt/baseimages/temurin:17
 
 ENV JAVA_OPTS='-XX:MaxRAMPercentage=90'
 
