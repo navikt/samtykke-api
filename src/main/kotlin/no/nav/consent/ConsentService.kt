@@ -144,12 +144,10 @@ class ConsentService(
     }
 
     private fun validateConsent(baseConsent: BaseConsent) {
-        require(baseConsent.title.length > 5) { "Title must be longer than 5 characters" }
-        require(baseConsent.title.length < 50) { "Title must be shorter than 50 characters" }
+        require(baseConsent.title.isNotBlank()) { "Title must be set" }
         require(baseConsent.responsibleGroup.isNotBlank()) { "Responsible group must be set" }
         require(baseConsent.theme.isNotBlank()) { "Theme must be set" }
-        require(baseConsent.purpose.length > 30) { "Purpose must be longer than 30 characters" }
-        require(baseConsent.purpose.length < 300) { "Purpose must be shorten than 300 characters" }
+        require(baseConsent.purpose.isNotBlank()) { "Purpose must be set" }
         require(baseConsent.totalInvolved > 0) { "There has to be at least 1 involved" }
         require(baseConsent.endResult.isNotBlank()) { "End result must be set" }
     }
