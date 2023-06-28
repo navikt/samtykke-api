@@ -9,6 +9,7 @@ import io.ktor.serialization.kotlinx.json.*
 import io.ktor.server.plugins.*
 import kotlinx.coroutines.runBlocking
 import no.nav.consent.pdf.getAzureOBOToken
+import no.nav.isNais
 import no.nav.message.SlackMessage
 
 fun sendSlackMessage(message: SlackMessage, channelId: String) = runBlocking {
@@ -19,9 +20,11 @@ fun sendSlackMessage(message: SlackMessage, channelId: String) = runBlocking {
             json()
         }
         install(io.ktor.client.plugins.auth.Auth) {
-            bearer {
-                loadTokens {
-                    BearerTokens(getAzureOBOToken(), "")
+            if (isNais()) {
+                bearer {
+                    loadTokens {
+                        BearerTokens(getAzureOBOToken(), "")
+                    }
                 }
             }
         }

@@ -45,7 +45,7 @@ class MessageService(
                     messageDao.createMessage(
                         BaseMessage(
                             "En innbygger har trukket sitt samtykke til: $consentTitle.",
-                            "En innbygger med løpenummer: ${citizenTrackingNumber.split("-")[0].uppercase()} har " +
+                            "En innbygger med løpenummer: ${citizenTrackingNumber.uppercase()} har " +
                                     "trukket sitt samtykke til: $consentTitle. Nå må du slette all " +
                                     "ekstern data knyttet til innbyggeren.",
                             "/$consentCode"
@@ -62,7 +62,7 @@ class MessageService(
                     messageDao.createMessage(
                         BaseMessage(
                             "En innbygger har oppdatert sitt samtykke til: $consentTitle.",
-                            "En innbygger med løpenummer: ${citizenTrackingNumber.split("-")[0].uppercase()} har " +
+                            "En innbygger med løpenummer: ${citizenTrackingNumber.uppercase()} har " +
                                     "oppdatert sitt samtykke til: $consentTitle. Nå må du oppdatere " +
                                     "all ekstern data knyttet til innbyggeren.",
                             "/$consentCode"
@@ -106,9 +106,9 @@ class MessageService(
 
         trackingNumbers.forEachIndexed { index, element ->
             string = if (trackingNumbers.lastIndex == index) {
-                "$string${element.split("-")[0].uppercase()}"
+                "$string${element.uppercase()}"
             } else {
-                "$string${element.split("-")[0].uppercase()}, "
+                "$string${element.uppercase()}, "
             }
         }
 
