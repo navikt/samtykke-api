@@ -1,6 +1,7 @@
 package no.nav.candidate
 
 import io.ktor.server.plugins.*
+import io.ktor.util.logging.*
 import kotlinx.coroutines.runBlocking
 import kotlinx.datetime.LocalDate
 import kotlinx.datetime.toJavaLocalDate
@@ -14,16 +15,22 @@ class CandidateService(
     private val candidateDao: CandidateDao,
     private val messageService: MessageService
 ) {
+
+    private val logger = KtorSimpleLogger("com.example.RequestTracePlugin")
+
     fun createCandidature(createCandidateRequest: CreateCandidateRequest, code: String, citizenId: String) = runBlocking {
         val consent = consentDao.getConsentByCode(code)
 
         try {
             validateCandidate(createCandidateRequest)
         } catch (e: Exception) {
+            logger.info("Validation of candidate failed: ${e.message}")
             throw BadRequestException("Candidate not valid")
         }
 
         candidateDao.createCandidature(createCandidateRequest, consent.id, citizenId)
+
+        logger.info("Candidate for consent with code: $code created")
 
         messageService.createMessage(
             MessageType.CITIZEN_ACCEPT_CONSENT,
@@ -50,6 +57,8 @@ class CandidateService(
         )
 
         candidateDao.anonymizeCandidate(consent.id, citizenId)
+
+        logger.info("Candidate for consent with code: $code made anonymous")
     }
 
     fun updateCandidate(candidate: Candidate, code: String, citizenId: String) = runBlocking {
@@ -58,10 +67,13 @@ class CandidateService(
         try {
             validateCandidate(candidate)
         } catch (e: Exception) {
+            logger.info("Validation of candidate failed: ${e.message}")
             throw BadRequestException("Candidate not valid")
         }
 
         candidateDao.updateCandidate(consent.id, citizenId, candidate)
+
+        logger.info("Candidate for consent with code: $code updated")
 
         messageService.createMessage(
             MessageType.CITIZEN_UPDATE_CONSENT,
