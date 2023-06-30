@@ -9,11 +9,12 @@ import io.ktor.server.auth.*
 import io.ktor.server.plugins.contentnegotiation.*
 import io.ktor.server.plugins.cors.routing.*
 import io.ktor.server.routing.*
-import io.ktor.server.response.*
 import no.nav.citizen.citizenRoute
 import no.nav.employee.employeeRoute
+import io.ktor.server.plugins.callloging.*
 
 fun Application.configureRouting() {
+    install(CallLogging)
     install(ContentNegotiation) { json() }
     install(IgnoreTrailingSlash)
     install(CORS) {

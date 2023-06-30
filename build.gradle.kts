@@ -63,6 +63,7 @@ dependencies {
     implementation("org.flywaydb:flyway-core:9.12.0")
     implementation("io.ktor:ktor-server-cors:$ktor_version")
     implementation("io.ktor:ktor-server-netty-jvm:$ktor_version")
+    implementation("io.ktor:ktor-server-call-logging:$ktor_version")
     implementation("ch.qos.logback:logback-classic:$logback_version")
 
     implementation("io.ktor:ktor-server-auth:$ktor_version")

@@ -1,6 +1,7 @@
 package no.nav.consent
 
 import io.ktor.server.plugins.*
+import io.ktor.util.logging.*
 import kotlinx.coroutines.runBlocking
 import no.nav.candidate.Candidate
 import no.nav.candidate.CandidateDao
@@ -14,12 +15,16 @@ class ConsentService(
     private val employeeDao: EmployeeDao,
     private val messageService: MessageService
 ) {
+
+    private val Logger = KtorSimpleLogger("com.example.RequestTracePlugin")
+
     fun createConsent(baseConsent: BaseConsent, employeeId: String): String {
         var consentCodeUsed = ""
 
         try {
             validateConsent(baseConsent)
         } catch (e: Exception) {
+            Logger.info("Validation of consent failed: ${e.message}")
             throw BadRequestException("Consent not valid")
         }
 
@@ -37,6 +42,8 @@ class ConsentService(
                 unique = true
             }
         } while (!unique)
+
+        Logger.info("Consent with code: $consentCodeUsed created")
 
         return consentCodeUsed
     }
