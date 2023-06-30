@@ -5,12 +5,17 @@ import io.ktor.client.request.*
 import io.ktor.client.statement.*
 import io.ktor.http.*
 import io.ktor.server.plugins.*
+import io.ktor.util.logging.*
 import kotlinx.coroutines.runBlocking
 import no.nav.candidate.Candidate
 import no.nav.consent.Consent
 import no.nav.employee.Employee
+import kotlin.math.log
 
 fun generateConsentPDF(httpClient: HttpClient, version: PDFVersion, consent: Consent, employee: Employee, candidate: Candidate?): HttpResponse = runBlocking {
+
+    val logger = KtorSimpleLogger("com.example.RequestTracePlugin")
+
     val pdfGeneratorAPIPath = "${System.getenv("PDFGEN_URL")}/api/v1/genpdf/samtykke/samtykke"
 
     try {
@@ -73,6 +78,7 @@ fun generateConsentPDF(httpClient: HttpClient, version: PDFVersion, consent: Con
             }
         }
     } catch (e: Exception) {
+        logger.info("PDF of consent could not be generated: ${e.message}")
         throw BadRequestException("PDF could not be generated")
     }
 }
