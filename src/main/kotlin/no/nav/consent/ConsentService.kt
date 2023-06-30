@@ -16,7 +16,7 @@ class ConsentService(
     private val messageService: MessageService
 ) {
 
-    private val Logger = KtorSimpleLogger("com.example.RequestTracePlugin")
+    private val logger = KtorSimpleLogger("com.example.RequestTracePlugin")
 
     fun createConsent(baseConsent: BaseConsent, employeeId: String): String {
         var consentCodeUsed = ""
@@ -24,7 +24,7 @@ class ConsentService(
         try {
             validateConsent(baseConsent)
         } catch (e: Exception) {
-            Logger.info("Validation of consent failed: ${e.message}")
+            logger.info("Validation of consent failed: ${e.message}")
             throw BadRequestException("Consent not valid")
         }
 
@@ -43,7 +43,7 @@ class ConsentService(
             }
         } while (!unique)
 
-        Logger.info("Consent with code: $consentCodeUsed created")
+        logger.info("Consent with code: $consentCodeUsed created")
 
         return consentCodeUsed
     }
@@ -138,6 +138,8 @@ class ConsentService(
         } catch (e: Exception) {
             consentDao.deleteExpiredConsents()
         }
+
+        logger.info("Consents with codes: ${expiredConsents.joinToString { it.code.toString() }} deleted")
     }
 
     private fun stripCandidatesForTrackingNumber(candidates: List<Candidate>): List<String> {
