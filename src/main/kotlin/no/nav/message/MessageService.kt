@@ -1,11 +1,15 @@
 package no.nav.message
 
 import io.ktor.server.plugins.*
+import io.ktor.util.logging.*
 import no.nav.message.slack.sendSlackMessage
 
 class MessageService(
     private val messageDao: MessageDao
 ) {
+
+    private val logger = KtorSimpleLogger("com.example.RequestTracePlugin")
+
     fun getMessagesByEmployeeId(employeeId: String): List<Message> {
         val messages: List<Message> = messageDao.getMessagesByEmployeeId(employeeId)
 
@@ -94,7 +98,9 @@ class MessageService(
                     ), slackChannelId)
                 }
             }
+            logger.info("Message of type: $messageType for consent with code: $consentCode created")
         } catch (e: Exception) {
+            logger.info("Creation of message failed: ${e.message}")
             throw Error("Could not create message of type $messageType")
         }
     }
