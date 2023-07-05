@@ -10,7 +10,6 @@ import no.nav.candidate.CandidateDao.CandidateQueries.SELECT_CANDIDATE
 import no.nav.candidate.CandidateDao.CandidateQueries.UPDATE_CANDIDATE
 import no.nav.candidate.CandidateDao.CandidateQueries.UPDATE_CANDIDATE_NO_CONSENTED_DATE
 import no.nav.database.toList
-import java.sql.Date
 import javax.sql.DataSource
 
 class CandidateDao(
@@ -115,10 +114,9 @@ class CandidateDao(
                     setString(1, candidate.name)
                     setString(2, candidate.email)
                     setString(3, candidate.status.toString())
-                    setDate(4, Date.valueOf(candidate.consented.toString()))
-                    setBoolean(5, candidate.audioRecording)
-                    setLong(6, consentId)
-                    setString(7, citizenId)
+                    setBoolean(4, candidate.audioRecording)
+                    setLong(5, consentId)
+                    setString(6, citizenId)
                 }.executeUpdate()
             }
         } catch (e: Exception) {
@@ -192,9 +190,9 @@ class CandidateDao(
 
         val POST_CANDIDATE = """
             INSERT INTO candidate
-            (name, email, status, consented, audio_recording, consent_id, citizen_id)
+            (name, email, status, audio_recording, consent_id, citizen_id)
             VALUES
-            (?, ?, ?::status, ?, ?, ?, ?)
+            (?, ?, ?::status, ?, ?, ?)
         """.trimIndent()
 
         // Should this return any value?

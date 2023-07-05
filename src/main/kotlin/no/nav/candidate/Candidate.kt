@@ -20,6 +20,5 @@ data class CreateCandidateRequest(
     val name: String,
     val email: String,
     val status: CandidateStatus,
-    val consented: LocalDate,
     val audioRecording: Boolean,
 )
