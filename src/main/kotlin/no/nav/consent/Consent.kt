@@ -16,6 +16,17 @@ interface IConsentBase {
 }
 
 @Serializable
+data class ConsentBase(
+    override val title: String,
+    override val responsibleGroup: String,
+    override val theme: String,
+    override val purpose: String,
+    override val totalInvolved: Int,
+    override val expiration: LocalDate,
+    override val endResult: String,
+) : IConsentBase
+
+@Serializable
 data class CreateConsentRequest(
     override val title: String,
     override val responsibleGroup: String,
@@ -28,7 +39,7 @@ data class CreateConsentRequest(
 ) : IConsentBase
 
 @Serializable
-data class Consent(
+data class FullConsent(
     val id: Long,
     override val title: String,
     override val responsibleGroup: String,

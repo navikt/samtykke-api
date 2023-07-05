@@ -37,13 +37,13 @@ class ConsentDao(
         }
     }
 
-    fun getActiveConsents(employeeId: String): List<Consent> {
+    fun getActiveConsents(employeeId: String): List<FullConsent> {
         try {
             dataSource.connection.use {
                 return it.prepareStatement(SELECT_ALL_ACTIVE_CONSENTS).apply {
                     setString(1, employeeId)
                 }.executeQuery().toList {
-                    Consent(
+                    FullConsent(
                         getLong("id"),
                         getString("title"),
                         getString("responsible_group"),
@@ -68,13 +68,13 @@ class ConsentDao(
         }
     }
 
-    fun getConsentByCode(code: String): Consent {
+    fun getConsentByCode(code: String): FullConsent {
         dataSource.connection.use {
             val result = it.prepareStatement(SELECT_CONSENT_BY_CODE).apply {
                 setString(1, code)
             }.executeQuery()
             return if (result.next()) {
-                Consent(
+                FullConsent(
                     result.getLong("id"),
                     result.getString("title"),
                     result.getString("responsible_group"),
@@ -98,13 +98,13 @@ class ConsentDao(
         }
     }
 
-    fun getConsentById(consentId: Long): Consent {
+    fun getConsentById(consentId: Long): FullConsent {
         dataSource.connection.use {
             val result = it.prepareStatement(SELECT_CONSENT_BY_ID).apply {
                 setLong(1, consentId)
             }.executeQuery()
             return if (result.next()) {
-                Consent(
+                FullConsent(
                     result.getLong("id"),
                     result.getString("title"),
                     result.getString("responsible_group"),
@@ -141,11 +141,11 @@ class ConsentDao(
         }
     }
 
-    fun getExpiredConsent(): List<Consent> {
+    fun getExpiredConsent(): List<FullConsent> {
         try {
             dataSource.connection.use {
                 return it.prepareStatement(SELECT_ALL_EXPIRED_CONSENTS).executeQuery().toList {
-                    Consent(
+                    FullConsent(
                         getLong("id"),
                         getString("title"),
                         getString("responsible_group"),

@@ -8,11 +8,11 @@ import io.ktor.server.plugins.*
 import io.ktor.util.logging.*
 import kotlinx.coroutines.runBlocking
 import no.nav.candidate.Candidate
-import no.nav.consent.Consent
+import no.nav.consent.ConsentBase
+import no.nav.consent.FullConsent
 import no.nav.employee.Employee
-import kotlin.math.log
 
-fun generateConsentPDF(httpClient: HttpClient, version: PDFVersion, consent: Consent, employee: Employee, candidate: Candidate?): HttpResponse = runBlocking {
+fun generateConsentPDF(httpClient: HttpClient, version: PDFVersion, consent: FullConsent, employee: Employee, candidate: Candidate?): HttpResponse = runBlocking {
 
     val logger = KtorSimpleLogger("com.example.RequestTracePlugin")
 
@@ -26,7 +26,7 @@ fun generateConsentPDF(httpClient: HttpClient, version: PDFVersion, consent: Con
                     contentType(ContentType.Application.Json)
                     setBody(CreateConsentPDF(
                         version,
-                        PDFConsent(
+                        ConsentBase(
                             consent.title,
                             consent.responsibleGroup,
                             consent.theme,
@@ -54,7 +54,7 @@ fun generateConsentPDF(httpClient: HttpClient, version: PDFVersion, consent: Con
                     contentType(ContentType.Application.Json)
                     setBody(CreateConsentPDF(
                         version,
-                        PDFConsent(
+                        ConsentBase(
                             consent.title,
                             consent.responsibleGroup,
                             consent.theme,

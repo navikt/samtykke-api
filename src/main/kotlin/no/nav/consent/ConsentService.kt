@@ -48,18 +48,18 @@ class ConsentService(
         return consentCodeUsed
     }
 
-    fun getConsentByCode(code: String): Consent = consentDao.getConsentByCode(code)
+    fun getConsentByCode(code: String): FullConsent = consentDao.getConsentByCode(code)
 
-    fun getEmployeeActiveConsents(employeeId: String): List<Consent> {
-        val consents: List<Consent> = consentDao.getActiveConsents(employeeId)
+    fun getEmployeeActiveConsents(employeeId: String): List<FullConsent> {
+        val consents: List<FullConsent> = consentDao.getActiveConsents(employeeId)
 
         if (consents.isEmpty()) throw NotFoundException()
 
         return consents
     }
 
-    fun getCitizenActiveConsents(citizenId: String): List<Consent> {
-        val consents = mutableListOf<Consent>()
+    fun getCitizenActiveConsents(citizenId: String): List<FullConsent> {
+        val consents = mutableListOf<FullConsent>()
 
         candidateDao.getCitizenCandidaturesByCitizenId(citizenId).forEach {
             consents.add(consentDao.getConsentById(it.consentId))
@@ -70,9 +70,9 @@ class ConsentService(
         return consents
     }
 
-    fun getConsentByCodeWithCandidates(code: String): Consent {
+    fun getConsentByCodeWithCandidates(code: String): FullConsent {
         val consent = consentDao.getConsentByCode(code)
-        return Consent(
+        return FullConsent(
             consent.id,
             consent.title,
             consent.responsibleGroup,
@@ -88,7 +88,7 @@ class ConsentService(
         )
     }
 
-    fun getConsentByCodeWithCandidate(code: String, citizenId: String): Consent {
+    fun getConsentByCodeWithCandidate(code: String, citizenId: String): FullConsent {
         val consent = consentDao.getConsentByCode(code)
         val employeeId = consentDao.getOwnerIdByConsentId(consent.id)
         val employee = employeeDao.getEmployee(employeeId)
@@ -101,7 +101,7 @@ class ConsentService(
             if (e !is NotFoundException) throw e
         }
 
-        return Consent(
+        return FullConsent(
             consent.id,
             consent.title,
             consent.responsibleGroup,
