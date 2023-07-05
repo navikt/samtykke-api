@@ -89,7 +89,6 @@ class CandidateService(
     private fun validateCandidate(createCandidateRequest: CreateCandidateRequest) {
         require(createCandidateRequest.name.isNotBlank()) { "Name must be set" }
         require(isEmail(createCandidateRequest.email)) { "Email must be valid" }
-        require(consentedDateValid(createCandidateRequest.consented)) { "Consented date not valid" }
     }
 
     private fun validateCandidate(candidate: Candidate) {
@@ -101,10 +100,5 @@ class CandidateService(
         return Pattern
             .compile("^[a-z\\wæøåA-Z\\wæøå0-9.!#$%&'*+/=?^_`\\{|\\}~-]+@[a-zA-Z0-9-]+(?:\\.[a-zA-Z0-9-]+)*$")
             .matcher(email).matches()
-    }
-
-    private fun consentedDateValid(consented: LocalDate): Boolean {
-        val date = consented.toJavaLocalDate()
-        return !(date.isBefore(java.time.LocalDate.now().minusDays(1)) || date.isAfter(java.time.LocalDate.now().plusMonths(3)))
     }
 }
