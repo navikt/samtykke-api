@@ -49,8 +49,6 @@ internal class CandidateServiceTest {
         val validCandidate = CreateCandidateRequest(
             "Pølle Bølle",
             "pølle.bølle@outlook.com",
-            CandidateStatus.ACCEPTED,
-            LocalDate(2023, 8, 12),
             false
         )
 
@@ -66,8 +64,6 @@ internal class CandidateServiceTest {
         val invalidCandidate = CreateCandidateRequest(
             "",
             "",
-            CandidateStatus.ACCEPTED,
-            LocalDate(2023, 6, 12),
             false
         )
 

@@ -52,7 +52,7 @@ CREATE TABLE candidate(
     id BIGSERIAL CONSTRAINT candidate_pk PRIMARY KEY,
     name TEXT,
     email TEXT,
-    status STATUS,
+    status STATUS DEFAULT 'ACCEPTED',
     consented DATE DEFAULT CURRENT_DATE,
     tracking_number TEXT DEFAULT split_part(gen_random_uuid()::text, '-', 1),
     audio_recording BOOLEAN,

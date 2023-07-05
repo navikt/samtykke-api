@@ -113,10 +113,9 @@ class CandidateDao(
                 it.prepareStatement(POST_CANDIDATE).apply {
                     setString(1, candidate.name)
                     setString(2, candidate.email)
-                    setString(3, candidate.status.toString())
-                    setBoolean(4, candidate.audioRecording)
-                    setLong(5, consentId)
-                    setString(6, citizenId)
+                    setBoolean(3, candidate.audioRecording)
+                    setLong(4, consentId)
+                    setString(5, citizenId)
                 }.executeUpdate()
             }
         } catch (e: Exception) {
@@ -190,9 +189,9 @@ class CandidateDao(
 
         val POST_CANDIDATE = """
             INSERT INTO candidate
-            (name, email, status, audio_recording, consent_id, citizen_id)
+            (name, email, audio_recording, consent_id, citizen_id)
             VALUES
-            (?, ?, ?::status, ?, ?, ?)
+            (?, ?, ?, ?, ?)
         """.trimIndent()
 
         // Should this return any value?
