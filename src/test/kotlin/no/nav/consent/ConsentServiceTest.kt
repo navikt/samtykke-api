@@ -71,7 +71,7 @@ internal class ConsentServiceTest {
     @Test
     fun `get full consent by consent code`() {
         every { consentDao.getConsentByCode(any()) }.returns(
-            Consent(
+            FullConsent(
                 1,
                 "Brukertest av den nye samtykkeløsningen",
                 "Team ResearchOps",
