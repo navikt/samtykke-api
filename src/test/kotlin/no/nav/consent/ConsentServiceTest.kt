@@ -32,7 +32,7 @@ internal class ConsentServiceTest {
 
     @Test
     fun `create valid consent`() {
-        val validConsent = BaseConsent(
+        val validConsent = CreateConsentRequest(
             "Brukertest av den nye samtykkeløsningen",
             "Team ResearchOps",
             "Samtykke",
@@ -52,7 +52,7 @@ internal class ConsentServiceTest {
 
     @Test
     fun `unable to create in-valid consent`() {
-        val emptyConsent = BaseConsent(
+        val emptyConsent = CreateConsentRequest(
             "",
             "",
             "",
@@ -63,20 +63,8 @@ internal class ConsentServiceTest {
             ""
         )
 
-        val overFilledConsent = BaseConsent(
-            createRandomString(70),
-            createRandomString(8),
-            createRandomString(10),
-            createRandomString(500),
-            3,
-            LocalDate(2023, 6, 12),
-            createRandomString(9),
-            ""
-        )
-
         assertFails {
             consentService.createConsent(emptyConsent, "")
-            consentService.createConsent(overFilledConsent, "")
         }
     }
 

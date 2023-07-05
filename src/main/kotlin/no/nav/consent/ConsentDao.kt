@@ -16,7 +16,7 @@ import javax.sql.DataSource
 class ConsentDao(
     private val dataSource: DataSource
 ) {
-    fun createConsent(consent: BaseConsent, employeeId: String, code: String): String {
+    fun createConsent(consent: CreateConsentRequest, employeeId: String, code: String): String {
         try {
             dataSource.connection.use {
                 return it.prepareStatement(POST_CONSENT).apply {

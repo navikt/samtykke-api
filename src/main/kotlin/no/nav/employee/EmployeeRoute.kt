@@ -8,10 +8,10 @@ import io.ktor.server.auth.*
 import io.ktor.server.request.*
 import io.ktor.server.response.*
 import io.ktor.server.routing.*
-import no.nav.consent.BaseConsent
 import no.nav.getEmployeeId
 import no.nav.consent.pdf.generateConsentPDF
 import no.nav.consent.ConsentService
+import no.nav.consent.CreateConsentRequest
 import no.nav.consent.pdf.PDFVersion
 import no.nav.message.MessageService
 
@@ -30,7 +30,7 @@ fun Route.employeeRoute(
 
     route("consent") {
         post {
-                val source = call.receive<BaseConsent>()
+                val source = call.receive<CreateConsentRequest>()
                 consentService.createConsent(source, getEmployeeId(call.principal(), employeeService))
                 call.respond(HttpStatusCode.OK)
         }

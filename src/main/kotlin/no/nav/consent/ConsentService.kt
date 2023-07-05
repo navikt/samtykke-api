@@ -18,11 +18,11 @@ class ConsentService(
 
     private val logger = KtorSimpleLogger("com.example.RequestTracePlugin")
 
-    fun createConsent(baseConsent: BaseConsent, employeeId: String): String {
+    fun createConsent(consent: CreateConsentRequest, employeeId: String): String {
         var consentCodeUsed = ""
 
         try {
-            validateConsent(baseConsent)
+            validateConsent(consent)
         } catch (e: Exception) {
             logger.info("Validation of consent failed: ${e.message}")
             throw BadRequestException("Consent not valid")
@@ -37,7 +37,7 @@ class ConsentService(
                 break
             } catch (e: Exception) {
                 if (e is NotFoundException) {
-                    consentCodeUsed = consentDao.createConsent(baseConsent, employeeId, code)
+                    consentCodeUsed = consentDao.createConsent(consent, employeeId, code)
                 }
                 unique = true
             }
@@ -152,7 +152,7 @@ class ConsentService(
         return trackingNumbers
     }
 
-    private fun validateConsent(baseConsent: BaseConsent) {
+    private fun validateConsent(baseConsent: IConsentBase) {
         require(baseConsent.title.isNotBlank()) { "Title must be set" }
         require(baseConsent.responsibleGroup.isNotBlank()) { "Responsible group must be set" }
         require(baseConsent.theme.isNotBlank()) { "Theme must be set" }
