@@ -17,11 +17,11 @@ Lokal kjøring av database kan gjøres på to måter: ved å bruke [Postgres.app
 
 ##### Oppsett av Docker postgres database
 Last ned Docker postgres bildet
-````
+````bash
 docker pull postgres
 ````
 Kjør Docker postgres containeren
-````
+````bash
 docker run \
     --name samtykke
     -e POSTGRES_PASSWORD=<password> \
@@ -31,7 +31,7 @@ docker run \
     postgres
 ````
 Opprett samtykke databasen i postgres containeren
-````
+````bash
 # Hent container ID'en til Docker postgres containeren
 docker ps
 # Exec inn i containeren og opprett samtykke databasen
@@ -46,23 +46,23 @@ exit
 Når postres database og [samtykke-slackbot](https://github.com/navikt/samtykke-slackbot) kjører lokalt kan man begynne å kjøre API'et.
 
 Legg inn følgende miljøvariabler. I Intellij kan dette legges inn i Run/debug configuration for prosjektet.
-````
+````bash
 DB_HOST=localhost;DB_PASSWORD=<password>;DB_PORT=5432;DB_USERNAME=postgres;DB_DATABASE=samtykke;PDFGEN_URL=http://localhost:8080;SLACKBOT_URL=http://localhost:8081
 ````
 
 Last ned avhengigheter direkte i IntelliJ eller kjør følgende kommando i terminal:
-```
+````bash
 gradle
-```
+````
 
 Kjør API'et direkte i IntelliJ eller kjør følgende kommando i terminal:
-````
+````bash
 gradle run
 ````
 
 ### Kjør testing
 Tester kjøres gjennom Gradle, og de spesifike testene kan enten kjøres direkte i IntelliJ eller via Gradle i terminalen med følgende kommando:
-````
+````bash
 gradle test
 ````
 
